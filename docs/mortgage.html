@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ипотека | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="mortgage">
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" /><div><div class="brand-title">Россия 2050</div><div class="brand-subtitle">демографическая платформа</div></div></a>
+    <nav class="nav-tabs" aria-label="Главная навигация">
+        <a href="index.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a href="estate.html">Усадьба</a>
+        <a href="capital.html?v=20260614-matcapital-formula6">Маткапитал</a>
+        <a class="active" href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+      </nav>
+  </div></header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="section-number">Конструктор семейной ипотеки</div>
+        <h1>Ставка, платёж, бюджет и цена рождения</h1>
+        <p class="lead">Интерактивное продолжение расчётов из аналитического доклада: меняем ставку, лимит, срок, метод расчёта и сразу видим ежемесячный платёж, бюджетную субсидию и стоимость поддержки по очередности рождения.</p>
+      </div>
+      <div class="hero-kpis">
+        <div class="kpi-card gold"><div class="kpi-label">ключевая ставка</div><div class="kpi-value" id="mortgageHeroKeyRate">14,5%</div><div class="kpi-note">значение можно менять</div></div>
+        <div class="kpi-card"><div class="kpi-label">базовый кредит</div><div class="kpi-value" id="mortgageHeroLoan">6 млн ₽</div><div class="kpi-note">сценарная сумма займа</div></div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Настройки сценария</h2>
+        <div class="grid two" style="grid-template-columns:1fr 1fr; gap:14px; margin:0">
+          <div class="control"><label for="scenarioSelect">Сценарий ставок</label><select id="scenarioSelect"></select></div>
+          <div class="control"><label for="calcMethod">Метод расчёта</label><select id="calcMethod"><option value="annuity">Аннуитет</option><option value="simple">Простая переплата</option></select></div>
+          <div class="control"><label for="keyRate">Ключевая ставка, %</label><input id="keyRate" type="number" step="0.1" /></div>
+          <div class="control"><label for="bankSpread">Спред банка, п.п.</label><input id="bankSpread" type="number" step="0.1" /></div>
+          <div class="control"><label for="marketRate">Рыночная ставка, %</label><input id="marketRate" type="number" step="0.1" /></div>
+          <div class="control"><label for="loanAmount">Сумма кредита, ₽</label><input id="loanAmount" type="number" step="100000" /></div>
+          <div class="control"><label for="termYears">Срок, лет</label><input id="termYears" type="number" step="1" min="1" /></div>
+          <div class="control"><label for="loanLimit">Льготный лимит, ₽</label><input id="loanLimit" type="number" step="100000" /></div>
+          <div class="control"><label for="takeUpMortgage">Охват программы, %</label><input id="takeUpMortgage" type="number" step="0.1" min="0" max="100" /></div>
+          <div class="control"><label for="birthConversionMortgage">Конверсия в рождение, %</label><input id="birthConversionMortgage" type="number" step="0.1" min="0.1" max="100" /></div>
+          <div class="control"><label for="areaNormMortgage">Норма площади, м²/чел.</label><input id="areaNormMortgage" type="number" step="1" /></div>
+          <div class="control"><label for="priceM2Mortgage">Цена м², ₽</label><input id="priceM2Mortgage" type="number" step="1000" /></div>
+        </div>
+        <div class="btn-row" style="margin-top:18px"><button id="resetMortgage" class="gold" type="button">сброс</button><button id="downloadMortgageCsv" class="ghost" type="button">Скачать таблицу</button></div>
+      </div>
+      <div class="card teal">
+        <h2>Ключевые результаты</h2>
+        <div class="metric-strip" style="grid-template-columns:1fr 1fr">
+          <div class="metric"><span>Платёж 1 ребёнок</span><b id="mortgageKpiPay1">—</b></div>
+          <div class="metric"><span>Платёж 4 ребёнок</span><b id="mortgageKpiPay4">—</b></div>
+          <div class="metric"><span>Бюджет / кредит</span><b id="mortgageKpiBudget">—</b></div>
+          <div class="metric"><span>Цена потенциального рождения при заданной конверсии</span><b id="mortgageKpiBirthCost">—</b></div>
+        </div>
+        <p class="kpi-note">Расчёты показывают не фактическое поведение семей, а сценарную цену изменения условий программы при заданном охвате и конверсии поддержки в потенциальное рождение.</p>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white"><h2>Ежемесячный платёж</h2><div id="mortgagePaymentChart" class="chart mid"></div></div>
+      <div class="card white"><h2>Номинальная субсидия за срок кредита</h2><div id="mortgageBudgetChart" class="chart mid"></div></div>
+    </section>
+    <section class="grid two">
+      <div class="card white"><h2>Матери и гипотетический максимум</h2><p class="text-note">Светлая штрихованная часть — потенциал перехода в следующую группу; это не прогноз, а верхняя теоретическая граница.</p><div id="mothersPotentialChart" class="chart mid"></div></div>
+      <div class="card white"><h2>Комфортная площадь и стоимость жилья</h2><div id="housingAreaChart" class="chart mid"></div></div>
+    </section>
+    <section class="card white"><h2>Расчётная таблица</h2><div id="mortgageTable" class="table-wrap"></div></section>
+  </main>
+  <footer class="footer">Модуль построен как конструктор сценариев, а не как сбор индивидуальных данных о семьях.</footer>
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/mortgage.js"></script>
+</body>
+</html>

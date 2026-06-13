@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Усадьба | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=20260613-estate-groundplan1" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="estate">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
+        <div>
+          <div class="brand-title">Россия 2050</div>
+          <div class="brand-subtitle">демографическая платформа</div>
+        </div>
+      </a>
+      <nav class="nav-tabs" aria-label="Главная навигация">
+        <a href="index.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a class="active" href="estate.html">Усадьба</a>
+        <a href="capital.html?v=20260614-matcapital-formula6">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero estate-hero">
+      <div class="hero-main">
+        <div class="section-number">Многопоколенная усадьба</div>
+        <h1>Растущий дом как демографическая инфраструктура</h1>
+        <p class="lead">трёхмерный конструктор показывает, как стартовый дом дополняется детскими и старшими модулями, а экономический блок считает площадь, стоимость, субсидию и выгоду совместного проживания в расчёте на одного человека.</p>
+      </div>
+      <div class="hero-kpis">
+        <div class="kpi-card gold"><div class="kpi-label">целевая норма</div><div class="kpi-value" id="estateHeroAreaNorm">30 м²</div><div class="kpi-note">на одного члена семьи</div></div>
+        <div class="kpi-card"><div class="kpi-label">расчётная стоимость</div><div class="kpi-value" id="estateHeroPriceM2">116 тыс. ₽</div><div class="kpi-note">за 1 м², сценарный норматив</div></div>
+      </div>
+    </section>
+
+    <section class="grid two estate-top-grid">
+      <div class="card white estate-view-card">
+        <div class="card-title-row">
+          <div>
+            <h2>трёхмерная модель семейного пространства</h2>
+            <div class="text-note">Поверните модель мышью и посмотрите, как стартовый дом превращается в многопоколенную усадьбу при росте семьи.</div>
+          </div>
+          <span class="pill" id="estateModulePill">—</span>
+        </div>
+        <div class="estate-three-wrap">
+          <div id="estateThree" aria-label="трёхмерная модель модульного дома"></div>
+          <svg id="estateDimensionPlan" class="estate-dimension-plan" viewBox="0 0 1000 620" role="img" aria-label="схема размеров участка и дома"></svg>
+          <div class="estate-three-fallback">трёхмерная модель загружается</div>
+          <div class="estate-canvas-overlay">
+            <button class="ghost" id="estateViewReset" type="button">сброс вида</button>
+            <label class="estate-dimensions-toggle"><input id="estateDimensionsToggle" type="checkbox"> <span>показать размеры</span></label>
+            <span id="estateViewHint">обзор модели · изменение масштаба</span>
+          </div>
+        </div>
+        <div class="estate-legend">
+          <span><i class="legend-box core"></i>ядро дома</span>
+          <span><i class="legend-box child"></i>детские зоны</span>
+          <span><i class="legend-box elder"></i>старшее поколение</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Состав семьи и нормативы</h2>
+        <div class="controls estate-controls">
+          <div class="estate-stepper-grid">
+            <div class="estate-stepper-card">
+              <label for="estateAdults">Родители</label>
+              <div class="estate-stepper-control">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateAdults" data-step-delta="-1" aria-label="уменьшить число родителей">‹</button>
+                <input id="estateAdults" class="estate-stepper-input" type="number" min="1" max="2" step="1" inputmode="numeric">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateAdults" data-step-delta="1" aria-label="увеличить число родителей">›</button>
+              </div>
+              <div class="text-note estate-stepper-echo" hidden><b id="estateAdultsLabel">—</b></div>
+            </div>
+            <div class="estate-stepper-card">
+              <label for="estateChildren">Дети</label>
+              <div class="estate-stepper-control">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateChildren" data-step-delta="-1" aria-label="уменьшить число детей">‹</button>
+                <input id="estateChildren" class="estate-stepper-input" type="number" min="0" max="8" step="1" inputmode="numeric">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateChildren" data-step-delta="1" aria-label="увеличить число детей">›</button>
+              </div>
+              <div class="text-note estate-stepper-echo" hidden><b id="estateChildrenLabel">—</b></div>
+            </div>
+            <div class="estate-stepper-card">
+              <label for="estateElders">Прародители рядом</label>
+              <div class="estate-stepper-control">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateElders" data-step-delta="-1" aria-label="уменьшить число прародителей">‹</button>
+                <input id="estateElders" class="estate-stepper-input" type="number" min="0" max="4" step="1" inputmode="numeric">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateElders" data-step-delta="1" aria-label="увеличить число прародителей">›</button>
+              </div>
+              <div class="text-note estate-stepper-echo" hidden><b id="estateEldersLabel">—</b></div>
+            </div>
+            <div class="estate-stepper-card">
+              <label for="estateFloors">Этажность дома</label>
+              <div class="estate-stepper-control">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateFloors" data-step-delta="-1" aria-label="уменьшить этажность дома">‹</button>
+                <input id="estateFloors" class="estate-stepper-input" type="number" min="1" max="4" step="1" inputmode="numeric">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateFloors" data-step-delta="1" aria-label="увеличить этажность дома">›</button>
+              </div>
+              <div class="text-note estate-stepper-echo" hidden><b id="estateFloorsLabel">—</b></div>
+            </div>
+          </div>
+          <div class="estate-stepper-card estate-stepper-card-wide estate-site-card">
+            <label for="estateSiteArea">Участок (соток)</label>
+            <div class="estate-site-options">
+              <div class="estate-stepper-control">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateSiteArea" data-step-delta="-1" aria-label="уменьшить размер участка">‹</button>
+                <input id="estateSiteArea" class="estate-stepper-input" type="number" min="4" max="30" step="1" inputmode="numeric">
+                <button class="estate-stepper-btn" type="button" data-step-target="estateSiteArea" data-step-delta="1" aria-label="увеличить размер участка">›</button>
+              </div>
+              <label class="toggle-row estate-elder-house-toggle"><input id="estateSeparateElderHouse" type="checkbox"> <span>Отдельный дом для прародителей</span></label>
+            </div>
+            <div class="text-note estate-stepper-echo" hidden><b id="estateSiteAreaLabel">—</b></div>
+          </div>
+        </div>
+        <div class="metric-strip estate-main-kpis">
+          <div class="metric"><span>человек</span><b id="estateKpiPeople">—</b></div>
+          <div class="metric"><span>площадь</span><b id="estateKpiArea">—</b></div>
+          <div class="metric"><span>стоимость / чел.</span><b id="estateKpiCostPerPerson">—</b></div>
+          <div class="metric"><span>экономия совместно</span><b id="estateKpiSavings">—</b></div>
+        </div>
+        <div class="site-fit-note" id="estateSiteFitNote">—</div>
+      </div>
+    </section>
+
+    <section class="grid three">
+      <div class="card teal"><h2>Стоимость строительства</h2><div class="big-number" id="estateTotalCost">—</div><p class="kpi-note">Дом, участок и инженерная подготовка. Цена 1 м² снижается по мере роста общей площади.</p></div>
+      <div class="card gold-panel"><h2>Расчётная субсидия</h2><div class="big-number" id="estateSubsidy">—</div><p class="kpi-note">Субсидируются не весь дом, а «зоны демографического роста»: детские и старшие модули.</p></div>
+      <div class="card teal"><h2>Софинансирование семьи</h2><div class="big-number" id="estateFamilyCost">—</div><p class="kpi-note">Остаточная стоимость после сценарной государственной поддержки.</p></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white">
+        <div class="card-title-row"><div><h2>Площадь по модулям</h2><div class="text-note">Состав дома: стартовое ядро, модули роста для детей, автономные модули старшего поколения и рабочее пространство.</div></div><span class="pill" id="estateAreaPill">—</span></div>
+        <div id="estateAreaChart" class="chart mid"></div>
+      </div>
+      <div class="card white">
+        <div class="card-title-row"><div><h2>Экономика на 1 человека</h2><div class="text-note">Сравнение совместной усадьбы и раздельного сценария в расчёте на одного человека.</div></div><span class="pill" id="estateSavingsPill">—</span></div>
+        <div id="estateCostChart" class="chart mid"></div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white"><h2>Стоимость, субсидия и остаток</h2><div id="estateBudgetChart" class="chart mid"></div></div>
+      <div class="card white"><h2>Эффект масштаба семьи</h2><div class="text-note">Модель показывает относительную стоимость семейного пространства на человека при росте семьи. Это не прогноз рынка, а расчётная иллюстрация экономии масштаба.</div><div id="estateScaleChart" class="chart mid"></div></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Настройки субсидии и пилота</h2>
+        <div class="grid two" style="grid-template-columns:1fr 1fr;gap:14px;margin:0">
+          <div class="control"><label for="estateAreaNorm">Норма площади, м²/чел.</label><input id="estateAreaNorm" type="number" min="18" max="50" step="1"></div>
+          <div class="control"><label for="estatePriceM2">Стоимость строительства 1 м², ₽</label><input id="estatePriceM2" type="number" min="30000" step="1000"></div>
+          <div class="control"><label for="estateChildSubsidy">Субсидия детских модулей, %</label><input id="estateChildSubsidy" type="number" min="0" max="100" step="5"></div>
+          <div class="control"><label for="estateElderSubsidy">Субсидия старших модулей, %</label><input id="estateElderSubsidy" type="number" min="0" max="100" step="5"></div>
+          <div class="control"><label for="estateInfraCost">Инженерная подготовка, ₽</label><input id="estateInfraCost" type="number" min="0" step="100000"></div>
+          <div class="control"><label for="estateLandPrice">Цена сотки земли, ₽</label><input id="estateLandPrice" type="number" min="0" step="50000"></div>
+          <div class="control"><label for="estatePilotFamilies">Пилот, семей</label><input id="estatePilotFamilies" type="number" min="1" step="100"></div>
+        </div>
+        <div class="btn-row" style="margin-top:18px"><button id="estateReset" class="gold" type="button">сброс</button><button id="estateDownloadCsv" class="ghost" type="button">Скачать таблицу</button></div>
+      </div>
+      <div class="card teal">
+        <h2>Масштабирование пилота</h2>
+        <div class="metric-strip" style="grid-template-columns:1fr 1fr">
+          <div class="metric"><span>субсидия / семья</span><b id="estatePilotSubsidyPerFamily">—</b></div>
+          <div class="metric"><span>бюджет пилота</span><b id="estatePilotBudget">—</b></div>
+          <div class="metric"><span>модулей роста</span><b id="estatePilotModules">—</b></div>
+          <div class="metric"><span>площадь пилота</span><b id="estatePilotArea">—</b></div>
+        </div>
+        <p class="kpi-note">Пилотный бюджет считает только сценарную субсидию, а не полную стоимость строительства.</p>
+      </div>
+    </section>
+
+    <section class="card white">
+      <h2>Расчётная таблица</h2>
+      <div id="estateTable" class="table-wrap"></div>
+    </section>
+  </main>
+
+  <footer class="footer">Расчётная платформа для экспертного обсуждения. Модуль «Усадьба» показывает сценарную оценку стоимости, субсидии и экономии совместного проживания.</footer>
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/estate.js?v=20260613-estate-groundplan1"></script>
+  <script type="module" src="assets/js/estate3d.js?v=20260613-estate-groundplan1"></script>
+</body>
+</html>

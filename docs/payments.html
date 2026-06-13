@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Выплаты | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="payments">
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="index.html"><img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" /><div><div class="brand-title">Россия 2050</div><div class="brand-subtitle">демографическая платформа</div></div></a>
+    <nav class="nav-tabs" aria-label="Главная навигация">
+        <a href="index.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a href="estate.html">Усадьба</a>
+        <a href="capital.html?v=20260614-matcapital-formula6">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a class="active" href="payments.html">Выплаты</a>
+      </nav>
+  </div></header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="section-number">Прямые ежемесячные выплаты</div>
+        <h1>Порог выплаты, охват, бюджет и демографический след до 2050 года</h1>
+        <p class="lead">Параметрическая версия расчётов о прямых выплатах: выбираем, с какого ребёнка начинается мера, какой процент потенциального пула ей воспользуется и какой эффект в рождениях закладывается. Все расчётные горизонты ограничены 2050 годом.</p>
+      </div>
+      <div class="hero-kpis">
+        <div class="kpi-card gold"><div class="kpi-label">ежемесячная выплата</div><div class="kpi-value" id="paymentsHeroPayment">18 371 ₽</div><div class="kpi-note">редактируемый параметр</div></div>
+        <div class="kpi-card"><div class="kpi-label">базовый порог</div><div class="kpi-value" id="paymentsHeroOrder">4-й</div><div class="kpi-note">ребёнок и последующие</div></div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Настройки меры</h2>
+        <div class="grid two" style="grid-template-columns:1fr 1fr; gap:14px; margin:0">
+          <div class="control"><label for="paymentStartOrder">Выплата с ребёнка</label><select id="paymentStartOrder"><option value="2">2-го</option><option value="3">3-го</option><option value="4">4-го</option><option value="5">5-го</option><option value="6">6-го</option><option value="7">7-го и последующих</option></select></div>
+          <div class="control"><label for="paymentTakeup">Охват потенциального пула, %</label><input id="paymentTakeup" type="number" min="0" max="100" step="0.1" /></div>
+          <div class="control"><label for="birthsPerParticipant">Дополнительных рождений на участницу</label><input id="birthsPerParticipant" type="number" min="0" step="0.01" /></div>
+          <div class="control"><label for="effectWindow">Период эффекта, лет</label><input id="effectWindow" type="number" min="1" step="1" /></div>
+          <div class="control"><label for="policyStartYearPayments">Год запуска</label><input id="policyStartYearPayments" type="number" min="2026" max="2050" step="1" /></div>
+          <div class="control"><label for="monthlyPayment">Выплата, ₽/мес.</label><input id="monthlyPayment" type="number" min="0" step="100" /></div>
+          <details class="method-box compact">
+            <summary>Дополнительные настройки</summary>
+            <div class="form-grid compact-grid">
+              <div class="control"><label for="paymentDuration">Платить ребёнку, лет</label><input id="paymentDuration" type="number" min="1" max="18" step="1" /></div>
+              <div class="control"><label for="budgetHorizon">Бюджетный горизонт до 2050, лет</label><input id="budgetHorizon" type="number" min="1" max="25" step="1" /></div>
+              <div class="control"><label for="survivalAdded">Учёт сохранения дополнительных когорт</label><input id="survivalAdded" type="number" min="0.95" max="1" step="0.001" /></div>
+            </div>
+          </details>
+        </div>
+        <div class="btn-row" style="margin-top:18px"><button id="scenario35" class="gold" type="button">3,5%</button><button id="scenario70" class="ghost" type="button">7%</button><button id="resetPayments" class="ghost" type="button">сброс</button><button id="downloadPaymentsCsv" class="ghost" type="button">Скачать таблицу</button></div>
+      </div>
+      <div class="card teal">
+        <h2>Ключевые результаты</h2>
+        <div class="summary-line" id="paymentsSummaryLine">—</div>
+        <div class="metric-strip" style="grid-template-columns:1fr 1fr">
+          <div class="metric"><span>Пул матерей</span><b id="paymentsKpiPool">—</b></div>
+          <div class="metric"><span>Участницы</span><b id="paymentsKpiParticipants">—</b></div>
+          <div class="metric"><span>Дополнительные рождения</span><b id="paymentsKpiBirths">—</b></div>
+          <div class="metric"><span>Цена рождения</span><b id="paymentsKpiCost">—</b></div>
+        </div>
+        <p class="kpi-note">Потенциальные рождения — расчётное допущение, задаваемое через охват и интенсивность реакции на меру.</p>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white"><h2>Бюджет по годам</h2><div id="paymentsBudgetChart" class="chart mid"></div></div>
+      <div class="card white"><h2>Демографический след к 2050 году</h2><div id="paymentsPopulationChart" class="chart mid"></div></div>
+    </section>
+    <section class="grid two">
+      <div class="card white"><h2>Сравнение порогов выплаты</h2><div id="paymentsThresholdChart" class="chart mid"></div></div>
+      <div class="card white"><h2>Пул матерей по детности</h2><div id="paymentsMothersChart" class="chart mid"></div></div>
+    </section>
+    <section class="card white"><h2>Годовая таблица бюджета</h2><div id="paymentsTable" class="table-wrap"></div></section>
+  </main>
+  <footer class="footer">Модуль предназначен для сценарных расчётов прямых выплат и последующего объединения с общей платформой.</footer>
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/payments.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+﻿region_code;region_name;territory_id;has_2012;has_2017
+01;Алтайский край;terr_altayskiy_kray;False;True
+03;Краснодарский край;terr_krasnodarskiy_kray;False;True
+04;Красноярский край;terr_krasnoyarskiy_kray;False;True
+05;Приморский край;terr_primorskiy_kray;False;True
+07;Ставропольский край;terr_stavropolskiy_kray;True;True
+08;Хабаровский край;terr_habarovskiy_kray;True;True
+10;Амурская область;terr_amurskaya_oblast;True;True
+11;Архангельская область;terr_arhangelskaya_oblast_krome_nenetskogo_avtonomnogo_okruga;False;True
+12;Астраханская область;terr_astrahanskaya_oblast;True;True
+14;Белгородская область;terr_belgorodskaya_oblast;True;True
+15;Брянская область;terr_bryanskaya_oblast;False;True
+17;Владимирская область;terr_vladimirskaya_oblast;False;True
+18;Волгоградская область;terr_volgogradskaya_oblast;False;True
+19;Вологодская область;terr_vologodskaya_oblast;True;True
+20;Воронежская область;terr_voronezhskaya_oblast;False;True
+22;Нижегородская область;terr_nizhegorodskaya_oblast;True;True
+24;Ивановская область;terr_ivanovskaya_oblast;False;True
+25;Иркутская область;terr_irkutskaya_oblast;True;True
+26;Республика Ингушетия;terr_respublika_ingushetiya;True;True
+27;Калининградская область;terr_kaliningradskaya_oblast;True;True
+28;Тверская область;terr_tverskaya_oblast;True;True
+29;Калужская область;terr_kaluzhskaya_oblast;True;True
+30;Камчатский край;terr_kamchatskiy_kray;False;True
+32;Кемеровская область;terr_kemerovskaya_oblast_kuzbass;False;True
+33;Кировская область;terr_kirovskaya_oblast;False;True
+34;Костромская область;terr_kostromskaya_oblast;True;True
+35;Республика Крым;terr_respublika_krym;False;True
+36;Самарская область;terr_samarskaya_oblast;True;True
+37;Курганская область;terr_kurganskaya_oblast;False;True
+38;Курская область;terr_kurskaya_oblast;False;True
+40;г. Санкт-Петербург;terr_sankt_peterburg;True;True
+41;Ленинградская область;terr_leningradskaya_oblast;False;True
+42;Липецкая область;terr_lipetskaya_oblast;False;True
+45;Москва;terr_moskva;False;True
+46;Московская область;terr_moskovskaya_oblast;True;True
+47;Мурманская область;terr_murmanskaya_oblast;False;True
+49;Новгородская область;terr_novgorodskaya_oblast;False;True
+50;Новосибирская область;terr_novosibirskaya_oblast;False;True
+52;Омская область;terr_omskaya_oblast;False;True
+53;Оренбургская область;terr_orenburgskaya_oblast;True;True
+54;Орловская область;terr_orlovskaya_oblast;False;True
+56;Пензенская область;terr_penzenskaya_oblast;False;True
+57;Пермский край;terr_permskiy_kray;False;True
+58;Псковская область;terr_pskovskaya_oblast;False;True
+60;Ростовская область;terr_rostovskaya_oblast;True;True
+61;Рязанская область;terr_ryazanskaya_oblast;True;True
+63;Саратовская область;terr_saratovskaya_oblast;False;True
+64;Сахалинская область;terr_sahalinskaya_oblast;False;True
+65;Свердловская область;terr_sverdlovskaya_oblast;True;True
+66;Смоленская область;terr_smolenskaya_oblast;True;True
+67;г. Севастополь;terr_sevastopol;False;True
+68;Тамбовская область;terr_tambovskaya_oblast;False;True
+69;Томская область;terr_tomskaya_oblast;False;True
+70;Тульская область;terr_tulskaya_oblast;False;True
+71;Тюменская область;terr_tyumenskaya_oblast_krome_hanty_mansiyskogo_avtonom_340b5449;False;True
+72;Ханты-Мансийский автономный округ;terr_hanty_mansiyskiy_avtonomnyy_okrug_yugra_tyumenskaya_oblast;False;True
+73;Ульяновская область;terr_ulyanovskaya_oblast;True;True
+74;Ямало-Ненецкий автономный округ;terr_yamalo_nenetskiy_avtonomnyy_okrug_tyumenskaya_oblast;False;True
+75;Челябинская область;terr_chelyabinskaya_oblast;True;True
+76;Забайкальский край;terr_zabaykalskiy_kray;True;True
+78;Ярославская область;terr_yaroslavskaya_oblast;False;True
+79;Республика Адыгея;terr_respublika_adygeya_adygeya;False;True
+80;Республика Башкортостан;terr_respublika_bashkortostan;True;True
+81;Республика Бурятия;terr_respublika_buryatiya;True;True
+82;Республика Дагестан;terr_respublika_dagestan;False;True
+83;Кабардино-Балкарская Республика;terr_kabardino_balkarskaya_respublika;False;True
+84;Республика Алтай;terr_respublika_altay;True;True
+86;Республика Карелия;terr_respublika_kareliya;False;True
+87;Республика Коми;terr_respublika_komi;True;True
+88;Республика Марий Эл;terr_respublika_mariy_el;False;True
+89;Республика Мордовия;terr_respublika_mordoviya;True;True
+90;Республика Северная Осетия-Алания;terr_respublika_severnaya_osetiya_alaniya;False;True
+91;Карачаево-Черкесская Республика;terr_karachaevo_cherkesskaya_respublika;False;True
+92;Республика Татарстан;terr_respublika_tatarstan_tatarstan;False;True
+93;Республика Тыва;terr_respublika_tyva;False;True
+94;Удмуртская Республика;terr_udmurtskaya_respublika;False;True
+95;Республика Хакасия;terr_respublika_hakasiya;True;True
+96;Чеченская Республика;terr_chechenskaya_respublika;False;True
+97;Чувашская Республика;terr_chuvashskaya_respublika_chuvashiya;False;True
+98;Республика Саха (Якутия);terr_respublika_saha_yakutiya;False;True
+99;Еврейская автономная область;terr_evreyskaya_avtonomnaya_oblast;False;True

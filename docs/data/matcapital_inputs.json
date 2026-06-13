@@ -1,0 +1,76 @@
+{
+  "metadata": {
+    "title": "Конструктор федерального материнского капитала",
+    "version": "1.1.0",
+    "horizon_year": 2050,
+    "generated_at": "2026-06-13",
+    "runtime_external_fetch": false,
+    "note": "Все значения являются сценарными параметрами модуля; пользователь может изменить зарплату, цену квадратного метра, нормы площади, охват и бюджетные допущения."
+  },
+  "current_policy_2026": {
+    "source": "СФР, размер материнского (семейного) капитала с 1 февраля 2026 года",
+    "first_child": 728921.90,
+    "second_child_extra_after_first": 234321.27,
+    "second_child_full_if_no_prior_right": 963243.17,
+    "incremental_schedule_for_family_with_first_right": {
+      "child1": 728921.90,
+      "child2": 234321.27,
+      "child3": 0,
+      "child4plus": 0
+    }
+  },
+  "historical_reference": {
+    "base_year": 2007,
+    "base_capital_rub": 250000,
+    "average_wage_2007_rub_per_month": 13593,
+    "average_wage_current_default_rub_per_month": 100360,
+    "average_wage_2024_rub_per_month": 89069,
+    "wage_equivalent_2007_months": 18.3918193188
+  },
+  "comfortable_housing_model": {
+    "price_m2_default": 83500,
+    "area_norm_m2_per_person_default": 18,
+    "adults_default": 2,
+    "children_for_full_housing_default": 4,
+    "rates_default": {
+      "child1": 0.15,
+      "child2": 0.20,
+      "child3": 0.30,
+      "child4plus": 0.35
+    },
+    "description": "Прогрессивная шкала ФМК, привязанная к стоимости комфортного жилья: 15%, 20%, 30%, 35% стоимости жилья для семьи из 2 взрослых и 4 детей."
+  },
+  "budget_defaults": {
+    "births_child1": 512000,
+    "births_child2": 392000,
+    "births_child3": 208000,
+    "births_child4plus": 110000,
+    "program_coverage_percent": 100,
+    "certificate_use_share_percent": 80,
+    "cash_lag_years": 3,
+    "conversion_percent": 5
+  },
+  "ui_defaults": {
+    "main_claim": "Чтобы вернуть силу стимула 2007 года, маржинальная поддержка второго рождения должна быть порядка 1,8 млн рублей, а не 234 тыс. рублей.",
+    "argument_1_title": "Эквивалент 2007 года в средних зарплатах",
+    "argument_2_title": "Подход по стоимости комфортного жилья"
+  },
+  "sources": [
+    {
+      "id": "sfr_current_2026",
+      "title": "Размер материнского (семейного) капитала с 1 февраля 2026 года"
+    },
+    {
+      "id": "sfr_history",
+      "title": "Размер материнского (семейного) капитала с 2007 года"
+    },
+    {
+      "id": "tsargrad_presentation",
+      "title": "Предложения по повышению эффективности государственной семейной и демографической политики, Институт Царьград, 2025"
+    },
+    {
+      "id": "rpn_2022_questionnaire",
+      "title": "Индивидуальный вопросник РПН-2022, вопросы 24–26, 41–42"
+    }
+  ]
+}

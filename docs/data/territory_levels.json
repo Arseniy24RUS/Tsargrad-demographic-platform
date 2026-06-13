@@ -1,0 +1,873 @@
+{
+  "metadata": {
+    "generated_at_utc": "2026-06-13T11:34:40.420060+00:00",
+    "runtime_external_fetch": false,
+    "source_file": "data/tfr_data.json"
+  },
+  "territories": [
+    {
+      "territory_id": "terr_rf_bez_novyh_subektov",
+      "name": "Россия (без новых субъектов в исходной статистике)",
+      "short_name": "Россия",
+      "level": "country",
+      "type": "country_excluding_new_subjects",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "name": "Дальневосточный федеральный округ (с 03.11.2018)",
+      "short_name": "Дальневосточный федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_privolzhskiy_federalnyy_okrug",
+      "name": "Приволжский федеральный округ",
+      "short_name": "Приволжский федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "name": "Северо-Западный федеральный округ",
+      "short_name": "Северо-Западный федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "name": "Северо-Кавказский федеральный округ",
+      "short_name": "Северо-Кавказский федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_sibirskiy_federalnyy_okrug",
+      "name": "Сибирский федеральный округ (с 03.11.2018)",
+      "short_name": "Сибирский федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_uralskiy_federalnyy_okrug",
+      "name": "Уральский федеральный округ",
+      "short_name": "Уральский федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_tsentralnyy_federalnyy_okrug",
+      "name": "Центральный федеральный округ",
+      "short_name": "Центральный федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_yuzhnyy_federalnyy_okrug",
+      "name": "Южный федеральный округ (с 29.07.2016)",
+      "short_name": "Южный федеральный округ",
+      "level": "federal_district",
+      "type": "federal_district",
+      "federal_district_id": null,
+      "federal_district": null
+    },
+    {
+      "territory_id": "terr_altayskiy_kray",
+      "name": "Алтайский край",
+      "short_name": "Алтайский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_amurskaya_oblast",
+      "name": "Амурская область",
+      "short_name": "Амурская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_arhangelskaya_oblast",
+      "name": "Архангельская область",
+      "short_name": "Архангельская область",
+      "level": "federal_subject",
+      "type": "federal_subject_aggregate",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_arhangelskaya_oblast_krome_nenetskogo_avtonomnogo_okruga",
+      "name": "Архангельская область (кроме Ненецкого автономного округа)",
+      "short_name": "Архангельская область (кроме Ненецкого автономного округа)",
+      "level": "federal_subject",
+      "type": "federal_subject_remainder",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_astrahanskaya_oblast",
+      "name": "Астраханская область",
+      "short_name": "Астраханская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_belgorodskaya_oblast",
+      "name": "Белгородская область",
+      "short_name": "Белгородская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_bryanskaya_oblast",
+      "name": "Брянская область",
+      "short_name": "Брянская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_vladimirskaya_oblast",
+      "name": "Владимирская область",
+      "short_name": "Владимирская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_volgogradskaya_oblast",
+      "name": "Волгоградская область",
+      "short_name": "Волгоградская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_vologodskaya_oblast",
+      "name": "Вологодская область",
+      "short_name": "Вологодская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_voronezhskaya_oblast",
+      "name": "Воронежская область",
+      "short_name": "Воронежская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_evreyskaya_avtonomnaya_oblast",
+      "name": "Еврейская автономная область",
+      "short_name": "Еврейская автономная область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_zabaykalskiy_kray",
+      "name": "Забайкальский край",
+      "short_name": "Забайкальский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_ivanovskaya_oblast",
+      "name": "Ивановская область",
+      "short_name": "Ивановская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_irkutskaya_oblast",
+      "name": "Иркутская область",
+      "short_name": "Иркутская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kabardino_balkarskaya_respublika",
+      "name": "Кабардино-Балкарская Республика",
+      "short_name": "Кабардино-Балкарская Республика",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kaliningradskaya_oblast",
+      "name": "Калининградская область",
+      "short_name": "Калининградская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_kaluzhskaya_oblast",
+      "name": "Калужская область",
+      "short_name": "Калужская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_kamchatskiy_kray",
+      "name": "Камчатский край",
+      "short_name": "Камчатский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_karachaevo_cherkesskaya_respublika",
+      "name": "Карачаево-Черкесская Республика",
+      "short_name": "Карачаево-Черкесская Республика",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kemerovskaya_oblast_kuzbass",
+      "name": "Кемеровская область - Кузбасс",
+      "short_name": "Кемеровская область - Кузбасс",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kirovskaya_oblast",
+      "name": "Кировская область",
+      "short_name": "Кировская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kostromskaya_oblast",
+      "name": "Костромская область",
+      "short_name": "Костромская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_krasnodarskiy_kray",
+      "name": "Краснодарский край",
+      "short_name": "Краснодарский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_krasnoyarskiy_kray",
+      "name": "Красноярский край",
+      "short_name": "Красноярский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kurganskaya_oblast",
+      "name": "Курганская область",
+      "short_name": "Курганская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_kurskaya_oblast",
+      "name": "Курская область",
+      "short_name": "Курская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_leningradskaya_oblast",
+      "name": "Ленинградская область",
+      "short_name": "Ленинградская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_lipetskaya_oblast",
+      "name": "Липецкая область",
+      "short_name": "Липецкая область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_magadanskaya_oblast",
+      "name": "Магаданская область",
+      "short_name": "Магаданская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_moskva",
+      "name": "Город Москва столица Российской Федерации город федерального значения",
+      "short_name": "Москва",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_moskovskaya_oblast",
+      "name": "Московская область",
+      "short_name": "Московская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_murmanskaya_oblast",
+      "name": "Мурманская область",
+      "short_name": "Мурманская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_nenetskiy_avtonomnyy_okrug_arhangelskaya_oblast",
+      "name": "Ненецкий автономный округ (Архангельская область)",
+      "short_name": "Ненецкий автономный округ (Архангельская область)",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_nizhegorodskaya_oblast",
+      "name": "Нижегородская область",
+      "short_name": "Нижегородская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_novgorodskaya_oblast",
+      "name": "Новгородская область",
+      "short_name": "Новгородская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_novosibirskaya_oblast",
+      "name": "Новосибирская область",
+      "short_name": "Новосибирская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_omskaya_oblast",
+      "name": "Омская область",
+      "short_name": "Омская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_orenburgskaya_oblast",
+      "name": "Оренбургская область",
+      "short_name": "Оренбургская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_orlovskaya_oblast",
+      "name": "Орловская область",
+      "short_name": "Орловская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_penzenskaya_oblast",
+      "name": "Пензенская область",
+      "short_name": "Пензенская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_permskiy_kray",
+      "name": "Пермский край",
+      "short_name": "Пермский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_primorskiy_kray",
+      "name": "Приморский край",
+      "short_name": "Приморский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_pskovskaya_oblast",
+      "name": "Псковская область",
+      "short_name": "Псковская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_adygeya_adygeya",
+      "name": "Республика Адыгея (Адыгея)",
+      "short_name": "Республика Адыгея (Адыгея)",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_altay",
+      "name": "Республика Алтай",
+      "short_name": "Республика Алтай",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_bashkortostan",
+      "name": "Республика Башкортостан",
+      "short_name": "Республика Башкортостан",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_buryatiya",
+      "name": "Республика Бурятия",
+      "short_name": "Республика Бурятия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_dagestan",
+      "name": "Республика Дагестан",
+      "short_name": "Республика Дагестан",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_ingushetiya",
+      "name": "Республика Ингушетия",
+      "short_name": "Республика Ингушетия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_kalmykiya",
+      "name": "Республика Калмыкия",
+      "short_name": "Республика Калмыкия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_kareliya",
+      "name": "Республика Карелия",
+      "short_name": "Республика Карелия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_komi",
+      "name": "Республика Коми",
+      "short_name": "Республика Коми",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_krym",
+      "name": "Республика Крым",
+      "short_name": "Республика Крым",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_mariy_el",
+      "name": "Республика Марий Эл",
+      "short_name": "Республика Марий Эл",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_mordoviya",
+      "name": "Республика Мордовия",
+      "short_name": "Республика Мордовия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_saha_yakutiya",
+      "name": "Республика Саха (Якутия)",
+      "short_name": "Республика Саха (Якутия)",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_severnaya_osetiya_alaniya",
+      "name": "Республика Северная Осетия-Алания",
+      "short_name": "Республика Северная Осетия-Алания",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_tatarstan_tatarstan",
+      "name": "Республика Татарстан (Татарстан)",
+      "short_name": "Республика Татарстан (Татарстан)",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_tyva",
+      "name": "Республика Тыва",
+      "short_name": "Республика Тыва",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_respublika_hakasiya",
+      "name": "Республика Хакасия",
+      "short_name": "Республика Хакасия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_rostovskaya_oblast",
+      "name": "Ростовская область",
+      "short_name": "Ростовская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_ryazanskaya_oblast",
+      "name": "Рязанская область",
+      "short_name": "Рязанская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_samarskaya_oblast",
+      "name": "Самарская область",
+      "short_name": "Самарская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_sankt_peterburg",
+      "name": "Город Санкт-Петербург город федерального значения",
+      "short_name": "Санкт-Петербург",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_zapadnyy_federalnyy_okrug",
+      "federal_district": "Северо-Западный федеральный округ"
+    },
+    {
+      "territory_id": "terr_saratovskaya_oblast",
+      "name": "Саратовская область",
+      "short_name": "Саратовская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_sahalinskaya_oblast",
+      "name": "Сахалинская область",
+      "short_name": "Сахалинская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_sverdlovskaya_oblast",
+      "name": "Свердловская область",
+      "short_name": "Свердловская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_sevastopol",
+      "name": "Город федерального значения Севастополь",
+      "short_name": "Севастополь",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_yuzhnyy_federalnyy_okrug",
+      "federal_district": "Южный федеральный округ"
+    },
+    {
+      "territory_id": "terr_smolenskaya_oblast",
+      "name": "Смоленская область",
+      "short_name": "Смоленская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_stavropolskiy_kray",
+      "name": "Ставропольский край",
+      "short_name": "Ставропольский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_tambovskaya_oblast",
+      "name": "Тамбовская область",
+      "short_name": "Тамбовская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_tverskaya_oblast",
+      "name": "Тверская область",
+      "short_name": "Тверская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_tomskaya_oblast",
+      "name": "Томская область",
+      "short_name": "Томская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_sibirskiy_federalnyy_okrug",
+      "federal_district": "Сибирский федеральный округ"
+    },
+    {
+      "territory_id": "terr_tulskaya_oblast",
+      "name": "Тульская область",
+      "short_name": "Тульская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    },
+    {
+      "territory_id": "terr_tyumenskaya_oblast",
+      "name": "Тюменская область",
+      "short_name": "Тюменская область",
+      "level": "federal_subject",
+      "type": "federal_subject_aggregate",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_tyumenskaya_oblast_krome_hanty_mansiyskogo_avtonom_340b5449",
+      "name": "Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа)",
+      "short_name": "Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа)",
+      "level": "federal_subject",
+      "type": "federal_subject_remainder",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_udmurtskaya_respublika",
+      "name": "Удмуртская Республика",
+      "short_name": "Удмуртская Республика",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_ulyanovskaya_oblast",
+      "name": "Ульяновская область",
+      "short_name": "Ульяновская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_habarovskiy_kray",
+      "name": "Хабаровский край",
+      "short_name": "Хабаровский край",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_hanty_mansiyskiy_avtonomnyy_okrug_yugra_tyumenskaya_oblast",
+      "name": "Ханты-Мансийский автономный округ - Югра (Тюменская область)",
+      "short_name": "Ханты-Мансийский автономный округ - Югра (Тюменская область)",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_chelyabinskaya_oblast",
+      "name": "Челябинская область",
+      "short_name": "Челябинская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_chechenskaya_respublika",
+      "name": "Чеченская Республика",
+      "short_name": "Чеченская Республика",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_severo_kavkazskiy_federalnyy_okrug",
+      "federal_district": "Северо-Кавказский федеральный округ"
+    },
+    {
+      "territory_id": "terr_chuvashskaya_respublika_chuvashiya",
+      "name": "Чувашская Республика - Чувашия",
+      "short_name": "Чувашская Республика - Чувашия",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_privolzhskiy_federalnyy_okrug",
+      "federal_district": "Приволжский федеральный округ"
+    },
+    {
+      "territory_id": "terr_chukotskiy_avtonomnyy_okrug",
+      "name": "Чукотский автономный округ",
+      "short_name": "Чукотский автономный округ",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_dalnevostochnyy_federalnyy_okrug",
+      "federal_district": "Дальневосточный федеральный округ"
+    },
+    {
+      "territory_id": "terr_yamalo_nenetskiy_avtonomnyy_okrug_tyumenskaya_oblast",
+      "name": "Ямало-Ненецкий автономный округ (Тюменская область)",
+      "short_name": "Ямало-Ненецкий автономный округ (Тюменская область)",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_uralskiy_federalnyy_okrug",
+      "federal_district": "Уральский федеральный округ"
+    },
+    {
+      "territory_id": "terr_yaroslavskaya_oblast",
+      "name": "Ярославская область",
+      "short_name": "Ярославская область",
+      "level": "federal_subject",
+      "type": "federal_subject",
+      "federal_district_id": "terr_tsentralnyy_federalnyy_okrug",
+      "federal_district": "Центральный федеральный округ"
+    }
+  ]
+}

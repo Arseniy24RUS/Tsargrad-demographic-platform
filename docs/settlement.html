@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Расселение и ИЖС | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="settlement">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
+        <div>
+          <div class="brand-title">Россия 2050</div>
+          <div class="brand-subtitle">демографическая платформа</div>
+        </div>
+      </a>
+      <nav class="nav-tabs" aria-label="Главная навигация">
+        <a href="index.html">СКР</a>
+        <a class="active" href="settlement.html">Расселение</a>
+        <a href="estate.html">Усадьба</a>
+        <a href="capital.html?v=20260614-matcapital-formula6">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="section-number">Расселение и ИЖС</div>
+        <h1>Расселение и ИЖС</h1>
+        <p class="lead">Модуль показывает разрыв между СКР городского и сельского населения, использует локальный модельный прогноз по типам местности и позволяет менять траекторию малоэтажного расселения, чтобы оценить вклад ИЖС-сценария в общий СКР и численность населения.</p>
+      </div>
+      <div class="hero-kpis">
+        <div class="kpi-card gold">
+          <div class="kpi-label" id="settlementShareLabelNow">доля сельской и пригородной среды сейчас</div>
+          <div class="kpi-value" id="settlementHeroShare">—</div>
+          <div class="kpi-note">выбранная территория, 2025</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">разрыв СКР</div>
+          <div class="kpi-value" id="settlementHeroGap">—</div>
+          <div class="kpi-note">сельский минус городской, последний год</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Параметры сценария</h2>
+        <div class="controls">
+          <div class="control">
+            <label for="settlementTerritorySelect">Территория</label>
+            <select id="settlementTerritorySelect"></select>
+          </div>
+          <div class="control">
+            <label for="delta2050" id="delta2050Title">Изменение доли сельской и пригородной среды к 2050 году</label>
+            <input id="delta2050" type="range" min="-15" max="30" value="5" step="0.5" />
+            <div class="text-note">Поверх базовой траектории: <span class="range-value" id="delta2050Label">+5,0 п.п.</span></div>
+          </div>
+          <div class="scenario-chip-row">
+            <button class="scenario-chip" data-preset="urban" type="button">урбанизация</button>
+            <button class="scenario-chip" data-preset="fix" type="button">фиксация</button>
+            <button class="scenario-chip active" data-preset="deurban" type="button">ИЖС-сценарий</button>
+          </div>
+          <div class="btn-row">
+            <button class="ghost" id="populationScenarioBtn" type="button">прогноз без миграции</button>
+            <button class="gold" id="downloadSettlementCsv" type="button">Скачать таблицу</button>
+          </div>
+        </div>
+      </div>
+      <div class="card white">
+        <h2>Итоговые показатели</h2>
+        <div class="metric-strip">
+          <div class="metric"><span>Изменение СКР к 2050</span><b id="settlementKpiDeltaTfr2050">—</b></div>
+          <div class="metric"><span id="settlementShareLabel2050">Доля сельской и пригородной среды 2050</span><b id="settlementKpiRuralShare2050">—</b></div>
+          <div class="metric"><span>+ население 2050</span><b id="settlementKpiPop2050">—</b></div>
+          <div class="metric"><span>накопл. рождения до 2050</span><b id="settlementKpiBirths">—</b></div>
+        </div>
+        <details class="method-box"><summary>Методика расчёта</summary><p>Общий прогноз СКР согласован с локальным авторским прогнозом страницы СКР. Городской и сельский ряды рассчитаны локальной моделью: гауссов процесс + структурный тренд, затем откалиброваны так, чтобы при базовой доле среды совпадать с общей траекторией. Численность населения берётся из авторского прогноза, построенного в логике компонентного метода, когда он доступен. Сценарная добавка от изменения структуры расселения используется для сравнения вариантов, а не как официальный прогноз.</p></details>
+      </div>
+    </section>
+
+    <section class="card white">
+      <div class="card-title-row">
+        <div>
+          <h2>СКР по типам местности и сценарный общий СКР</h2>
+          <div class="text-note">Прогноз городского и сельского СКР рассчитан локальной моделью: гауссов процесс + структурный тренд; общий сценарий пересчитывается через выбранную траекторию среды.</div>
+        </div>
+        <span class="pill" id="settlementActivePill">Россия</span>
+      </div>
+      <div id="settlementTfrChart" class="chart tall"></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white">
+        <h2 id="ruralShareChartTitle">Траектория сельской и пригородной среды</h2>
+        <div id="ruralShareChart" class="chart"></div>
+      </div>
+      <div class="card white">
+        <h2>Численность населения</h2>
+        <div id="populationTraceChart" class="chart"></div>
+      </div>
+    </section>
+
+    <section class="card white">
+      <h2>Опорные годы сценария</h2>
+      <div class="table-wrap" id="settlementTable"></div>
+    </section>
+  </main>
+
+  <footer class="footer">Расчётная платформа для экспертного обсуждения. Модуль оценивает вклад структуры расселения в рождаемость и численность населения к 2050 году.</footer>
+
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/settlement.js?v=20260614-settlement-forecast1"></script>
+</body>
+</html>

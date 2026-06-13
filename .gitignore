@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+.pytest_cache/
+artifacts/
+test-results/
+.playwright-mcp/
+playwright-report/
+*.zip
+.DS_Store
+/estate-*.png
+/estate-*.txt
+/estate-*.md

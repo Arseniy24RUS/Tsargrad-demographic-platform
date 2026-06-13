@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Маткапитал | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=20260614-matcapital-icons1" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="capital">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
+        <div><div class="brand-title">Россия 2050</div><div class="brand-subtitle">демографическая платформа</div></div>
+      </a>
+      <nav class="nav-tabs" aria-label="Главная навигация">
+        <a href="index.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a href="estate.html">Усадьба</a>
+        <a class="active" href="capital.html?v=20260614-matcapital-formula6">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="section-number">Федеральный семейный капитал</div>
+        <h1>Вернуть маткапиталу силу демографического стимула</h1>
+        <p class="lead">Страница сравнивает действующую модель с двумя сильными основаниями реформы: восстановлением эквивалента 2007 года в средних зарплатах и подходом по стоимости комфортного жилья.</p>
+      </div>
+      <div class="hero-kpis">
+        <div class="kpi-card gold"><div class="kpi-label">главный вывод</div><div class="kpi-value" id="heroClaim">—</div><div class="kpi-note">расчёт обновляется при изменении средней зарплаты и стоимости жилья</div></div>
+        <div class="kpi-card"><div class="kpi-label">текущая доплата за второго</div><div class="kpi-value" id="heroCurrentSecond">—</div><div class="kpi-note">после получения капитала на первого ребёнка</div></div>
+      </div>
+    </section>
+
+    <section class="grid two capital-overview">
+      <div class="card capital-settings">
+        <h2>Настройки сценария</h2>
+        <div class="controls capital-controls">
+          <div class="control"><label for="avgWage">Средняя зарплата, ₽/мес.</label><input id="avgWage" type="number" step="1000" /></div>
+          <div class="control"><label for="priceM2">Стоимость 1 м², ₽</label><input id="priceM2" type="number" step="1000" /></div>
+          <div class="control"><label for="areaNorm">Норма площади, м²/чел.</label><input id="areaNorm" type="number" step="1" min="10" /></div>
+          <div class="control"><label for="adults">Взрослых в семье</label><input id="adults" type="number" step="1" min="1" max="4" /></div>
+          <div class="control"><label for="rate1">1-й ребёнок, % жилья</label><input id="rate1" type="number" step="1" min="0" max="100" /></div>
+          <div class="control"><label for="rate2">2-й ребёнок, % жилья</label><input id="rate2" type="number" step="1" min="0" max="100" /></div>
+          <div class="control"><label for="rate3">3-й ребёнок, % жилья</label><input id="rate3" type="number" step="1" min="0" max="100" /></div>
+          <div class="control"><label for="rate4">4-й и следующие, % жилья</label><input id="rate4" type="number" step="1" min="0" max="100" /></div>
+          <div class="control"><label for="births1">Первые рождения в год</label><input id="births1" type="number" step="1000" /></div>
+          <div class="control"><label for="births2">Вторые рождения в год</label><input id="births2" type="number" step="1000" /></div>
+          <div class="control"><label for="births3">Третьи рождения в год</label><input id="births3" type="number" step="1000" /></div>
+          <div class="control"><label for="births4">Четвёртые и следующие в год</label><input id="births4" type="number" step="1000" /></div>
+          <div class="control"><label for="coverage">Охват программы, %</label><input id="coverage" type="number" step="1" min="0" max="100" /></div>
+          <div class="control"><label for="useShare">Использование сертификатов, %</label><input id="useShare" type="number" step="1" min="0" max="100" /></div>
+          <div class="control"><label for="conversion">Конверсия в рождение, %</label><input id="conversion" type="number" step="0.1" min="0.1" max="100" /></div>
+          <div class="control"><label for="childrenTarget">Детей в полной модели жилья</label><input id="childrenTarget" type="number" step="1" min="1" max="8" /></div>
+        </div>
+        <div class="btn-row"><button class="gold" id="resetCapital" type="button">Сброс</button><button class="ghost" id="downloadCapital" type="button">Скачать таблицу</button></div>
+      </div>
+      <div class="card teal capital-results">
+        <h2>Ключевые результаты</h2>
+        <div class="metric-strip">
+          <div class="metric"><span>эквивалент 2007 года</span><b id="kpiWageTarget">—</b></div>
+          <div class="metric"><span>по стоимости комфортного жилья: второй ребёнок</span><b id="kpiHousingSecond">—</b></div>
+          <div class="metric"><span>разрыв с текущей доплатой</span><b id="kpiGap">—</b></div>
+          <div class="metric"><span>обязательства в год</span><b id="kpiBudget">—</b></div>
+        </div>
+        <p class="kpi-note" id="summarySentence">—</p>
+      </div>
+    </section>
+
+    <section class="grid two capital-feature-grid">
+      <div class="card white capital-chart-card capital-feature-card capital-formula-card">
+        <h2>Два основания кратного увеличения</h2>
+        <p class="text-note">Сравнение текущей модели, эквивалента 2007 года и подхода по стоимости комфортного жилья.</p>
+        <div id="chartArguments" class="chart"></div>
+        <p class="capital-card-insight">Оба ориентира показывают кратное увеличение поддержки по сравнению с текущей доплатой.</p>
+      </div>
+      <div class="card white capital-chart-card capital-feature-card capital-order-card">
+        <h2>Выплаты по очередности рождения</h2>
+        <p class="text-note">График показывает выплаты по каждому ребёнку; сумма «Итого за 4 детей» вынесена в итоговые плашки над графиком.</p>
+        <div id="chartByOrderTotals" class="capital-order-summary" aria-live="polite">
+          <div class="capital-summary-icon" aria-hidden="true"><span></span></div>
+          <div class="capital-order-summary-main">
+            <div class="capital-order-summary-title">Итого за 4 детей</div>
+            <div class="capital-order-summary-items">
+              <div class="capital-total-chip total-current"><span>действующая модель</span><b id="orderTotalCurrent">—</b></div>
+              <div class="capital-total-chip total-comfortable"><span>по стоимости комфортного жилья</span><b id="orderTotalComfortable">—</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="capital-order-legend" aria-hidden="true">
+          <span><i class="legend-current"></i>действующая модель</span>
+          <span><i class="legend-comfortable"></i>по стоимости комфортного жилья</span>
+        </div>
+        <div id="chartByOrder" class="chart"></div>
+        <p class="capital-card-insight capital-order-insight">Подход по стоимости комфортного жилья добавляет выплаты на третьего, четвёртого и следующих детей.</p>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white capital-chart-card">
+        <h2>Покрытие стоимости комфортного жилья</h2>
+        <p class="text-note">В подходе по стоимости комфортного жилья сумма выплат на четырёх детей закрывает 100% расчётной стоимости комфортного жилья.</p>
+        <div id="chartHousingCoverage" class="chart"></div>
+      </div>
+      <div class="card white capital-chart-card">
+        <h2>Бюджетные обязательства</h2>
+        <p class="text-note">Показаны обязательства по сертификатам; кассовые расходы ниже при неполном и отложенном использовании сертификатов.</p>
+        <div id="chartBudget" class="chart"></div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white capital-table-card">
+        <h2>Итоговая таблица</h2>
+        <div id="capitalTable" class="table-wrap"></div>
+      </div>
+      <div class="card white method capital-method">
+        <h2>Методика</h2>
+        <details open><summary>Что именно сравнивается</summary><p>Сравнение ведётся по маржинальной траектории семьи: действующая модель даёт капитал на первого ребёнка и доплату за второго; в подходе по стоимости комфортного жилья выплата есть на каждого ребёнка и считается как доля расчётной стоимости комфортного жилья.</p></details>
+        <details><summary>Почему выбран зарплатный эквивалент</summary><p>В 2007 году маткапитал составлял около 18 средних зарплат. Если восстановить эту силу стимула при текущей средней зарплате, ориентир на второго ребёнка оказывается около 1,8 млн рублей, что близко к выплате, рассчитанной от стоимости комфортного жилья.</p></details>
+        <details><summary>Что означает цена потенциального рождения</summary><p>Это сценарная величина: дополнительные бюджетные обязательства делятся на потенциальные дополнительные рождения при заданной конверсии. Она не является прогнозом фактического поведения семей.</p></details>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">Расчётная страница для экспертного обсуждения. Все параметры можно менять; горизонт бюджетного обсуждения платформы — до 2050 года.</footer>
+  <script src="assets/vendor/plotly/plotly.min.js?v=20260614-matcapital-icons1"></script>
+  <script src="assets/js/capital.js?v=20260614-matcapital-icons1"></script>
+</body>
+</html>

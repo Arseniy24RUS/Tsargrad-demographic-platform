@@ -1,0 +1,1050 @@
+{
+  "metadata": {
+    "source_file": "РПН-2022.sav",
+    "survey": "Выборочное наблюдение репродуктивных планов населения, 2022",
+    "rows": 14988,
+    "weighted_population_total": 55326390.99999997,
+    "weighted_women_18_44": 27211780.16315487,
+    "method_notes": [
+      "I03_24 = желаемое число детей; I03_25 = ожидаемое/собираемое число детей.",
+      "Код «5 и более» трактован как 5, поэтому средние значения являются консервативной нижней оценкой.",
+      "Код «трудно сказать» исключён из средних желаемого и ожидаемого числа детей.",
+      "Рождения в сценариях считаются по женщинам 18–44, чтобы не удваивать один и тот же потенциальный репродуктивный результат.",
+      "Региональный разрез из SAV не извлечён: в метаданных нет открытой переменной субъекта РФ; есть только full_uch_number без таблицы соответствия регионам."
+    ]
+  },
+  "overall_by_sex": [
+    {
+      "group": "Все",
+      "n_unweighted": 14988,
+      "weighted_population": 55326390.99999997,
+      "desired_children_mean": 2.0222518716,
+      "expected_children_mean": 1.8274274477,
+      "gap_mean": 0.1948244239,
+      "born_children_mean": 1.105383435,
+      "share_positive_gap_pct": 15.0374398181
+    },
+    {
+      "group": "Женщины",
+      "n_unweighted": 7206,
+      "weighted_population": 27211780.16315487,
+      "desired_children_mean": 2.0271907736,
+      "expected_children_mean": 1.8344235353,
+      "gap_mean": 0.1927672383,
+      "born_children_mean": 1.0926690366,
+      "share_positive_gap_pct": 15.4910983871
+    },
+    {
+      "group": "Мужчины",
+      "n_unweighted": 7782,
+      "weighted_population": 28114610.836845104,
+      "desired_children_mean": 2.01739634,
+      "expected_children_mean": 1.820605145,
+      "gap_mean": 0.196791195,
+      "born_children_mean": 1.1176895421,
+      "share_positive_gap_pct": 14.5983493636
+    }
+  ],
+  "by_housing_condition": [
+    {
+      "housing_condition": "90–100 — очень хорошие",
+      "sex": "Все",
+      "n_unweighted": 3472,
+      "weighted_population": 13683640.471560242,
+      "desired_children_mean": 2.0165305868,
+      "expected_children_mean": 1.8403420718,
+      "gap_mean": 0.1761885151,
+      "share_positive_gap_pct": 13.4210388338,
+      "prob_birth_no_support_3y_mean": 0.2736613134,
+      "prob_birth_with_support_3y_mean": 0.3329156278,
+      "prob_birth_delta_3y_mean": 0.0650135878
+    },
+    {
+      "housing_condition": "90–100 — очень хорошие",
+      "sex": "Женщины",
+      "n_unweighted": 1684,
+      "weighted_population": 6835084.6513867285,
+      "desired_children_mean": 1.9979068538,
+      "expected_children_mean": 1.8221603578,
+      "gap_mean": 0.175746496,
+      "share_positive_gap_pct": 14.1580561169,
+      "prob_birth_no_support_3y_mean": 0.3129994055,
+      "prob_birth_with_support_3y_mean": 0.3801919058,
+      "prob_birth_delta_3y_mean": 0.0745890794
+    },
+    {
+      "housing_condition": "90–100 — очень хорошие",
+      "sex": "Мужчины",
+      "n_unweighted": 1788,
+      "weighted_population": 6848555.820173513,
+      "desired_children_mean": 2.0354694668,
+      "expected_children_mean": 1.8585962921,
+      "gap_mean": 0.1768731748,
+      "share_positive_gap_pct": 12.68547127,
+      "prob_birth_no_support_3y_mean": 0.2344005996,
+      "prob_birth_with_support_3y_mean": 0.2857323426,
+      "prob_birth_delta_3y_mean": 0.0554569314
+    },
+    {
+      "housing_condition": "70–80 — хорошие",
+      "sex": "Все",
+      "n_unweighted": 6398,
+      "weighted_population": 23624374.891786754,
+      "desired_children_mean": 2.0115970878,
+      "expected_children_mean": 1.8289455754,
+      "gap_mean": 0.1826515124,
+      "share_positive_gap_pct": 14.3668078128,
+      "prob_birth_no_support_3y_mean": 0.2691118307,
+      "prob_birth_with_support_3y_mean": 0.3428027498,
+      "prob_birth_delta_3y_mean": 0.0782575709
+    },
+    {
+      "housing_condition": "70–80 — хорошие",
+      "sex": "Женщины",
+      "n_unweighted": 3102,
+      "weighted_population": 11625807.042002538,
+      "desired_children_mean": 2.0205061726,
+      "expected_children_mean": 1.8267368056,
+      "gap_mean": 0.193769367,
+      "share_positive_gap_pct": 15.0612282115,
+      "prob_birth_no_support_3y_mean": 0.2948668897,
+      "prob_birth_with_support_3y_mean": 0.3793741764,
+      "prob_birth_delta_3y_mean": 0.0901140993
+    },
+    {
+      "housing_condition": "70–80 — хорошие",
+      "sex": "Мужчины",
+      "n_unweighted": 3296,
+      "weighted_population": 11998567.849784218,
+      "desired_children_mean": 2.0028520095,
+      "expected_children_mean": 1.8310906241,
+      "gap_mean": 0.1717613855,
+      "share_positive_gap_pct": 13.693961048,
+      "prob_birth_no_support_3y_mean": 0.2441569069,
+      "prob_birth_with_support_3y_mean": 0.3073674916,
+      "prob_birth_delta_3y_mean": 0.0667693905
+    },
+    {
+      "housing_condition": "50–60 — средние",
+      "sex": "Все",
+      "n_unweighted": 3641,
+      "weighted_population": 12950313.540628571,
+      "desired_children_mean": 2.0678872254,
+      "expected_children_mean": 1.8472906036,
+      "gap_mean": 0.2205966218,
+      "share_positive_gap_pct": 17.6048656456,
+      "prob_birth_no_support_3y_mean": 0.24233727,
+      "prob_birth_with_support_3y_mean": 0.3380805828,
+      "prob_birth_delta_3y_mean": 0.100874344
+    },
+    {
+      "housing_condition": "50–60 — средние",
+      "sex": "Женщины",
+      "n_unweighted": 1734,
+      "weighted_population": 6292377.890633108,
+      "desired_children_mean": 2.0846575213,
+      "expected_children_mean": 1.8807792475,
+      "gap_mean": 0.2038782737,
+      "share_positive_gap_pct": 17.7128213476,
+      "prob_birth_no_support_3y_mean": 0.2633185409,
+      "prob_birth_with_support_3y_mean": 0.37054676,
+      "prob_birth_delta_3y_mean": 0.1120573179
+    },
+    {
+      "housing_condition": "50–60 — средние",
+      "sex": "Мужчины",
+      "n_unweighted": 1907,
+      "weighted_population": 6657935.649995463,
+      "desired_children_mean": 2.0518549473,
+      "expected_children_mean": 1.8153863201,
+      "gap_mean": 0.2364686272,
+      "share_positive_gap_pct": 17.5028373131,
+      "prob_birth_no_support_3y_mean": 0.2225079878,
+      "prob_birth_with_support_3y_mean": 0.3073969796,
+      "prob_birth_delta_3y_mean": 0.0903053777
+    },
+    {
+      "housing_condition": "30–40 — плохие",
+      "sex": "Все",
+      "n_unweighted": 1222,
+      "weighted_population": 4189446.050874778,
+      "desired_children_mean": 2.0051077739,
+      "expected_children_mean": 1.7621742865,
+      "gap_mean": 0.2429334874,
+      "share_positive_gap_pct": 16.5271419302,
+      "prob_birth_no_support_3y_mean": 0.1976858097,
+      "prob_birth_with_support_3y_mean": 0.3009911189,
+      "prob_birth_delta_3y_mean": 0.1069563023
+    },
+    {
+      "housing_condition": "30–40 — плохие",
+      "sex": "Женщины",
+      "n_unweighted": 564,
+      "weighted_population": 1994050.1758084781,
+      "desired_children_mean": 2.0343136921,
+      "expected_children_mean": 1.8333419194,
+      "gap_mean": 0.2009717727,
+      "share_positive_gap_pct": 15.7445621747,
+      "prob_birth_no_support_3y_mean": 0.2226512588,
+      "prob_birth_with_support_3y_mean": 0.3324790566,
+      "prob_birth_delta_3y_mean": 0.1143168885
+    },
+    {
+      "housing_condition": "30–40 — плохие",
+      "sex": "Мужчины",
+      "n_unweighted": 658,
+      "weighted_population": 2195395.8750662995,
+      "desired_children_mean": 1.9776967169,
+      "expected_children_mean": 1.6951031837,
+      "gap_mean": 0.2825935332,
+      "share_positive_gap_pct": 17.2379491776,
+      "prob_birth_no_support_3y_mean": 0.1750100095,
+      "prob_birth_with_support_3y_mean": 0.2723910253,
+      "prob_birth_delta_3y_mean": 0.1002707754
+    },
+    {
+      "housing_condition": "0–20 — очень плохие",
+      "sex": "Все",
+      "n_unweighted": 255,
+      "weighted_population": 878616.0451496254,
+      "desired_children_mean": 1.8097769628,
+      "expected_children_mean": 1.604203567,
+      "gap_mean": 0.2055733958,
+      "share_positive_gap_pct": 13.2977899851,
+      "prob_birth_no_support_3y_mean": 0.1787209528,
+      "prob_birth_with_support_3y_mean": 0.2892925388,
+      "prob_birth_delta_3y_mean": 0.1122304826
+    },
+    {
+      "housing_condition": "0–20 — очень плохие",
+      "sex": "Женщины",
+      "n_unweighted": 122,
+      "weighted_population": 464460.4033240161,
+      "desired_children_mean": 1.8206922527,
+      "expected_children_mean": 1.5925221084,
+      "gap_mean": 0.2281701443,
+      "share_positive_gap_pct": 14.6809206674,
+      "prob_birth_no_support_3y_mean": 0.210594754,
+      "prob_birth_with_support_3y_mean": 0.351970212,
+      "prob_birth_delta_3y_mean": 0.1413754579
+    },
+    {
+      "housing_condition": "0–20 — очень плохие",
+      "sex": "Мужчины",
+      "n_unweighted": 133,
+      "weighted_population": 414155.6418256093,
+      "desired_children_mean": 1.7973464727,
+      "expected_children_mean": 1.6175142129,
+      "gap_mean": 0.1798322598,
+      "share_positive_gap_pct": 11.746659517,
+      "prob_birth_no_support_3y_mean": 0.1429756506,
+      "prob_birth_with_support_3y_mean": 0.219001821,
+      "prob_birth_delta_3y_mean": 0.0795454589
+    }
+  ],
+  "barrier_distribution": [
+    {
+      "barrier": "housing_difficulties",
+      "sex": "Все",
+      "n_unweighted": 3140,
+      "weighted_population": 11570641.984183433,
+      "очень мешает_pct": 19.4413077697,
+      "мешает_pct": 25.9276884609,
+      "не мешает_pct": 49.3197497457,
+      "трудно сказать / отказ_pct": 5.3112540237,
+      "very_or_somewhat_hinders_pct": 45.3689962307
+    },
+    {
+      "barrier": "housing_difficulties",
+      "sex": "Женщины",
+      "n_unweighted": 1476,
+      "weighted_population": 5644147.530221521,
+      "очень мешает_pct": 20.2648646264,
+      "мешает_pct": 25.3326212722,
+      "не мешает_pct": 49.4097240569,
+      "трудно сказать / отказ_pct": 4.9927900446,
+      "very_or_somewhat_hinders_pct": 45.5974858986
+    },
+    {
+      "barrier": "housing_difficulties",
+      "sex": "Мужчины",
+      "n_unweighted": 1664,
+      "weighted_population": 5926494.453961911,
+      "очень мешает_pct": 18.6569863745,
+      "мешает_pct": 26.4944057725,
+      "не мешает_pct": 49.2340619432,
+      "трудно сказать / отказ_pct": 5.6145459098,
+      "very_or_somewhat_hinders_pct": 45.151392147
+    },
+    {
+      "barrier": "mortgage_credit_payment",
+      "sex": "Все",
+      "n_unweighted": 3140,
+      "weighted_population": 11570641.984183433,
+      "очень мешает_pct": 15.9433138309,
+      "мешает_pct": 17.767629159,
+      "не мешает_pct": 59.6766038385,
+      "трудно сказать / отказ_pct": 6.6124531715,
+      "very_or_somewhat_hinders_pct": 33.7109429899
+    },
+    {
+      "barrier": "mortgage_credit_payment",
+      "sex": "Женщины",
+      "n_unweighted": 1476,
+      "weighted_population": 5644147.530221521,
+      "очень мешает_pct": 16.5411983798,
+      "мешает_pct": 18.0102878682,
+      "не мешает_pct": 59.8492959386,
+      "трудно сказать / отказ_pct": 5.5992178134,
+      "very_or_somewhat_hinders_pct": 34.551486248
+    },
+    {
+      "barrier": "mortgage_credit_payment",
+      "sex": "Мужчины",
+      "n_unweighted": 1664,
+      "weighted_population": 5926494.453961911,
+      "очень мешает_pct": 15.3739133824,
+      "мешает_pct": 17.5365310681,
+      "не мешает_pct": 59.5121390445,
+      "трудно сказать / отказ_pct": 7.577416505,
+      "very_or_somewhat_hinders_pct": 32.9104444505
+    }
+  ],
+  "postponement_housing_reasons": [
+    {
+      "sex": "Женщины",
+      "born_children": 0,
+      "n_unweighted": 2224,
+      "weighted_population": 9030394.878530324,
+      "absence_own_housing_score_1_5": 3.3498126604,
+      "credit_payments_score_1_5": 1.9669406091
+    },
+    {
+      "sex": "Женщины",
+      "born_children": 1,
+      "n_unweighted": 2389,
+      "weighted_population": 9306559.150606908,
+      "absence_own_housing_score_1_5": 2.6742004197,
+      "credit_payments_score_1_5": 2.2393980107
+    },
+    {
+      "sex": "Женщины",
+      "born_children": 2,
+      "n_unweighted": 1917,
+      "weighted_population": 6796106.681463504,
+      "absence_own_housing_score_1_5": 2.4791361689,
+      "credit_payments_score_1_5": 2.2877916189
+    },
+    {
+      "sex": "Мужчины",
+      "born_children": 0,
+      "n_unweighted": 2551,
+      "weighted_population": 9607468.169535687,
+      "absence_own_housing_score_1_5": 3.423522829,
+      "credit_payments_score_1_5": 2.0113821614
+    },
+    {
+      "sex": "Мужчины",
+      "born_children": 1,
+      "n_unweighted": 2321,
+      "weighted_population": 8653901.786112782,
+      "absence_own_housing_score_1_5": 2.5346160092,
+      "credit_payments_score_1_5": 2.4381545366
+    },
+    {
+      "sex": "Мужчины",
+      "born_children": 2,
+      "n_unweighted": 2143,
+      "weighted_population": 7454305.057021441,
+      "absence_own_housing_score_1_5": 2.3635418309,
+      "credit_payments_score_1_5": 2.4147499634
+    }
+  ],
+  "birth_decision_measures": [
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Все",
+      "born_children_group": "0 детей",
+      "n_unweighted": 4775,
+      "weighted_population": 18637863.048066013,
+      "mean_score_1_5": 3.0812141438,
+      "share_score_4_5_pct": 44.9440705963
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Все",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 4710,
+      "weighted_population": 17960460.936719686,
+      "mean_score_1_5": 2.8200134593,
+      "share_score_4_5_pct": 37.6328309031
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Все",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 4060,
+      "weighted_population": 14250411.738484945,
+      "mean_score_1_5": 2.7714940538,
+      "share_score_4_5_pct": 38.4150876665
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Все",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 1443,
+      "weighted_population": 4477655.276729324,
+      "mean_score_1_5": 2.8590032846,
+      "share_score_4_5_pct": 41.2654396601
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Все",
+      "born_children_group": "все",
+      "n_unweighted": 14988,
+      "weighted_population": 55326390.99999997,
+      "mean_score_1_5": 2.8986627982,
+      "share_score_4_5_pct": 40.5912551178
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Женщины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2224,
+      "weighted_population": 9030394.878530324,
+      "mean_score_1_5": 3.1772829921,
+      "share_score_4_5_pct": 47.526322393
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Женщины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2389,
+      "weighted_population": 9306559.150606908,
+      "mean_score_1_5": 2.8934337844,
+      "share_score_4_5_pct": 39.0869436398
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Женщины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 1917,
+      "weighted_population": 6796106.681463504,
+      "mean_score_1_5": 2.9641530145,
+      "share_score_4_5_pct": 43.633378837
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Женщины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 676,
+      "weighted_population": 2078719.4525541328,
+      "mean_score_1_5": 2.9959317479,
+      "share_score_4_5_pct": 44.33295487
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Женщины",
+      "born_children_group": "все",
+      "n_unweighted": 7206,
+      "weighted_population": 27211780.16315487,
+      "mean_score_1_5": 3.0131227704,
+      "share_score_4_5_pct": 43.4238141487
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Мужчины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2551,
+      "weighted_population": 9607468.169535687,
+      "mean_score_1_5": 2.990915678,
+      "share_score_4_5_pct": 42.5169219461
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Мужчины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2321,
+      "weighted_population": 8653901.786112782,
+      "mean_score_1_5": 2.7410559421,
+      "share_score_4_5_pct": 36.069052329
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Мужчины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 2143,
+      "weighted_population": 7454305.057021441,
+      "mean_score_1_5": 2.5958464462,
+      "share_score_4_5_pct": 33.6575598731
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Мужчины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 767,
+      "weighted_population": 2398935.824175191,
+      "mean_score_1_5": 2.740352399,
+      "share_score_4_5_pct": 38.6073845869
+    },
+    {
+      "measure": "land_plot_for_house_construction",
+      "sex": "Мужчины",
+      "born_children_group": "все",
+      "n_unweighted": 7782,
+      "weighted_population": 28114610.836845104,
+      "mean_score_1_5": 2.7878784229,
+      "share_score_4_5_pct": 37.8496566623
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Все",
+      "born_children_group": "0 детей",
+      "n_unweighted": 4775,
+      "weighted_population": 18637863.048066013,
+      "mean_score_1_5": 3.3855656998,
+      "share_score_4_5_pct": 54.8922430839
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Все",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 4710,
+      "weighted_population": 17960460.936719686,
+      "mean_score_1_5": 3.0916583948,
+      "share_score_4_5_pct": 46.2226645106
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Все",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 4060,
+      "weighted_population": 14250411.738484945,
+      "mean_score_1_5": 2.9523631305,
+      "share_score_4_5_pct": 43.8656760207
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Все",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 1443,
+      "weighted_population": 4477655.276729324,
+      "mean_score_1_5": 2.9084592403,
+      "share_score_4_5_pct": 43.4795787939
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Все",
+      "born_children_group": "все",
+      "n_unweighted": 14988,
+      "weighted_population": 55326390.99999997,
+      "mean_score_1_5": 3.1399624053,
+      "share_score_4_5_pct": 48.314103467
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Женщины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2224,
+      "weighted_population": 9030394.878530324,
+      "mean_score_1_5": 3.4990438887,
+      "share_score_4_5_pct": 57.3348443087
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Женщины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2389,
+      "weighted_population": 9306559.150606908,
+      "mean_score_1_5": 3.2406989765,
+      "share_score_4_5_pct": 49.8405269495
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Женщины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 1917,
+      "weighted_population": 6796106.681463504,
+      "mean_score_1_5": 3.1675659335,
+      "share_score_4_5_pct": 48.858417319
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Женщины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 676,
+      "weighted_population": 2078719.4525541328,
+      "mean_score_1_5": 3.0365502225,
+      "share_score_4_5_pct": 46.2019250232
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Женщины",
+      "born_children_group": "все",
+      "n_unweighted": 7206,
+      "weighted_population": 27211780.16315487,
+      "mean_score_1_5": 3.2925724157,
+      "share_score_4_5_pct": 51.8043268315
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Мужчины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2551,
+      "weighted_population": 9607468.169535687,
+      "mean_score_1_5": 3.2789035868,
+      "share_score_4_5_pct": 52.5963568836
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Мужчины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2321,
+      "weighted_population": 8653901.786112782,
+      "mean_score_1_5": 2.9313775153,
+      "share_score_4_5_pct": 42.3319512094
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Мужчины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 2143,
+      "weighted_population": 7454305.057021441,
+      "mean_score_1_5": 2.7561622512,
+      "share_score_4_5_pct": 39.313782553
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Мужчины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 767,
+      "weighted_population": 2398935.824175191,
+      "mean_score_1_5": 2.7974661851,
+      "share_score_4_5_pct": 41.1206186222
+    },
+    {
+      "measure": "partial_mortgage_credit_repayment",
+      "sex": "Мужчины",
+      "born_children_group": "все",
+      "n_unweighted": 7782,
+      "weighted_population": 28114610.836845104,
+      "mean_score_1_5": 2.9922530851,
+      "share_score_4_5_pct": 44.9359599293
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Все",
+      "born_children_group": "0 детей",
+      "n_unweighted": 4775,
+      "weighted_population": 18637863.048066013,
+      "mean_score_1_5": 3.371643571,
+      "share_score_4_5_pct": 53.3980940053
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Все",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 4710,
+      "weighted_population": 17960460.936719686,
+      "mean_score_1_5": 3.1198751256,
+      "share_score_4_5_pct": 46.4117666589
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Все",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 4060,
+      "weighted_population": 14250411.738484945,
+      "mean_score_1_5": 2.9805999745,
+      "share_score_4_5_pct": 43.8943759245
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Все",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 1443,
+      "weighted_population": 4477655.276729324,
+      "mean_score_1_5": 3.0185954468,
+      "share_score_4_5_pct": 45.5114811376
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Все",
+      "born_children_group": "все",
+      "n_unweighted": 14988,
+      "weighted_population": 55326390.99999997,
+      "mean_score_1_5": 3.1606188291,
+      "share_score_4_5_pct": 48.0439929432
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Женщины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2224,
+      "weighted_population": 9030394.878530324,
+      "mean_score_1_5": 3.5314542385,
+      "share_score_4_5_pct": 57.7948008438
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Женщины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2389,
+      "weighted_population": 9306559.150606908,
+      "mean_score_1_5": 3.2917772399,
+      "share_score_4_5_pct": 50.5203231769
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Женщины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 1917,
+      "weighted_population": 6796106.681463504,
+      "mean_score_1_5": 3.1939062081,
+      "share_score_4_5_pct": 49.4985889996
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Женщины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 676,
+      "weighted_population": 2078719.4525541328,
+      "mean_score_1_5": 3.205604744,
+      "share_score_4_5_pct": 51.2207990316
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Женщины",
+      "born_children_group": "все",
+      "n_unweighted": 7206,
+      "weighted_population": 27211780.16315487,
+      "mean_score_1_5": 3.3402895943,
+      "share_score_4_5_pct": 52.7327357358
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Мужчины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2551,
+      "weighted_population": 9607468.169535687,
+      "mean_score_1_5": 3.2214319431,
+      "share_score_4_5_pct": 49.2654756905
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Мужчины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2321,
+      "weighted_population": 8653901.786112782,
+      "mean_score_1_5": 2.9350085492,
+      "share_score_4_5_pct": 41.9933522599
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Мужчины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 2143,
+      "weighted_population": 7454305.057021441,
+      "mean_score_1_5": 2.7861282018,
+      "share_score_4_5_pct": 38.7850022629
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Мужчины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 767,
+      "weighted_population": 2398935.824175191,
+      "mean_score_1_5": 2.8565486509,
+      "share_score_4_5_pct": 40.56425827
+    },
+    {
+      "measure": "monthly_cash_payment",
+      "sex": "Мужчины",
+      "born_children_group": "все",
+      "n_unweighted": 7782,
+      "weighted_population": 28114610.836845104,
+      "mean_score_1_5": 2.9867177427,
+      "share_score_4_5_pct": 43.5058174423
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Все",
+      "born_children_group": "0 детей",
+      "n_unweighted": 4775,
+      "weighted_population": 18637863.048066013,
+      "mean_score_1_5": 3.3218354638,
+      "share_score_4_5_pct": 52.156690403
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Все",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 4710,
+      "weighted_population": 17960460.936719686,
+      "mean_score_1_5": 3.0777964526,
+      "share_score_4_5_pct": 45.5683667858
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Все",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 4060,
+      "weighted_population": 14250411.738484945,
+      "mean_score_1_5": 2.9625700207,
+      "share_score_4_5_pct": 44.0846522148
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Все",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 1443,
+      "weighted_population": 4477655.276729324,
+      "mean_score_1_5": 3.0413962198,
+      "share_score_4_5_pct": 46.7975944966
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Все",
+      "born_children_group": "все",
+      "n_unweighted": 14988,
+      "weighted_population": 55326390.99999997,
+      "mean_score_1_5": 3.1273813583,
+      "share_score_4_5_pct": 47.5051059398
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Женщины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2224,
+      "weighted_population": 9030394.878530324,
+      "mean_score_1_5": 3.4810471967,
+      "share_score_4_5_pct": 56.2359258654
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Женщины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2389,
+      "weighted_population": 9306559.150606908,
+      "mean_score_1_5": 3.2450226654,
+      "share_score_4_5_pct": 49.7012604391
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Женщины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 1917,
+      "weighted_population": 6796106.681463504,
+      "mean_score_1_5": 3.212817579,
+      "share_score_4_5_pct": 50.4913828829
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Женщины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 676,
+      "weighted_population": 2078719.4525541328,
+      "mean_score_1_5": 3.2394595676,
+      "share_score_4_5_pct": 51.5135674594
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Женщины",
+      "born_children_group": "все",
+      "n_unweighted": 7206,
+      "weighted_population": 27211780.16315487,
+      "mean_score_1_5": 3.3148806969,
+      "share_score_4_5_pct": 52.2056038913
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Мужчины",
+      "born_children_group": "0 детей",
+      "n_unweighted": 2551,
+      "weighted_population": 9607468.169535687,
+      "mean_score_1_5": 3.1721867956,
+      "share_score_4_5_pct": 48.3224745223
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Мужчины",
+      "born_children_group": "1 ребёнок",
+      "n_unweighted": 2321,
+      "weighted_population": 8653901.786112782,
+      "mean_score_1_5": 2.8979584236,
+      "share_score_4_5_pct": 41.1237798008
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Мужчины",
+      "born_children_group": "2 ребёнка",
+      "n_unweighted": 2143,
+      "weighted_population": 7454305.057021441,
+      "mean_score_1_5": 2.7344187591,
+      "share_score_4_5_pct": 38.2436214593
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Мужчины",
+      "born_children_group": "3+ детей",
+      "n_unweighted": 767,
+      "weighted_population": 2398935.824175191,
+      "mean_score_1_5": 2.8697708976,
+      "share_score_4_5_pct": 42.7111222215
+    },
+    {
+      "measure": "additional_monthly_benefits",
+      "sex": "Мужчины",
+      "born_children_group": "все",
+      "n_unweighted": 7782,
+      "weighted_population": 28114610.836845104,
+      "mean_score_1_5": 2.9459030937,
+      "share_score_4_5_pct": 42.9555527678
+    }
+  ],
+  "potential_births_scenarios": [
+    {
+      "scenario_id": "upper_bound_all_women_desired_expected_gap",
+      "description": "Сумма положительного разрыва желаемое–ожидаемое среди всех женщин 18–44; верхняя граница полного закрытия разрыва.",
+      "n_unweighted": 7206,
+      "target_women_weighted": 27211780.16315487,
+      "latent_desired_expected_gap_births": 5111009.048805779,
+      "baseline_births_next_3y_by_probability": 7766133.466190962,
+      "support_births_next_3y_by_probability": 10167251.219623175,
+      "additional_births_next_3y_probability_positive_delta": 2556195.705615853,
+      "mean_positive_gap": 0.1982314649,
+      "mean_probability_delta_3y": 0.0939370997
+    },
+    {
+      "scenario_id": "upper_bound_women_with_positive_gap",
+      "description": "Только женщины, у которых желаемое число детей больше ожидаемого.",
+      "n_unweighted": 1093,
+      "target_women_weighted": 4215403.637952808,
+      "latent_desired_expected_gap_births": 5111009.048805778,
+      "baseline_births_next_3y_by_probability": 936744.200796498,
+      "support_births_next_3y_by_probability": 1345334.223256605,
+      "additional_births_next_3y_probability_positive_delta": 434697.4880423505,
+      "mean_positive_gap": 1.2124601789,
+      "mean_probability_delta_3y": 0.1031212015
+    },
+    {
+      "scenario_id": "upper_bound_housing_barrier",
+      "description": "Женщины с положительным разрывом и жилищными трудностями как препятствием.",
+      "n_unweighted": 513,
+      "target_women_weighted": 1989966.5837828824,
+      "latent_desired_expected_gap_births": 2379537.908329611,
+      "baseline_births_next_3y_by_probability": 467022.1401000193,
+      "support_births_next_3y_by_probability": 712151.5393116645,
+      "additional_births_next_3y_probability_positive_delta": 256286.8424107779,
+      "mean_positive_gap": 1.195767772,
+      "mean_probability_delta_3y": 0.1287895206
+    },
+    {
+      "scenario_id": "upper_bound_need_improvement_and_housing_barrier",
+      "description": "Женщины с положительным разрывом, потребностью улучшить жильё и жилищными трудностями как препятствием.",
+      "n_unweighted": 379,
+      "target_women_weighted": 1457925.6732685943,
+      "latent_desired_expected_gap_births": 1774764.2159948961,
+      "baseline_births_next_3y_by_probability": 332030.3286448701,
+      "support_births_next_3y_by_probability": 536961.384738778,
+      "additional_births_next_3y_probability_positive_delta": 212667.084688618,
+      "mean_positive_gap": 1.2173214647,
+      "mean_probability_delta_3y": 0.1458696342
+    },
+    {
+      "scenario_id": "near_term_support_all_women_probability_delta",
+      "description": "Дополнительные рождения за 3 года по самооценке вероятности при дополнительных мерах, все женщины.",
+      "n_unweighted": 7206,
+      "target_women_weighted": 27211780.16315487,
+      "latent_desired_expected_gap_births": 5111009.048805779,
+      "baseline_births_next_3y_by_probability": 7766133.466190962,
+      "support_births_next_3y_by_probability": 10167251.219623175,
+      "additional_births_next_3y_probability_positive_delta": 2556195.705615853,
+      "mean_positive_gap": 0.1982314649,
+      "mean_probability_delta_3y": 0.0939370997
+    },
+    {
+      "scenario_id": "near_term_support_housing_barrier_probability_delta",
+      "description": "Дополнительные рождения за 3 года по самооценке вероятности, жилищно-ограниченная группа.",
+      "n_unweighted": 513,
+      "target_women_weighted": 1989966.5837828824,
+      "latent_desired_expected_gap_births": 2379537.908329611,
+      "baseline_births_next_3y_by_probability": 467022.1401000193,
+      "support_births_next_3y_by_probability": 712151.5393116645,
+      "additional_births_next_3y_probability_positive_delta": 256286.8424107779,
+      "mean_positive_gap": 1.195767772,
+      "mean_probability_delta_3y": 0.1287895206
+    },
+    {
+      "scenario_id": "near_term_support_housing_barrier_and_housing_measures_high",
+      "description": "То же, но только при высокой оценке хотя бы одной жилищной меры: участок или погашение кредита.",
+      "n_unweighted": 318,
+      "target_women_weighted": 1243786.1591735785,
+      "latent_desired_expected_gap_births": 1485195.380234947,
+      "baseline_births_next_3y_by_probability": 326696.7910024789,
+      "support_births_next_3y_by_probability": 537247.5484124757,
+      "additional_births_next_3y_probability_positive_delta": 215972.525700936,
+      "mean_positive_gap": 1.1940922234,
+      "mean_probability_delta_3y": 0.1736412036
+    },
+    {
+      "scenario_id": "near_term_support_need_barrier_and_housing_measures_high",
+      "description": "Самая узкая целевая группа: есть разрыв, нужна жилплощадь, жильё мешает, жилищные меры высоко значимы.",
+      "n_unweighted": 247,
+      "target_women_weighted": 970097.2704181914,
+      "latent_desired_expected_gap_births": 1180804.415514169,
+      "baseline_births_next_3y_by_probability": 258753.8806880814,
+      "support_births_next_3y_by_probability": 442472.828974594,
+      "additional_births_next_3y_probability_positive_delta": 188054.3203007401,
+      "mean_positive_gap": 1.2172020802,
+      "mean_probability_delta_3y": 0.1938509942
+    }
+  ],
+  "housing_barrier_potential_by_born_children": [
+    {
+      "born_children": 0,
+      "n_unweighted": 103,
+      "target_women_weighted": 432901.0917543449,
+      "latent_desired_expected_gap_births": 565258.7246385794,
+      "additional_births_next_3y_probability_positive_delta": 52703.4532156985
+    },
+    {
+      "born_children": 1,
+      "n_unweighted": 257,
+      "target_women_weighted": 994333.4739927725,
+      "latent_desired_expected_gap_births": 1183301.7723944066,
+      "additional_births_next_3y_probability_positive_delta": 115625.0492597151
+    },
+    {
+      "born_children": 2,
+      "n_unweighted": 133,
+      "target_women_weighted": 511423.809661296,
+      "latent_desired_expected_gap_births": 566763.346612954,
+      "additional_births_next_3y_probability_positive_delta": 79457.0521666667
+    },
+    {
+      "born_children": 3,
+      "n_unweighted": 18,
+      "target_women_weighted": 45116.780912622,
+      "latent_desired_expected_gap_births": 58022.637221824,
+      "additional_births_next_3y_probability_positive_delta": 7525.4242225234
+    },
+    {
+      "born_children": 4,
+      "n_unweighted": 2,
+      "target_women_weighted": 6191.427461847,
+      "latent_desired_expected_gap_births": 6191.427461847,
+      "additional_births_next_3y_probability_positive_delta": 975.8635461741
+    }
+  ],
+  "counterfactual_housing_improvement": [
+    {
+      "scenario": "associative_counterfactual_raise_housing_score_below_80_to_80",
+      "target_women_weighted": 25942578.455641195,
+      "additional_expected_children_all_women": 272593.5148988239,
+      "mean_delta_expected_children_all_women": 0.0105075722,
+      "additional_expected_children_need_housing_improvement": 212863.444876528,
+      "mean_delta_expected_children_need_housing_improvement": 0.0145620877
+    }
+  ]
+}

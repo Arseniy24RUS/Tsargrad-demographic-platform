@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>СКР | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="skr" class="view-brief">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
+        <div>
+          <div class="brand-title">Россия 2050</div>
+          <div class="brand-subtitle">демографическая платформа</div>
+        </div>
+      </a>
+      <nav class="nav-tabs" aria-label="Главная навигация">
+        <a class="active" href="index.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a href="estate.html">Усадьба</a>
+        <a href="capital.html?v=20260614-matcapital-formula6">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="section-number">Мониторинг целевой траектории</div>
+        <h1>Рождаемость: факт, инерционный прогноз и цель «Россия 2050»</h1>
+        <p class="lead">Главный экран показывает, как текущая динамика рождаемости соотносится с целевым коридором 2036 и 2050 годов. Россия всегда остаётся базовой линией сравнения; выбранная территория добавляется как контекст.</p>
+      </div>
+      <div class="hero-kpis">
+        <div class="kpi-card gold">
+          <div class="kpi-label">цель 2036</div>
+          <div class="kpi-value">2,10–2,15</div>
+          <div class="kpi-note">целевой коридор СКР</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">цель 2050</div>
+          <div class="kpi-value">2,50–3,00</div>
+          <div class="kpi-note">прорывной демографический сценарий</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white">
+        <div class="card-title-row">
+          <div>
+            <h2>Картограмма СКР</h2>
+            <div class="text-note">Цвет показывает последнее доступное месячное значение общего СКР. Клик по субъекту добавляет территорию на график сравнения.</div>
+          </div>
+          <span class="pill" id="mapMetricPill">2026-05</span>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend" id="mapLegend"></div>
+      </div>
+      <div class="card">
+        <h2>Параметры сравнения</h2>
+        <div class="controls">
+          <div class="control">
+            <label>Режим анализа</label>
+            <div class="scenario-chip-row mode-row" aria-label="Режим анализа">
+              <button class="scenario-chip active" data-analysis-mode="country" type="button">Россия</button>
+              <button class="scenario-chip" data-analysis-mode="district" type="button">Федеральный округ</button>
+              <button class="scenario-chip" data-analysis-mode="subject" type="button">Субъект РФ</button>
+            </div>
+          </div>
+          <div class="control">
+            <label>Состав страницы</label>
+            <div class="scenario-chip-row mode-row" aria-label="Состав страницы">
+              <button class="scenario-chip active" data-view-mode="brief" type="button">Краткий вид</button>
+              <button class="scenario-chip" data-view-mode="detail" type="button">Подробный вид</button>
+            </div>
+          </div>
+          <div class="control">
+            <label for="territorySelect">Территория</label>
+            <select id="territorySelect"></select>
+          </div>
+          <div class="control">
+            <label for="policyMonthRange">Месяц введения мер</label>
+            <input id="policyMonthRange" type="range" min="0" max="0" value="0" step="1" />
+            <div class="text-note">Ввод мер: <b id="policyMonthLabel">—</b>; начало демографического эффекта с учётом 9 месяцев: <b id="effectMonthLabel">—</b>.</div>
+          </div>
+          <div class="btn-row">
+            <button class="gold" id="policyNowBtn" type="button">с июня 2026</button>
+            <button class="ghost" id="policy2030Btn" type="button">с января 2030</button>
+            <button class="ghost" id="resetTerritoryBtn" type="button">только Россия</button>
+          </div>
+        </div>
+        <div class="metric-strip">
+          <div class="metric"><span>Последний СКР</span><b id="kpiLastTfr">—</b></div>
+          <div class="metric"><span>Инерционный прогноз 2036</span><b id="kpiLastTfr3">—</b></div>
+          <div class="metric"><span>Отставание от цели 2036</span><b id="kpiDelta2036">—</b></div>
+          <div class="metric"><span>Требуемый прирост после запуска мер</span><b id="kpiMonthlyLift">—</b></div>
+        </div>
+        <div class="territory-kpi-split">
+          <div><strong>Россия</strong><span id="russiaKpiSummary">—</span></div>
+          <div><strong id="selectedKpiTitle">Выбранная территория</strong><span id="selectedKpiSummary">—</span></div>
+        </div>
+        <p class="source-note">Россия в месячных рядах показана без новых субъектов, как в исходной статистической публикации.</p>
+      </div>
+    </section>
+
+    <section class="card white">
+      <div class="card-title-row">
+        <div>
+          <h2>СКР и требуемая траектория</h2>
+          <div class="text-note">Факт и инерционный прогноз не меняются. Ползунок меняет дату запуска мер, начало эффекта через 9 месяцев, требуемую траекторию и разрыв с планом.</div>
+        </div>
+        <span class="pill" id="activeTerritoryPill">Россия</span>
+      </div>
+      <div class="chart-policy-control" aria-label="Управление датой запуска мер на графике">
+        <div>
+          <strong>Запуск мер</strong>
+          <span>начало эффекта рассчитывается через 9 месяцев</span>
+        </div>
+        <input id="policyMonthChartRange" type="range" min="0" max="0" value="0" step="1" />
+        <div class="chart-policy-values">
+          <span>ввод мер: <b id="chartPolicyMonthLabel">—</b></span>
+          <span>начало эффекта: <b id="chartEffectMonthLabel">—</b></span>
+        </div>
+      </div>
+      <div id="tfrChart" class="chart tall"></div>
+    </section>
+
+    <section class="card teal rpn-hero-card">
+      <div class="card-title-row">
+        <div>
+          <div class="section-number">Репродуктивные установки и жильё</div>
+          <h2>Желаемое, ожидаемое и жилищный барьер рождаемости</h2>
+          <p class="lead compact">Выборочное наблюдение репродуктивных планов показывает, сколько детей люди хотели бы иметь, сколько реально ожидают и какая часть разрыва связана с жилищными условиями.</p>
+        </div>
+        <span class="pill inverted">РПН‑2022 · федеральная оценка</span>
+      </div>
+      <div class="metric-strip rpn-kpis">
+        <div class="metric"><span>Желаемое число детей</span><b id="rpnKpiDesired">—</b></div>
+        <div class="metric"><span>Ожидаемое число детей</span><b id="rpnKpiExpected">—</b></div>
+        <div class="metric"><span>Разрыв желаемое−ожидаемое</span><b id="rpnKpiGap">—</b></div>
+        <div class="metric"><span>Жилищные трудности мешают</span><b id="rpnKpiHousingBarrier">—</b></div>
+      </div>
+      <p class="source-note light-text">Показатели «желаемое» и «ожидаемое» — средние числа детей по ответам респондентов. Они дополняют фактический СКР и показывают резерв нереализованных репродуктивных планов.</p>
+    </section>
+
+
+
+    <section class="grid two rpn-regional-section" data-detail-section>
+      <div class="card white">
+        <div class="card-title-row">
+          <div>
+            <h2>Региональная ретроспектива РПН-2012/2017</h2>
+            <div class="text-note">Историческая региональная ретроспектива: сопоставление фактического СКР субъекта с желаемым и ожидаемым числом детей.</div>
+          </div>
+          <div class="control mini-select"><label for="rpnRegionalYearSelect">Год</label><select id="rpnRegionalYearSelect"><option value="2017">2017</option><option value="2012">2012</option></select></div>
+        </div>
+        <div class="control mini-select" style="max-width:220px;margin-bottom:10px"><label for="rpnRegionalSexSelect">Пол</label><select id="rpnRegionalSexSelect"><option>Все</option><option>Женщины</option><option>Мужчины</option></select></div>
+        <div id="rpnRegionalScatter" class="chart mid"></div>
+        <p class="source-note">РПН-2012 представлен по 30 субъектам, РПН-2017 — почти по всем субъектам. Этот блок используется как исторический контекст.</p>
+      </div>
+      <div class="card white">
+        <div class="card-title-row">
+          <div>
+            <h2>Выбранная территория: установки и факт</h2>
+            <div class="text-note">Если выбран субъект на карте или в селекторе, карточка показывает его значения в 2012/2017 годах и разрыв с фактическим СКР за тот же год.</div>
+          </div>
+          <span class="pill" id="rpnRegionalTerritoryPill">Россия</span>
+        </div>
+        <div id="rpnRegionalTrend" class="chart mid"></div>
+        <div class="table-wrap" id="rpnRegionalTable"></div>
+      </div>
+    </section>
+
+    <section class="grid two" data-detail-section>
+      <div class="card white">
+        <div class="card-title-row">
+          <div>
+            <h2>Фактическое, ожидаемое и желаемое</h2>
+            <div class="text-note">Сопоставление среднего числа уже рождённых, ожидаемых и желаемых детей по полу респондента. Для демографической политики это показывает разрыв между установкой и реалистичным планом.</div>
+          </div>
+          <span class="pill">Россия в целом</span>
+        </div>
+        <div id="rpnIntentChart" class="chart mid"></div>
+      </div>
+      <div class="card white">
+        <div class="card-title-row">
+          <div>
+            <h2>Жильё и разрыв репродуктивных планов</h2>
+            <div class="text-note">При выборе пола график показывает среднее желаемое, ожидаемое число детей и разрыв между ними по самооценке жилищных условий.</div>
+          </div>
+          <div class="control mini-select"><label for="rpnSexSelect">Пол</label><select id="rpnSexSelect"><option>Все</option><option>Женщины</option><option>Мужчины</option></select></div>
+        </div>
+        <div id="rpnHousingGapChart" class="chart mid"></div>
+      </div>
+    </section>
+
+    <section class="grid two" data-detail-section>
+      <div class="card">
+        <h2>Сценарий жилищного эффекта</h2>
+        <div class="controls">
+          <div class="control">
+            <label for="rpnScenarioSelect">Целевая группа</label>
+            <select id="rpnScenarioSelect"></select>
+            <div class="text-note" id="rpnScenarioDescription">—</div>
+          </div>
+          <div class="control">
+            <label for="rpnLatentClosureRange">Закрытие латентного разрыва желаемое−ожидаемое</label>
+            <input id="rpnLatentClosureRange" type="range" min="0" max="100" value="10" step="1" />
+            <div class="text-note">Реализовано: <b id="rpnLatentClosureLabel">10%</b> латентного максимума.</div>
+          </div>
+          <div class="control">
+            <label for="rpnProbabilityScaleRange">Масштаб вероятностного эффекта за 3 года</label>
+            <input id="rpnProbabilityScaleRange" type="range" min="0" max="200" value="100" step="5" />
+            <div class="text-note">Коэффициент: <b id="rpnProbabilityScaleLabel">100%</b> от самооценочной прибавки вероятности рождения.</div>
+          </div>
+        </div>
+        <div class="metric-strip" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:18px">
+          <div class="metric"><span>Целевая группа</span><b id="rpnKpiTargetWomen">—</b></div>
+          <div class="metric"><span>Вероятностный эффект</span><b id="rpnKpiProbBirths">—</b></div>
+          <div class="metric"><span>Латентный максимум</span><b id="rpnKpiLatentBirths">—</b></div>
+          <div class="metric"><span>Средний разрыв</span><b id="rpnKpiMeanGap">—</b></div>
+        </div>
+      </div>
+      <div class="card white">
+        <h2>Потенциальные рождения</h2>
+        <div class="text-note">Сценарный расчёт показывает две оценки: полное/частичное закрытие разрыва желаемое−ожидаемое и более строгий краткосрочный эффект по самооценке вероятности рождения в ближайшие 3 года.</div>
+        <div id="rpnPotentialChart" class="chart mid"></div>
+      </div>
+    </section>
+
+    <section class="grid two" data-detail-section>
+      <div class="card white">
+        <h2>Жилищные барьеры</h2>
+        <div class="text-note">Доли ответов среди тех, кто хотел бы иметь больше детей, чем собирается. Показаны жилищные трудности и необходимость выплачивать ипотечный кредит.</div>
+        <div id="rpnBarrierChart" class="chart mid"></div>
+      </div>
+      <div class="card white">
+        <h2>Какие жилищные меры значимее</h2>
+        <div class="text-note">Доля респондентов, оценивших меру на 4–5 баллов. Используется тот же фильтр пола, что и в графике жилищных условий.</div>
+        <div id="rpnMeasuresChart" class="chart mid"></div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white">
+        <h2>Резерв по текущему числу детей</h2>
+        <div class="text-note">Женщины с положительным разрывом и жилищным барьером: латентный разрыв и вероятностная прибавка рождений за 3 года по числу уже рождённых детей.</div>
+        <div id="rpnOrderPotentialChart" class="chart mid"></div>
+      </div>
+      <div class="card white">
+        <h2>Таблица сценария</h2>
+        <div class="table-wrap" id="rpnScenarioTable"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">Расчётная платформа для экспертного обсуждения. Все параметры можно менять для сравнения сценариев.</footer>
+
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/skr.js"></script>
+</body>
+</html>

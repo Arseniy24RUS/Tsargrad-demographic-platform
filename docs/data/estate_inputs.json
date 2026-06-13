@@ -1,0 +1,36 @@
+{
+  "defaults": {
+    "adults": 2,
+    "children": 3,
+    "elders": 1,
+    "floors": 2,
+    "separateElderHouse": false,
+    "areaNormM2": 30,
+    "priceM2": 116427,
+    "coreAreaM2": 100,
+    "childModuleAreaM2": 24,
+    "elderModuleAreaM2": 30,
+    "siteAreaSotka": 12,
+    "lotAspectRatio": 1.35,
+    "minSetbackM": 4,
+    "floorHeightM": 3.1,
+    "landPricePerSotka": 200000,
+    "infraFixedCost": 1800000,
+    "scaleDiscountMaxPct": 14,
+    "scaleDiscountAreaM2": 170,
+    "childSubsidyPct": 75,
+    "elderSubsidyPct": 50,
+    "pilotFamilies": 10000
+  },
+  "methodology": {
+    "area_rule": "area = max(core + child_modules + elder_modules, area_norm * household_members)",
+    "child_modules": "Модули роста добавляются со второго ребёнка; логика воспроизводит модель растущего дома: ядро около 100 м² и один-два модуля по 20–25 м² после рождения детей.",
+    "scale_discount": "unit_cost = price_m2 * (1 - max_discount * (1 - exp(-(area-core_area)/scale_area)))",
+    "subsidy_rule": "the state subsidizes demographic growth zones rather than the whole house: child modules and elder modules."
+  },
+  "sources": [
+    "Ростовская Т.К. Тезисы на ПМЭФ 2026.docx",
+    "Малоэтажная_и_многодетная_Россия.pdf",
+    "Минтруд_демография_02.02.2026.pdf"
+  ]
+}
