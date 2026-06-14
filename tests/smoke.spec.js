@@ -411,7 +411,15 @@ test.describe('самодостаточный релиз', () => {
     expect(before.mapRenderedPaths).toBeGreaterThanOrEqual(83);
     expect(before.mapValueCount).toBeGreaterThanOrEqual(80);
     expect(before.mapDomain.max).toBeGreaterThan(before.mapDomain.min);
+    expect(before.dataChecks.rf2010Divorces).toBe(639321);
+    expect(before.dataChecks.rf2010DivorceIndex).toBeCloseTo(52.6162, 3);
     expect(before.renderedCharts).toEqual(expect.arrayContaining(before.chartIds));
+    const rf2010ChartDivorces = await page.evaluate(() => {
+      const trace = document.getElementById('eventsTrend').data.find(item => String(item.name || '').includes('разводы'));
+      const idx = trace.x.findIndex(year => Number(year) === 2010);
+      return Number(trace.y[idx]);
+    });
+    expect(rf2010ChartDivorces).toBe(639321);
     expect(before.territoryTableRows).toBeGreaterThan(0);
     await page.locator('#territoryMode').selectOption('subject');
     await page.locator('#subjectSelect').selectOption({ index: 2 });

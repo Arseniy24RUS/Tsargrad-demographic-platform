@@ -24771,13 +24771,13 @@
         {
           "year": 2010,
           "marriages_count": 1215066.0,
-          "divorces_count": 7.5,
+          "divorces_count": 639321.0,
           "marriage_rate_per_1000": 8.5,
           "divorce_rate_per_1000": 4.5,
-          "divorces_per_100_marriages": 0.0006,
-          "marriage_divorce_balance_count": 1215058.5,
+          "divorces_per_100_marriages": 52.6162,
+          "marriage_divorce_balance_count": 575745.0,
           "marriage_divorce_balance_per_1000": 4.0,
-          "family_stability_index_0_100": 99.9994
+          "family_stability_index_0_100": 47.3838
         },
         {
           "year": 2011,

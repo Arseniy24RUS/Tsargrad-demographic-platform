@@ -369,6 +369,7 @@
   function getState() {
     const selected = state.data ? selectedTerritoryId() : state.countryId;
     const chartIds = ['familyMap', 'divorceReductionPlot', 'eventsTrend', 'ratesTrend', 'indexTrend'];
+    const rf2010 = state.series.length ? rowForYear(state.countryId, 2010) : null;
     return {
       loaded: Boolean(state.data && state.geo && state.series.length),
       runtimeExternalFetch: state.data?.metadata?.runtime_external_fetch,
@@ -391,6 +392,10 @@
       topTableRows: el('topRegionsTable')?.querySelectorAll('tbody tr').length || 0,
       territoryTableRows: el('territoryTable')?.querySelectorAll('tbody tr').length || 0,
       kpiScenarioText: el('kpiScenario')?.textContent || '',
+      dataChecks: {
+        rf2010Divorces: rf2010?.divorces_count ?? null,
+        rf2010DivorceIndex: rf2010?.divorces_per_100_marriages ?? null,
+      },
     };
   }
 

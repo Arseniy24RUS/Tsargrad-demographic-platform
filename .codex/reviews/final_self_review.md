@@ -11,6 +11,8 @@
 - Блок ВЦИОМ-2025 подключён к СКР через явный контейнер `vciom2025Mount`.
 - `policyStartDragHandle` отсутствует, `policyLagDragBand` сохранён, `SkrModule.getState().interactionMode === "lag-band"`.
 - `family.html` и `abortions.html` используют локальные JSON/GeoJSON/SQLite/CSV и имеют `FamilyModule.getState()` / `AbortionsModule.getState()`.
+- Hero KPI на страницах `Семья` и `Аборты` сделаны горизонтальными, значения `945 995`, `683 796` и `338 367` не переносятся.
+- Федеральный ряд `Семья` за 2010 год исправлен и проверен: `divorces_count = 639321`, `divorces_per_100_marriages ≈ 52.6162`.
 - Картограммы новых страниц строятся как локальные SVG из GeoJSON; для карт нет runtime-запросов к `cdn.plot.ly` или другим внешним гео-источникам.
 - Новых runtime-библиотек, CDN, удалённых шрифтов и внешних изображений не добавлено.
 
@@ -26,6 +28,7 @@
 - `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh` — пройдено.
 - `python scripts/audit_all.py` — пройдено.
 - `npm run test:smoke` — 55 тестов пройдены, включая full-page visual QA новых страниц.
+- Targeted Playwright QA `family/abortions` desktop, wide и mobile — пройдено.
 
 ## Ограничения
 

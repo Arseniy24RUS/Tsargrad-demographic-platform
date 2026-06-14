@@ -180,6 +180,54 @@ async function expectNoHorizontalOverflow(page, context) {
   expect(report.overflow, `${context} horizontal overflow: ${JSON.stringify(report.offenders)}`).toBeLessThanOrEqual(2);
 }
 
+async function expectHeroKpiValuesOneLine(page, target, context) {
+  const selector = target.slug === 'family'
+    ? '.family-hero-kpis .kpi-value'
+    : target.slug === 'abortions'
+      ? '.abortions-hero-kpis .kpi-value'
+      : null;
+  if (!selector) return;
+  const failures = await page.evaluate((kpiSelector) => {
+    return [...document.querySelectorAll(kpiSelector)].map(el => {
+      const style = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      const lineHeight = Number.parseFloat(style.lineHeight);
+      const maxHeight = Number.isFinite(lineHeight) ? lineHeight * 1.25 : rect.height + 1;
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      const ok = style.whiteSpace === 'nowrap'
+        && el.scrollWidth <= el.clientWidth + 1
+        && rect.height <= maxHeight + 1;
+      return ok ? null : {
+        text,
+        whiteSpace: style.whiteSpace,
+        clientWidth: Math.round(el.clientWidth),
+        scrollWidth: Math.round(el.scrollWidth),
+        height: Math.round(rect.height),
+        maxHeight: Math.round(maxHeight),
+      };
+    }).filter(Boolean);
+  }, selector);
+  expect(failures, `${context} hero KPI values should stay on one line`).toEqual([]);
+}
+
+async function expectFamilyRf2010Data(page, context) {
+  await page.waitForFunction(() => document.getElementById('eventsTrend')?.data?.length);
+  const check = await page.evaluate(() => {
+    const state = window.FamilyModule.getState();
+    const chart = document.getElementById('eventsTrend');
+    const divorceTrace = (chart.data || []).find(trace => String(trace.name || '').includes('разводы'));
+    const idx = divorceTrace ? divorceTrace.x.findIndex(year => Number(year) === 2010) : -1;
+    return {
+      stateDivorces: state.dataChecks?.rf2010Divorces,
+      stateIndex: state.dataChecks?.rf2010DivorceIndex,
+      chartDivorces: idx >= 0 ? Number(divorceTrace.y[idx]) : null,
+    };
+  });
+  expect(check.stateDivorces, `${context} RF 2010 divorces state`).toBe(639321);
+  expect(check.stateIndex, `${context} RF 2010 divorce index`).toBeCloseTo(52.6162, 3);
+  expect(check.chartDivorces, `${context} RF 2010 chart point`).toBe(639321);
+}
+
 async function expectSelectorsReadable(page, selectors, context) {
   const failures = await page.evaluate((items) => {
     function rgb(value) {
@@ -560,10 +608,12 @@ test.describe('Playwright visual QA', () => {
           await page.waitForFunction((moduleName) => window[moduleName]?.getState?.().loaded, target.moduleName);
         }
         await expectNoHorizontalOverflow(page, `${target.slug} ${viewport.name} initial`);
+        await expectHeroKpiValuesOneLine(page, target, `${target.slug} ${viewport.name}`);
         await expectSelectorsReadable(page, target.contrastSelectors, `${target.slug} ${viewport.name}`);
         await page.screenshot({ path: `artifacts/visual-qa/${target.slug}-${viewport.name}-full-page.png`, fullPage: true });
         await captureAndCheckSections(page, target, viewport.name);
         await expectLocalGeoMap(page, target);
+        if (target.slug === 'family') await expectFamilyRf2010Data(page, `${target.slug} ${viewport.name}`);
         expect(runtime.external, 'external runtime requests').toEqual([]);
         expect(runtime.consoleErrors, 'console errors').toEqual([]);
       });
