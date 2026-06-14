@@ -48,6 +48,6 @@
 
 ## Публикация
 
-- [ ] Коммит `Integrate home family abortions patch`.
-- [ ] Push в `main`.
-- [ ] GitHub Pages: корень сайта открывает главную, СКР доступен по `/skr.html`.
+- [x] Коммит `Integrate home family abortions patch`.
+- [x] Push в `main`.
+- [x] GitHub Pages: корень сайта открывает главную, СКР доступен по `/skr.html`.
