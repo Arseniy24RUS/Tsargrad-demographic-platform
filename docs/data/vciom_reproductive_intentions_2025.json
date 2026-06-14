@@ -1,0 +1,67 @@
+{
+  "metadata": {
+    "title": "Желаемое и ожидаемое число детей: ВЦИОМ, 2025",
+    "runtime_external_fetch": false,
+    "source_name": "ВЦИОМ. Аналитический обзор «Семья и брак в России XXI века», 12 мая 2025 г.",
+    "source_date": "2025-05-12",
+    "fieldwork_date": "2025-04-25",
+    "sample": "1600 россиян в возрасте от 18 лет",
+    "method": "Всероссийский телефонный опрос «ВЦИОМ-Спутник»; открытые вопросы о желаемом и ожидаемом числе детей",
+    "actual_tfr_note": "Фактический СКР 2025 используется из локального слоя платформы; значение по умолчанию — 1,361 для России без новых субъектов, как в исходных статистических данных платформы."
+  },
+  "actual": {
+    "year": 2025,
+    "territory": "Российская Федерация без новых субъектов",
+    "tfr_total": 1.361,
+    "label": "Фактический СКР, 2025"
+  },
+  "vciom_2025": {
+    "all": {
+      "expected_children": 2.4,
+      "desired_children": 3.2,
+      "desired_expected_gap": 0.8,
+      "expected_actual_gap": 1.039,
+      "desired_actual_gap": 1.839,
+      "answered_expected_percent": 72,
+      "answered_desired_percent": 90
+    },
+    "sex": [
+      {
+        "group": "Мужчины",
+        "expected_children": 2.6,
+        "desired_children": 3.6,
+        "desired_expected_gap": 1.0,
+        "answered_expected_percent": 73,
+        "answered_desired_percent": 89
+      },
+      {
+        "group": "Женщины",
+        "expected_children": 2.3,
+        "desired_children": 2.8,
+        "desired_expected_gap": 0.5,
+        "answered_expected_percent": 70,
+        "answered_desired_percent": 91
+      }
+    ],
+    "age": [
+      { "group": "18–24 года", "expected_children": 2.4, "desired_children": 3.1 },
+      { "group": "25–34 года", "expected_children": 2.3, "desired_children": 3.0 },
+      { "group": "35–44 года", "expected_children": 2.5, "desired_children": 3.4 },
+      { "group": "45–59 лет", "expected_children": 2.4, "desired_children": 3.3 },
+      { "group": "60 лет и старше", "expected_children": 2.5, "desired_children": 3.0 }
+    ]
+  },
+  "vciom_2005": {
+    "all": { "expected_children": 1.9, "desired_children": 2.4, "desired_expected_gap": 0.5 },
+    "sex": [
+      { "group": "Мужчины", "expected_children": 2.0, "desired_children": 2.5 },
+      { "group": "Женщины", "expected_children": 1.8, "desired_children": 2.3 }
+    ]
+  },
+  "tsargrad_targets": {
+    "target_2036_low": 2.10,
+    "target_2036_high": 2.15,
+    "target_2050_low": 2.50,
+    "target_2050_high": 3.00
+  }
+}

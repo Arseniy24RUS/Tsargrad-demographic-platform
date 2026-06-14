@@ -28,6 +28,7 @@ ETL: `scripts/build_settlement_tfr_forecasts.py`.
 
 - `tfr_data.json` — месячные ряды СКР, метаданные целей и справочник территорий.
 - `skr_monthly_forecast_2050.json` — месячный прогноз СКР для основного графика страницы `СКР`; нужен, чтобы прогноз и требуемая траектория шли без годовых разрывов.
+- `vciom_reproductive_intentions_2025.json` — локальный социологический слой ВЦИОМ-2025 для страницы `СКР`, `runtime_external_fetch:false`.
 - `subjects.geojson` — локальная геометрия субъектов для SVG-карты СКР.
 - `settlement_data.json` — ряды расселения, городского и сельского СКР.
 - `settlement_tfr_forecast_2050.json` — модельный прогноз городского/сельского СКР и базовой общей траектории для сценария расселения.
@@ -35,6 +36,12 @@ ETL: `scripts/build_settlement_tfr_forecasts.py`.
 - `matcapital_inputs.json` — сценарные параметры Маткапитала: действующие суммы сертификатов, эквивалент 2007 года в средних зарплатах, подход по стоимости комфортного жилья, охват, использование сертификатов и конверсия в потенциальное рождение. Метаданные: `runtime_external_fetch:false`, горизонт 2050.
 - `mortgage_inputs.json` — параметры ипотеки.
 - `payments_inputs.json` — параметры выплат.
+- `family_dashboard.json` — показатели браков, разводов, коэффициентов на 1000 населения и индекса разводимости для страницы `Семья`, `runtime_external_fetch:false`.
+- `family_subjects.geojson` — локальная геометрия субъектов для страницы `Семья`.
+- `family.sqlite`, `family_summary.csv`, `family_join_audit.json`, `family_join_audit.csv`, `family_data_manifest.json` — воспроизводимые локальные слои семейного модуля.
+- `abortions_dashboard.json` — показатели прерываний беременности, расчёт на 1000 женщин 15–49 лет и на 100 родов для страницы `Аборты`, `runtime_external_fetch:false`.
+- `abortions_subjects.geojson` — локальная геометрия субъектов для страницы `Аборты`.
+- `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json`, `abortions_join_audit.csv`, `abortions_data_manifest.json` — воспроизводимые локальные слои модуля прерываний беременности.
 - `rpn2022_fertility_housing_dashboard.json` — федеральный слой РПН-2022.
 - `rpn_regional_intentions_2012_2017.json` — региональный слой РПН-2012/2017.
 - `sources.json` — описание источников для документации; не используется как runtime-зависимость от сети.

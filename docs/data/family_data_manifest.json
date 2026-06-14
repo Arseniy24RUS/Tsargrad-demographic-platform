@@ -1,0 +1,14 @@
+{
+  "module": "family",
+  "generated_at": "2026-06-14",
+  "files": [
+    "family_dashboard.json",
+    "family_subjects.geojson",
+    "family.sqlite",
+    "family_summary.csv",
+    "family_join_audit.json",
+    "family_join_audit.csv"
+  ],
+  "horizon": "1990–2023",
+  "runtime_external_fetch": false
+}

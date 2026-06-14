@@ -168,3 +168,68 @@
 ```
 
 Полные URL источников для этого runtime-файла хранятся только в `docs/data/sources.json`.
+
+## `docs/data/vciom_reproductive_intentions_2025.json`
+
+```json
+{
+  "metadata": {
+    "title": "Желаемое и ожидаемое число детей: ВЦИОМ, 2025",
+    "runtime_external_fetch": false,
+    "source_date": "2025-05-12"
+  },
+  "actual": {
+    "year": 2025,
+    "tfr_total": 1.361
+  },
+  "vciom_2025": {
+    "all": {
+      "expected_children": 2.4,
+      "desired_children": 3.2
+    }
+  }
+}
+```
+
+## `docs/data/family_dashboard.json`
+
+Подробный контракт: `docs/methodology/DATA_CONTRACT_FAMILY.md`.
+
+Минимальные требования runtime:
+
+```json
+{
+  "metadata": {
+    "runtime_external_fetch": false,
+    "horizon": "1990–2023"
+  },
+  "territories": [],
+  "series": [],
+  "national": {
+    "marriages_count_latest": 0,
+    "divorces_count_latest": 0,
+    "divorces_per_100_marriages_latest": 0
+  }
+}
+```
+
+Страница `family.html` также использует `family_subjects.geojson`, `family.sqlite`, `family_summary.csv`, `family_join_audit.json` и `family_join_audit.csv`.
+
+## `docs/data/abortions_dashboard.json`
+
+Подробный контракт: `docs/methodology/DATA_CONTRACT_ABORTIONS.md`.
+
+Минимальные требования runtime:
+
+```json
+{
+  "metadata": {
+    "runtime_external_fetch": false
+  },
+  "territories": [],
+  "series": [],
+  "national": {}
+}
+```
+
+Страница `abortions.html` также использует `abortions_subjects.geojson`, `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json` и `abortions_join_audit.csv`.

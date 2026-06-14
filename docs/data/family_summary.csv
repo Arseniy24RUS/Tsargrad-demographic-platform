@@ -1,0 +1,97 @@
+﻿territory_id,territory_name,territory_type,federal_district_id,marriages_count_latest,marriages_count_latest_year,divorces_count_latest,divorces_count_latest_year,marriage_rate_per_1000_latest,marriage_rate_per_1000_latest_year,divorce_rate_per_1000_latest,divorce_rate_per_1000_latest_year,divorces_per_100_marriages_latest,divorces_per_100_marriages_latest_year,marriage_divorce_balance_count_latest,marriage_divorce_balance_count_latest_year,marriage_divorce_balance_per_1000_latest,marriage_divorce_balance_per_1000_latest_year,family_stability_index_0_100_latest,family_stability_index_0_100_latest_year
+terr_altayskiy_kray,Алтайский край,federal_subject,terr_sibirskiy_federalnyy_okrug,13905.0,2023,10843.0,2023,6.5,2023,5.1,2023,77.9791,2023,3062.0,2023,1.4,2023,22.0209,2023
+terr_amurskaya_oblast,Амурская область,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,5864.0,2023,4911.0,2023,7.8,2023,6.5,2023,83.7483,2023,953.0,2023,1.3,2023,16.2517,2023
+terr_arhangelskaya_oblast,Архангельская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,6836.0,2023,4964.0,2023,6.8,2023,5.0,2023,72.6156,2023,1872.0,2023,1.8,2023,27.3844,2023
+terr_arhangelskaya_oblast_krome_nenetskogo_avtonomnogo_okruga,Архангельская область (кроме Ненецкого автономного округа),federal_subject,terr_severo_zapadnyy_federalnyy_okrug,6586.0,2023,4789.0,2023,6.9,2023,5.0,2023,72.7148,2023,1797.0,2023,1.9,2023,27.2852,2023
+terr_astrahanskaya_oblast,Астраханская область,federal_subject,terr_yuzhnyy_federalnyy_okrug,5625.0,2023,5657.0,2023,5.9,2023,6.0,2023,100.5689,2023,-32.0,2023,-0.1,2023,0.0,2023
+terr_belgorodskaya_oblast,Белгородская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,10158.0,2023,6388.0,2023,6.7,2023,4.2,2023,62.8864,2023,3770.0,2023,2.5,2023,37.1136,2023
+terr_bryanskaya_oblast,Брянская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,6913.0,2023,5347.0,2023,6.0,2023,4.7,2023,77.347,2023,1566.0,2023,1.3,2023,22.653,2023
+terr_chechenskaya_respublika,Чеченская Республика,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,2799.0,2023,6753.0,2023,1.8,2023,4.4,2023,241.2647,2023,-3954.0,2023,-2.6,2023,0.0,2023
+terr_chelyabinskaya_oblast,Челябинская область,federal_subject,terr_uralskiy_federalnyy_okrug,23231.0,2023,17007.0,2023,6.8,2023,5.0,2023,73.2082,2023,6224.0,2023,1.8,2023,26.7918,2023
+terr_chukotskiy_avtonomnyy_okrug,Чукотский автономный округ,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,293.0,2023,226.0,2023,6.1,2023,4.7,2023,77.1331,2023,67.0,2023,1.4,2023,22.8669,2023
+terr_chuvashskaya_respublika_chuvashiya,Чувашская Республика - Чувашия,federal_subject,terr_privolzhskiy_federalnyy_okrug,6129.0,2023,4179.0,2023,5.2,2023,3.6,2023,68.184,2023,1950.0,2023,1.6,2023,31.816,2023
+terr_dalnevostochnyy_federalnyy_okrug,Дальневосточный федеральный округ (с 03.11.2018),federal_district,,58138.0,2023,45536.0,2023,7.4,2023,5.8,2023,78.324,2023,12602.0,2023,1.6,2023,21.676,2023
+terr_evreyskaya_avtonomnaya_oblast,Еврейская автономная область,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,1111.0,2023,977.0,2023,7.6,2023,6.7,2023,87.9388,2023,134.0,2023,0.9,2023,12.0612,2023
+terr_habarovskiy_kray,Хабаровский край,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,9574.0,2023,7532.0,2023,7.5,2023,5.9,2023,78.6714,2023,2042.0,2023,1.6,2023,21.3286,2023
+terr_hanty_mansiyskiy_avtonomnyy_okrug_yugra_tyumenskaya_oblast,Ханты-Мансийский автономный округ - Югра (Тюменская область),federal_subject,terr_uralskiy_federalnyy_okrug,9845.0,2020,7341.0,2020,7.2,2021,5.1,2021,74.5658,2020,2504.0,2020,2.1,2021,25.4342,2020
+terr_irkutskaya_oblast,Иркутская область,federal_subject,terr_sibirskiy_federalnyy_okrug,17396.0,2023,13153.0,2023,7.4,2023,5.6,2023,75.6093,2023,4243.0,2023,1.8,2023,24.3907,2023
+terr_ivanovskaya_oblast,Ивановская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,5313.0,2023,4135.0,2023,5.8,2023,4.5,2023,77.828,2023,1178.0,2023,1.3,2023,22.172,2023
+terr_kabardino_balkarskaya_respublika,Кабардино-Балкарская Республика,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,4157.0,2023,4547.0,2023,4.6,2023,5.0,2023,109.3818,2023,-390.0,2023,-0.4,2023,0.0,2023
+terr_kaliningradskaya_oblast,Калининградская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,7910.0,2023,5909.0,2023,7.7,2023,5.7,2023,74.7029,2023,2001.0,2023,2.0,2023,25.2971,2023
+terr_kaluzhskaya_oblast,Калужская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,6135.0,2023,4864.0,2023,5.7,2023,4.5,2023,79.2828,2023,1271.0,2023,1.2,2023,20.7172,2023
+terr_kamchatskiy_kray,Камчатский край,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,3150.0,2022,1842.0,2022,10.8,2022,6.3,2022,58.4762,2022,1308.0,2022,4.5,2022,41.5238,2022
+terr_karachaevo_cherkesskaya_respublika,Карачаево-Черкесская Республика,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,1866.0,2023,2914.0,2023,4.0,2023,6.2,2023,156.1629,2023,-1048.0,2023,-2.2,2023,0.0,2023
+terr_kemerovskaya_oblast_kuzbass,Кемеровская область - Кузбасс,federal_subject,terr_sibirskiy_federalnyy_okrug,16581.0,2023,11630.0,2023,6.5,2023,4.5,2023,70.1405,2023,4951.0,2023,2.0,2023,29.8595,2023
+terr_kirovskaya_oblast,Кировская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,7066.0,2023,5281.0,2023,6.2,2023,4.7,2023,74.7382,2023,1785.0,2023,1.5,2023,25.2618,2023
+terr_kostromskaya_oblast,Костромская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,3573.0,2023,2692.0,2023,6.3,2023,4.7,2023,75.3428,2023,881.0,2023,1.6,2023,24.6572,2023
+terr_krasnodarskiy_kray,Краснодарский край,federal_subject,terr_yuzhnyy_federalnyy_okrug,46095.0,2023,30773.0,2023,7.9,2023,5.3,2023,66.76,2023,15322.0,2023,2.6,2023,33.24,2023
+terr_krasnoyarskiy_kray,Красноярский край,federal_subject,terr_sibirskiy_federalnyy_okrug,20863.0,2023,15222.0,2023,7.3,2023,5.3,2023,72.9617,2023,5641.0,2023,2.0,2023,27.0383,2023
+terr_kurganskaya_oblast,Курганская область,federal_subject,terr_uralskiy_federalnyy_okrug,4480.0,2023,3946.0,2023,5.9,2023,5.2,2023,88.0804,2023,534.0,2023,0.7,2023,11.9196,2023
+terr_kurskaya_oblast,Курская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,6950.0,2023,4876.0,2023,6.5,2023,4.6,2023,70.1583,2023,2074.0,2023,1.9,2023,29.8417,2023
+terr_leningradskaya_oblast,Ленинградская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,8711.0,2023,6935.0,2023,4.3,2023,3.4,2023,79.612,2023,1776.0,2023,0.9,2023,20.388,2023
+terr_lipetskaya_oblast,Липецкая область,federal_subject,terr_tsentralnyy_federalnyy_okrug,6492.0,2023,4756.0,2023,5.8,2023,4.2,2023,73.2594,2023,1736.0,2023,1.6,2023,26.7406,2023
+terr_magadanskaya_oblast,Магаданская область,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,1021.0,2023,757.0,2023,7.6,2023,5.7,2023,74.143,2023,264.0,2023,1.9,2023,25.857,2023
+terr_moskovskaya_oblast,Московская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,55411.0,2023,38789.0,2023,6.4,2023,4.5,2023,70.0023,2023,16622.0,2023,1.9,2023,29.9977,2023
+terr_moskva,Город Москва столица Российской Федерации город федерального значения,federal_subject,terr_tsentralnyy_federalnyy_okrug,90891.0,2023,49211.0,2023,6.9,2023,3.7,2023,54.1429,2023,41680.0,2023,3.2,2023,45.8571,2023
+terr_murmanskaya_oblast,Мурманская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,5035.0,2023,3677.0,2023,7.7,2023,5.6,2023,73.0288,2023,1358.0,2023,2.1,2023,26.9712,2023
+terr_nenetskiy_avtonomnyy_okrug_arhangelskaya_oblast,Ненецкий автономный округ (Архангельская область),federal_subject,terr_severo_zapadnyy_federalnyy_okrug,250.0,2023,175.0,2023,6.0,2023,4.2,2023,70.0,2023,75.0,2023,1.8,2023,30.0,2023
+terr_nizhegorodskaya_oblast,Нижегородская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,19720.0,2023,12957.0,2023,6.4,2023,4.2,2023,65.7049,2023,6763.0,2023,2.2,2023,34.2951,2023
+terr_novgorodskaya_oblast,Новгородская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,3584.0,2023,2789.0,2023,6.2,2023,4.9,2023,77.8181,2023,795.0,2023,1.3,2023,22.1819,2023
+terr_novosibirskaya_oblast,Новосибирская область,federal_subject,terr_sibirskiy_federalnyy_okrug,19657.0,2023,14118.0,2023,7.0,2023,5.1,2023,71.8217,2023,5539.0,2023,1.9,2023,28.1783,2023
+terr_omskaya_oblast,Омская область,federal_subject,terr_sibirskiy_federalnyy_okrug,12443.0,2023,8799.0,2023,6.8,2023,4.8,2023,70.7145,2023,3644.0,2023,2.0,2023,29.2855,2023
+terr_orenburgskaya_oblast,Оренбургская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,11971.0,2023,9152.0,2023,6.5,2023,5.0,2023,76.4514,2023,2819.0,2023,1.5,2023,23.5486,2023
+terr_orlovskaya_oblast,Орловская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,4364.0,2023,3141.0,2023,6.3,2023,4.5,2023,71.9753,2023,1223.0,2023,1.8,2023,28.0247,2023
+terr_penzenskaya_oblast,Пензенская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,7216.0,2023,5085.0,2023,5.8,2023,4.1,2023,70.4684,2023,2131.0,2023,1.7,2023,29.5316,2023
+terr_permskiy_kray,Пермский край,federal_subject,terr_privolzhskiy_federalnyy_okrug,16734.0,2023,12072.0,2023,6.7,2023,4.8,2023,72.1406,2023,4662.0,2023,1.9,2023,27.8594,2023
+terr_primorskiy_kray,Приморский край,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,14920.0,2023,10466.0,2023,8.2,2023,5.8,2023,70.1475,2023,4454.0,2023,2.4,2023,29.8525,2023
+terr_privolzhskiy_federalnyy_okrug,Приволжский федеральный округ,federal_district,,173365.0,2023,119758.0,2023,6.1,2023,4.2,2023,69.0785,2023,53607.0,2023,1.9,2023,30.9215,2023
+terr_pskovskaya_oblast,Псковская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,3876.0,2023,2908.0,2023,6.6,2023,5.0,2023,75.0258,2023,968.0,2023,1.6,2023,24.9742,2023
+terr_respublika_adygeya_adygeya,Республика Адыгея (Адыгея),federal_subject,terr_yuzhnyy_federalnyy_okrug,2407.0,2023,2213.0,2023,4.8,2023,4.4,2023,91.9402,2023,194.0,2023,0.4,2023,8.0598,2023
+terr_respublika_altay,Республика Алтай,federal_subject,terr_sibirskiy_federalnyy_okrug,1625.0,2023,1312.0,2023,7.7,2023,6.2,2023,80.7385,2023,313.0,2023,1.5,2023,19.2615,2023
+terr_respublika_bashkortostan,Республика Башкортостан,federal_subject,terr_privolzhskiy_federalnyy_okrug,23747.0,2023,16828.0,2023,5.8,2023,4.1,2023,70.8637,2023,6919.0,2023,1.7,2023,29.1363,2023
+terr_respublika_buryatiya,Республика Бурятия,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,5876.0,2023,5414.0,2023,6.0,2023,5.6,2023,92.1375,2023,462.0,2023,0.4,2023,7.8625,2023
+terr_respublika_dagestan,Республика Дагестан,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,7245.0,2023,20491.0,2023,2.2,2023,6.4,2023,282.8295,2023,-13246.0,2023,-4.2,2023,0.0,2023
+terr_respublika_hakasiya,Республика Хакасия,federal_subject,terr_sibirskiy_federalnyy_okrug,3595.0,2023,2727.0,2023,6.8,2023,5.2,2023,75.8554,2023,868.0,2023,1.6,2023,24.1446,2023
+terr_respublika_ingushetiya,Республика Ингушетия,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,992.0,2023,3500.0,2023,1.9,2023,6.7,2023,352.8226,2023,-2508.0,2023,-4.8,2023,0.0,2023
+terr_respublika_kalmykiya,Республика Калмыкия,federal_subject,terr_yuzhnyy_federalnyy_okrug,1191.0,2023,1487.0,2023,4.5,2023,5.6,2023,124.8531,2023,-296.0,2023,-1.1,2023,0.0,2023
+terr_respublika_kareliya,Республика Карелия,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,3967.0,2023,2786.0,2023,7.5,2023,5.3,2023,70.2294,2023,1181.0,2023,2.2,2023,29.7706,2023
+terr_respublika_komi,Республика Коми,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,4565.0,2023,3795.0,2023,6.3,2023,5.2,2023,83.1325,2023,770.0,2023,1.1,2023,16.8675,2023
+terr_respublika_krym,Республика Крым,federal_subject,terr_yuzhnyy_federalnyy_okrug,12592.0,2023,7884.0,2023,6.6,2023,4.1,2023,62.6112,2023,4708.0,2023,2.5,2023,37.3888,2023
+terr_respublika_mariy_el,Республика Марий Эл,federal_subject,terr_privolzhskiy_federalnyy_okrug,3318.0,2023,2688.0,2023,4.9,2023,4.0,2023,81.0127,2023,630.0,2023,0.9,2023,18.9873,2023
+terr_respublika_mordoviya,Республика Мордовия,federal_subject,terr_privolzhskiy_federalnyy_okrug,3826.0,2023,2279.0,2023,5.0,2023,3.0,2023,59.5661,2023,1547.0,2023,2.0,2023,40.4339,2023
+terr_respublika_saha_yakutiya,Республика Саха (Якутия),federal_subject,terr_dalnevostochnyy_federalnyy_okrug,5568.0,2023,4415.0,2023,5.6,2023,4.4,2023,79.2924,2023,1153.0,2023,1.2,2023,20.7076,2023
+terr_respublika_severnaya_osetiya_alaniya,Республика Северная Осетия-Алания,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,2575.0,2023,4494.0,2023,3.8,2023,6.6,2023,174.5243,2023,-1919.0,2023,-2.8,2023,0.0,2023
+terr_respublika_tatarstan_tatarstan,Республика Татарстан (Татарстан),federal_subject,terr_privolzhskiy_federalnyy_okrug,25220.0,2023,14267.0,2023,6.3,2023,3.6,2023,56.5702,2023,10953.0,2023,2.7,2023,43.4298,2023
+terr_respublika_tyva,Республика Тыва,federal_subject,terr_sibirskiy_federalnyy_okrug,1922.0,2023,1271.0,2023,5.7,2023,3.8,2023,66.129,2023,651.0,2023,1.9,2023,33.871,2023
+terr_rf_bez_novyh_subektov,Российская Федерация без учета новых субъектов (с 01.01.2023),country,,945995.0,2023,683796.0,2023,6.5,2023,4.7,2023,72.2833,2023,262199.0,2023,1.8,2023,27.7167,2023
+terr_rostovskaya_oblast,Ростовская область,federal_subject,terr_yuzhnyy_federalnyy_okrug,28428.0,2023,19771.0,2023,6.8,2023,4.8,2023,69.5476,2023,8657.0,2023,2.0,2023,30.4524,2023
+terr_ryazanskaya_oblast,Рязанская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,6602.0,2023,4513.0,2023,6.1,2023,4.2,2023,68.3581,2023,2089.0,2023,1.9,2023,31.6419,2023
+terr_sahalinskaya_oblast,Сахалинская область,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,3823.0,2023,2800.0,2023,8.3,2023,6.1,2023,73.2409,2023,1023.0,2023,2.2,2023,26.7591,2023
+terr_samarskaya_oblast,Самарская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,19915.0,2023,14077.0,2023,6.4,2023,4.5,2023,70.6854,2023,5838.0,2023,1.9,2023,29.3146,2023
+terr_sankt_peterburg,Город Санкт-Петербург город федерального значения,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,51551.0,2023,27314.0,2023,9.2,2023,4.9,2023,52.9844,2023,24237.0,2023,4.3,2023,47.0156,2023
+terr_saratovskaya_oblast,Саратовская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,13671.0,2023,10491.0,2023,5.7,2023,4.4,2023,76.7391,2023,3180.0,2023,1.3,2023,23.2609,2023
+terr_sevastopol,Город федерального значения Севастополь,federal_subject,terr_yuzhnyy_federalnyy_okrug,3913.0,2023,2169.0,2023,7.0,2023,3.9,2023,55.4306,2023,1744.0,2023,3.1,2023,44.5694,2023
+terr_severo_kavkazskiy_federalnyy_okrug,Северо-Кавказский федеральный округ,federal_district,,35101.0,2023,55261.0,2023,3.4,2023,5.4,2023,157.4343,2023,-20160.0,2023,-2.0,2023,0.0,2023
+terr_severo_zapadnyy_federalnyy_okrug,Северо-Западный федеральный округ,federal_district,,102759.0,2023,66036.0,2023,7.4,2023,4.8,2023,64.263,2023,36723.0,2023,2.6,2023,35.737,2023
+terr_sibirskiy_federalnyy_okrug,Сибирский федеральный округ (с 03.11.2018),federal_district,,114807.0,2023,84410.0,2023,6.9,2023,5.1,2023,73.5234,2023,30397.0,2023,1.8,2023,26.4766,2023
+terr_smolenskaya_oblast,Смоленская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,5465.0,2023,4189.0,2023,6.3,2023,4.8,2023,76.6514,2023,1276.0,2023,1.5,2023,23.3486,2023
+terr_stavropolskiy_kray,Ставропольский край,federal_subject,terr_severo_kavkazskiy_federalnyy_okrug,15467.0,2023,12562.0,2023,5.4,2023,4.3,2023,81.2181,2023,2905.0,2023,1.1,2023,18.7819,2023
+terr_sverdlovskaya_oblast,Свердловская область,federal_subject,terr_uralskiy_federalnyy_okrug,30288.0,2023,21604.0,2023,7.2,2023,5.1,2023,71.3286,2023,8684.0,2023,2.1,2023,28.6714,2023
+terr_tambovskaya_oblast,Тамбовская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,5503.0,2023,3709.0,2023,5.7,2023,3.9,2023,67.3996,2023,1794.0,2023,1.8,2023,32.6004,2023
+terr_tomskaya_oblast,Томская область,federal_subject,terr_sibirskiy_federalnyy_okrug,6820.0,2023,5335.0,2023,6.5,2023,5.1,2023,78.2258,2023,1485.0,2023,1.4,2023,21.7742,2023
+terr_tsentralnyy_federalnyy_okrug,Центральный федеральный округ,federal_district,,262274.0,2023,168630.0,2023,6.5,2023,4.2,2023,64.2954,2023,93644.0,2023,2.3,2023,35.7046,2023
+terr_tulskaya_oblast,Тульская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,9067.0,2023,5806.0,2023,6.1,2023,3.9,2023,64.0344,2023,3261.0,2023,2.2,2023,35.9656,2023
+terr_tverskaya_oblast,Тверская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,7487.0,2023,5489.0,2023,6.2,2023,4.6,2023,73.3137,2023,1998.0,2023,1.6,2023,26.6863,2023
+terr_tyumenskaya_oblast,Тюменская область,federal_subject,terr_uralskiy_federalnyy_okrug,27317.0,2023,21062.0,2023,7.1,2023,5.4,2023,77.1022,2023,6255.0,2023,1.7,2023,22.8978,2023
+terr_tyumenskaya_oblast_krome_hanty_mansiyskogo_avtonom_340b5449,Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа),federal_subject,terr_uralskiy_federalnyy_okrug,11881.0,2023,8092.0,2023,7.4,2023,5.0,2023,68.1087,2023,3789.0,2023,2.4,2023,31.8913,2023
+terr_udmurtskaya_respublika,Удмуртская Республика,federal_subject,terr_privolzhskiy_federalnyy_okrug,8153.0,2023,5672.0,2023,5.7,2023,3.9,2023,69.5695,2023,2481.0,2023,1.8,2023,30.4305,2023
+terr_ulyanovskaya_oblast,Ульяновская область,federal_subject,terr_privolzhskiy_federalnyy_okrug,6679.0,2023,4730.0,2023,5.7,2023,4.0,2023,70.819,2023,1949.0,2023,1.7,2023,29.181,2023
+terr_uralskiy_federalnyy_okrug,Уральский федеральный округ,federal_district,,85316.0,2023,63619.0,2023,7.0,2023,5.2,2023,74.5687,2023,21697.0,2023,1.8,2023,25.4313,2023
+terr_vladimirskaya_oblast,Владимирская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,8047.0,2023,5533.0,2023,6.1,2023,4.2,2023,68.7585,2023,2514.0,2023,1.9,2023,31.2415,2023
+terr_volgogradskaya_oblast,Волгоградская область,federal_subject,terr_yuzhnyy_federalnyy_okrug,13984.0,2023,10592.0,2023,5.7,2023,4.3,2023,75.7437,2023,3392.0,2023,1.4,2023,24.2563,2023
+terr_vologodskaya_oblast,Вологодская область,federal_subject,terr_severo_zapadnyy_federalnyy_okrug,6724.0,2023,4959.0,2023,6.0,2023,4.4,2023,73.7507,2023,1765.0,2023,1.6,2023,26.2493,2023
+terr_voronezhskaya_oblast,Воронежская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,16117.0,2023,9899.0,2023,7.1,2023,4.3,2023,61.4196,2023,6218.0,2023,2.8,2023,38.5804,2023
+terr_yamalo_nenetskiy_avtonomnyy_okrug_tyumenskaya_oblast,Ямало-Ненецкий автономный округ (Тюменская область),federal_subject,terr_uralskiy_federalnyy_okrug,3826.0,2023,3040.0,2023,7.4,2023,5.9,2023,79.4564,2023,786.0,2023,1.5,2023,20.5436,2023
+terr_yaroslavskaya_oblast,Ярославская область,federal_subject,terr_tsentralnyy_federalnyy_okrug,7786.0,2023,5293.0,2023,6.5,2023,4.4,2023,67.981,2023,2493.0,2023,2.1,2023,32.019,2023
+terr_yuzhnyy_federalnyy_okrug,Южный федеральный округ (с 29.07.2016),federal_district,,114235.0,2023,80546.0,2023,6.9,2023,4.8,2023,70.509,2023,33689.0,2023,2.1,2023,29.491,2023
+terr_zabaykalskiy_kray,Забайкальский край,federal_subject,terr_dalnevostochnyy_federalnyy_okrug,7544.0,2023,6246.0,2023,7.6,2023,6.3,2023,82.7943,2023,1298.0,2023,1.3,2023,17.2057,2023

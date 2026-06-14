@@ -1,0 +1,18 @@
+{
+  "module": "abortions",
+  "files": {
+    "dashboard_json": "docs/data/abortions_dashboard.json",
+    "subjects_geojson": "docs/data/abortions_subjects.geojson",
+    "sqlite": "docs/data/abortions.sqlite",
+    "summary_csv": "docs/data/abortions_summary.csv",
+    "join_audit_json": "docs/data/abortions_join_audit.json",
+    "join_audit_csv": "docs/data/abortions_join_audit.csv"
+  },
+  "generated_at": "2026-06-14",
+  "source_files": [
+    "data (5).xls",
+    "data (6).xls",
+    "data (7).xls"
+  ],
+  "runtime_external_fetch": false
+}

@@ -3,12 +3,15 @@ const zlib = require('zlib');
 const { test, expect } = require('@playwright/test');
 
 const pages = [
-  { path: '/index.html', slug: '01-skr', title: 'СКР' },
+  { path: '/index.html', slug: '00-home', title: 'Россия 2050' },
+  { path: '/skr.html', slug: '01-skr', title: 'СКР' },
   { path: '/settlement.html', slug: '02-settlement', title: 'Расселение' },
   { path: '/estate.html', slug: '03-estate', title: 'Усадьба' },
   { path: '/capital.html', slug: '04-capital', title: 'Маткапитал' },
   { path: '/mortgage.html', slug: '05-mortgage', title: 'Ипотека' },
-  { path: '/payments.html', slug: '06-payments', title: 'Выплаты' }
+  { path: '/payments.html', slug: '06-payments', title: 'Выплаты' },
+  { path: '/family.html', slug: '07-family', title: 'Семья' },
+  { path: '/abortions.html', slug: '08-abortions', title: 'Аборты' }
 ];
 
 const viewports = [
@@ -357,7 +360,7 @@ test.describe('Playwright visual QA', () => {
   }
 
   test('СКР: картограмма занимает рабочую область, а лаг-зона синхронизирована с графиком', async ({ page }) => {
-    await page.goto('/index.html', { waitUntil: 'networkidle' });
+    await page.goto('/skr.html', { waitUntil: 'networkidle' });
     const map = await page.locator('#map svg').evaluate(svg => {
       const boxes = [...svg.querySelectorAll('path')].map(path => path.getBBox());
       const left = Math.min(...boxes.map(b => b.x));

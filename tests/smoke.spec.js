@@ -2,12 +2,15 @@ const fs = require('fs');
 const { test, expect } = require('@playwright/test');
 
 const pages = [
-  { path: '/index.html', title: 'СКР', slug: '01-skr' },
+  { path: '/index.html', title: 'Россия 2050', slug: '00-home' },
+  { path: '/skr.html', title: 'СКР', slug: '01-skr' },
   { path: '/settlement.html', title: 'Расселение', slug: '02-settlement' },
   { path: '/estate.html', title: 'Усадьба', slug: '03-estate' },
   { path: '/capital.html', title: 'Маткапитал', slug: '04-capital' },
   { path: '/mortgage.html', title: 'Ипотека', slug: '05-mortgage' },
-  { path: '/payments.html', title: 'Выплаты', slug: '06-payments' }
+  { path: '/payments.html', title: 'Выплаты', slug: '06-payments' },
+  { path: '/family.html', title: 'Семья', slug: '07-family' },
+  { path: '/abortions.html', title: 'Аборты', slug: '08-abortions' }
 ];
 
 const forbiddenText = [
@@ -60,21 +63,38 @@ test.describe('самодостаточный релиз', () => {
       const runtime = await guardRuntime(page);
       await page.goto(p.path, { waitUntil: 'networkidle' });
       await expect(page.locator('body')).toContainText(p.title);
+      await expect(page.locator('nav a', { hasText: 'Главная' })).toHaveCount(0);
+      await expect(page.locator('a.brand').first()).toHaveAttribute('href', /index\.html/);
       await expectNoForbiddenUi(page);
       await page.screenshot({ path: `artifacts/screenshots/${p.slug}-desktop.png`, fullPage: true });
 
       await page.setViewportSize({ width: 390, height: 844 });
       await page.reload({ waitUntil: 'networkidle' });
       await expect(page.locator('body')).toContainText(p.title);
+      await expect(page.locator('nav a', { hasText: 'Главная' })).toHaveCount(0);
       await expectNoForbiddenUi(page);
       await page.screenshot({ path: `artifacts/screenshots/${p.slug}-mobile.png`, fullPage: true });
       await expectCleanRuntime(runtime);
     });
   }
 
+
+  test('Главная: открывается как первый экран и ведёт в разделы без пункта Главная', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/', { waitUntil: 'networkidle' });
+    await expect(page.locator('body')).toContainText('Россия 2050');
+    await expect(page.locator('body')).toContainText('Малоэтажная и многодетная Россия');
+    await expect(page.locator('nav a', { hasText: 'Главная' })).toHaveCount(0);
+    await expect(page.locator('nav a[href="skr.html"]')).toContainText('СКР');
+    await expect(page.locator('a.brand').first()).toHaveAttribute('href', /index\.html/);
+    await page.goto('/index.html', { waitUntil: 'networkidle' });
+    await expect(page.locator('body')).toContainText('Малоэтажная и многодетная Россия');
+    await expectCleanRuntime(runtime);
+  });
+
   test('СКР: режимы, краткий/подробный вид и выбор территории работают', async ({ page }) => {
     const runtime = await guardRuntime(page);
-    await page.goto('/index.html', { waitUntil: 'networkidle' });
+    await page.goto('/skr.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#tfrChart .main-svg').first()).toBeVisible();
     await expect(page.locator('#policyMonthRange')).toHaveCount(0);
     await expect(page.locator('#policyMonthChartRange')).toHaveCount(0);
@@ -90,6 +110,11 @@ test.describe('самодостаточный релиз', () => {
     expect(policyInitial.forecastEndMonth).toBe('2050-12');
     expect(policyInitial.forecastMonthsAreContinuous).toBe(true);
     expect(policyInitial.targetTrajectoryStartMonth).toBe(policyInitial.effectMonth);
+    await page.waitForFunction(() => window.VciomFertilityBlock?.getState?.().loaded);
+    const vciomState = await page.evaluate(() => window.VciomFertilityBlock.getState());
+    expect(vciomState.source).toBe('local-json');
+    expect(vciomState.runtimeExternalFetch).toBe(false);
+    await expect(page.locator('#vciom-2025-intentions')).toBeVisible();
     await expect(page.locator('[data-detail-section]').first()).toBeHidden();
 
     await page.locator('[data-view-mode="detail"]').click();
@@ -373,4 +398,47 @@ test.describe('самодостаточный релиз', () => {
     await downloadPromise;
     await expectCleanRuntime(runtime);
   });
+
+  test('Семья: данные, графики и сценарий работают локально', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/family.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.FamilyModule?.getState?.().loaded);
+    const before = await page.evaluate(() => window.FamilyModule.getState());
+    expect(before.runtimeExternalFetch).toBe(false);
+    expect(before.seriesCount).toBeGreaterThan(1000);
+    expect(before.geoFeatureCount).toBeGreaterThan(70);
+    expect(before.renderedCharts).toEqual(expect.arrayContaining(before.chartIds));
+    expect(before.territoryTableRows).toBeGreaterThan(0);
+    await page.locator('#territoryMode').selectOption('subject');
+    await page.locator('#subjectSelect').selectOption({ index: 2 });
+    await setRange(page, '#scenarioReduceRange', 25);
+    const after = await page.evaluate(() => window.FamilyModule.getState());
+    expect(after.analysisMode).toBe('subject');
+    expect(after.scenarioShare).toBe(25);
+    expect(after.selectedTerritoryId).not.toBe(before.selectedTerritoryId);
+    expect(after.kpiScenarioText).not.toBe(before.kpiScenarioText);
+    await expectCleanRuntime(runtime);
+  });
+
+  test('Аборты: данные, графики и сценарий работают локально', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/abortions.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.AbortionsModule?.getState?.().loaded);
+    const before = await page.evaluate(() => window.AbortionsModule.getState());
+    expect(before.runtimeExternalFetch).toBe(false);
+    expect(before.seriesCount).toBeGreaterThan(1000);
+    expect(before.geoFeatureCount).toBeGreaterThan(70);
+    expect(before.renderedCharts).toEqual(expect.arrayContaining(before.chartIds));
+    expect(before.territoryTableRows).toBeGreaterThan(0);
+    await page.locator('#territoryMode').selectOption('subject');
+    await page.locator('#subjectSelect').selectOption({ index: 2 });
+    await setRange(page, '#savedShareRange', 25);
+    const after = await page.evaluate(() => window.AbortionsModule.getState());
+    expect(after.analysisMode).toBe('subject');
+    expect(after.scenarioShare).toBe(25);
+    expect(after.selectedTerritoryId).not.toBe(before.selectedTerritoryId);
+    expect(after.kpiPotentialText).not.toBe(before.kpiPotentialText);
+    await expectCleanRuntime(runtime);
+  });
+
 });

@@ -1,0 +1,961 @@
+[
+  {
+    "source": "abortions",
+    "row": 46,
+    "territory_source_name": "Крымский федеральный округ (с 21.03.2014 до 27.07.2016)",
+    "status": "not_matched"
+  },
+  {
+    "source": "abortions",
+    "row": 108,
+    "territory_source_name": "Дальневосточный федеральный окру (до 03.11.2018)",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 66,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 89,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 90,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 92,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 101,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 104,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 112,
+    "territory_source_name": "Крымский федеральный округ",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 113,
+    "territory_source_name": "Чеченская и Ингушская Республики",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 114,
+    "territory_source_name": "Северный экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 115,
+    "territory_source_name": "Северо-Западный экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 116,
+    "territory_source_name": "Центральный экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 117,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 118,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 119,
+    "territory_source_name": "Поволжский экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 120,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 121,
+    "territory_source_name": "Уральский экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 122,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 123,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "births",
+    "row": 124,
+    "territory_source_name": "Дальневосточный экономический район",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 65,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 88,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 89,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 91,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 100,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 103,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 111,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 112,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 113,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 114,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 115,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 116,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 117,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 118,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 119,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 120,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 121,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "15-19 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 182,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 205,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 206,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 208,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 217,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 220,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 228,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 229,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 230,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 231,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 232,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 233,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 234,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 235,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 236,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 237,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 238,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "20-24 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 299,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 322,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 323,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 325,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 334,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 337,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 345,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 346,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 347,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 348,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 349,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 350,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 351,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 352,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 353,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 354,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 355,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "25-29 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 416,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 439,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 440,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 442,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 451,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 454,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 462,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 463,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 464,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 465,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 466,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 467,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 468,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 469,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 470,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 471,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 472,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "30-34 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 533,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 556,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 557,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 559,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 568,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 571,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 579,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 580,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 581,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 582,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 583,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 584,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 585,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 586,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 587,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 588,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 589,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "35-39 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 650,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 673,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 674,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 676,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 685,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 688,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 696,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 697,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 698,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 699,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 700,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 701,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 702,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 703,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 704,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 705,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 706,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "40-44 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 767,
+    "territory_source_name": "Коми-Пермяцкий округ, входящий в состав Пермского края",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 790,
+    "territory_source_name": "Таймырский (Долгано-Ненецкий) автономный округ (Красноярский край)",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 791,
+    "territory_source_name": "Эвенкийский автономный округ (Красноярский край)",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 793,
+    "territory_source_name": "Усть-Ордынский Бурятский округ",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 802,
+    "territory_source_name": "Агинский Бурятский округ (Забайкальский край)",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 805,
+    "territory_source_name": "Корякский округ, входящий в состав Камчатского края",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 813,
+    "territory_source_name": "Северный экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 814,
+    "territory_source_name": "Северо-Западный экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 815,
+    "territory_source_name": "Центральный экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 816,
+    "territory_source_name": "Волго-Вятский экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 817,
+    "territory_source_name": "Центрально-Черноземный экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 818,
+    "territory_source_name": "Поволжский экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 819,
+    "territory_source_name": "Северо-Кавказский экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 820,
+    "territory_source_name": "Уральский экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 821,
+    "territory_source_name": "Западно-Сибирский экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 822,
+    "territory_source_name": "Восточно-Сибирский экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  },
+  {
+    "source": "women15_49",
+    "row": 823,
+    "territory_source_name": "Дальневосточный экономический район",
+    "age_group": "45-49 лет",
+    "status": "not_matched"
+  }
+]

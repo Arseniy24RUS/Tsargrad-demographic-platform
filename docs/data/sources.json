@@ -68,5 +68,43 @@
       "POP_wide_female_withMIG.xlsx"
     ],
     "note": "СКР используется на странице «СКР» как годовой инерционный прогноз до 2050 года; возрастно-половая численность используется на странице «Расселение» как внешний когортно-компонентный контур численности."
+  },
+  "vciom_reproductive_intentions_2025": {
+    "title": "ВЦИОМ. Аналитический обзор «Семья и брак в России XXI века», 2025",
+    "file": "data/vciom_reproductive_intentions_2025.json",
+    "runtime_external_fetch": false,
+    "note": "Локальный социологический слой для страницы «СКР»; не формальный СКР."
+  },
+  "family_module": {
+    "title": "Браки и разводы: локальный модуль «Семья»",
+    "files": [
+      "data/family_dashboard.json",
+      "data/family_subjects.geojson",
+      "data/family.sqlite",
+      "data/family_summary.csv"
+    ],
+    "sources": [
+      "Росстат: число браков",
+      "Росстат: число разводов",
+      "Росстат: коэффициенты брачности и разводимости"
+    ],
+    "runtime_external_fetch": false,
+    "note": "Исходные выгрузки преобразованы в локальные runtime-слои; страница не запрашивает сеть."
+  },
+  "abortions_module": {
+    "title": "Прерывания беременности: локальный модуль «Аборты»",
+    "files": [
+      "data/abortions_dashboard.json",
+      "data/abortions_subjects.geojson",
+      "data/abortions.sqlite",
+      "data/abortions_summary.csv"
+    ],
+    "sources": [
+      "Минздрав России: число прерываний беременности",
+      "Росстат: число родившихся живыми",
+      "Росстат: численность женщин 15–49 лет"
+    ],
+    "runtime_external_fetch": false,
+    "note": "Исходные выгрузки преобразованы в локальные runtime-слои; страница не запрашивает сеть."
   }
 }

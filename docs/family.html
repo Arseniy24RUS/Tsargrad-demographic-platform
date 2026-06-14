@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Семья | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/family.css" />
+</head>
+<body data-page="family" class="family-page">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="Главная страница платформы">
+        <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
+        <div><div class="brand-title">Россия 2050</div><div class="brand-subtitle">расчётная демографическая платформа</div></div>
+      </a>
+      <nav class="nav-tabs" aria-label="Главная навигация">
+        <a href="skr.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a href="estate.html">Усадьба</a>
+        <a href="capital.html">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+        <a class="active" href="family.html">Семья</a>
+        <a href="abortions.html">Аборты</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-wrap">
+    <section class="hero family-hero">
+      <div class="hero-main">
+        <div class="section-number">07 · Брак, разводы и семейная устойчивость</div>
+        <h1>Семья: браки, разводы и устойчивость семейной среды</h1>
+        <p class="lead">Страница показывает число браков и разводов, коэффициенты на 1000 населения и индекс разводимости: сколько разводов приходится на 100 заключённых браков.</p>
+      </div>
+      <div class="hero-kpis family-hero-kpis">
+        <div class="kpi-card gold"><div class="kpi-label">Россия, 2023</div><div class="kpi-value" id="heroMarriages">—</div><div class="kpi-note">браков</div></div>
+        <div class="kpi-card"><div class="kpi-label">Россия, 2023</div><div class="kpi-value" id="heroDivorces">—</div><div class="kpi-note">разводов</div></div>
+        <div class="kpi-card"><div class="kpi-label">Россия, 2023</div><div class="kpi-value" id="heroDivorceIndex">—</div><div class="kpi-note">разводов на 100 браков</div></div>
+      </div>
+    </section>
+
+    <section class="card teal family-purpose">
+      <div class="card-title-row"><div><h2>Почему это отдельный модуль</h2><p class="lead compact">Презентационные материалы Царьграда выделяют укрепление институтов брака и семьи, профилактику разводов и рождений детей вне брака как отдельное направление прорывной семейно-демографической политики. Здесь эта рамка переводится в измеримые региональные показатели.</p></div><span class="pill inverted">ЗАГС · Росстат · расчётный индекс</span></div>
+      <div class="family-pills"><span>браки</span><span>разводы</span><span>на 1000 населения</span><span>разводов на 100 браков</span><span>картограмма субъектов</span><span>паспорт территории</span></div>
+    </section>
+
+    <section class="card white">
+      <div class="card-title-row"><div><h2>Параметры анализа</h2><div class="text-note">Россия всегда остаётся линией сравнения. Для федерального округа или субъекта добавляется выбранная территория.</div></div><span class="pill" id="selectedTerritoryLabel">Россия</span></div>
+      <div class="family-controls">
+        <div class="control"><label for="territoryMode">Режим анализа</label><select id="territoryMode"><option value="country">Россия</option><option value="district">Федеральный округ</option><option value="subject">Субъект РФ</option></select></div>
+        <div class="control"><label for="districtSelect">Федеральный округ</label><select id="districtSelect"></select></div>
+        <div class="control"><label for="subjectSelect">Субъект РФ</label><select id="subjectSelect"></select></div>
+        <div class="control"><label for="yearSelect">Год картограммы</label><select id="yearSelect"></select></div>
+        <div class="control"><label for="indicatorSelect">Показатель картограммы</label><select id="indicatorSelect"><option value="divorces_per_100_marriages">Разводов на 100 браков</option><option value="marriage_rate_per_1000">Браков на 1000 населения</option><option value="divorce_rate_per_1000">Разводов на 1000 населения</option><option value="marriages_count">Число браков</option><option value="divorces_count">Число разводов</option><option value="marriage_divorce_balance_per_1000">Баланс брачности</option></select></div>
+        <div class="control"><label for="scenarioReduceRange">Сценарий снижения разводов: <b id="scenarioReduceLabel">10</b>%</label><input id="scenarioReduceRange" type="range" min="0" max="50" value="10" step="1" /></div>
+      </div>
+      <div class="family-summary">
+        <div class="family-kpi"><span>Браки</span><b id="kpiMarriages">—</b><small>последнее значение</small></div>
+        <div class="family-kpi"><span>Разводы</span><b id="kpiDivorces">—</b><small>последнее значение</small></div>
+        <div class="family-kpi"><span>На 1000 населения</span><b id="kpiRates">—</b><small>браки / разводы</small></div>
+        <div class="family-kpi"><span>Индекс разводимости</span><b id="kpiDivorceIndex">—</b><small>разводов на 100 браков</small></div>
+        <div class="family-kpi"><span>Сценарий</span><b id="kpiScenario">—</b><small>меньше разводов при выбранной доле</small></div>
+      </div>
+      <p class="source-note">Индекс разводимости — отношение числа разводов к числу браков в том же году. Это не вероятность распада конкретного брака, а макропоказатель напряжённости семейной среды.</p>
+      <div class="download-row"><a href="data/family_summary.csv" download>Скачать таблицу</a><a href="data/family.sqlite" download>Скачать базу данных</a></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white map-card"><div class="card-title-row"><div><h2>Картограмма субъектов</h2><div class="text-note">По умолчанию цвет показывает индекс разводимости: число разводов на 100 браков. Наведите курсор на субъект, чтобы увидеть значения.</div></div></div><div id="familyMap" class="plot-box map-plot"></div></div>
+      <div class="card white"><h2>Сценарная оценка укрепления брака</h2><p class="family-note">Этот блок не является прогнозом. Он показывает механический порядок величины: сколько разводов не произошло бы при снижении их числа на выбранную долю.</p><div id="divorceReductionPlot" class="plot-box small-plot"></div></div>
+    </section>
+
+    <section class="grid three">
+      <div class="card white"><h2>Браки и разводы</h2><div id="eventsTrend" class="plot-box small-plot"></div></div>
+      <div class="card white"><h2>На 1000 населения</h2><div id="ratesTrend" class="plot-box small-plot"></div></div>
+      <div class="card white"><h2>Разводов на 100 браков</h2><div id="indexTrend" class="plot-box small-plot"></div></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white"><h2>Рейтинг субъектов</h2><p class="text-note">Топ-10 субъектов по выбранному показателю в выбранном году. Для сравнения регионов предпочтительнее относительные показатели.</p><table id="topRegionsTable" class="data-table"><thead><tr><th>Территория</th><th>Значение</th><th>Год</th></tr></thead><tbody></tbody></table></div>
+      <div class="card white"><h2>Паспорт выбранной территории</h2><table id="territoryTable" class="data-table"><thead><tr><th>Год</th><th>Браки</th><th>Разводы</th><th>Разводов на 100 браков</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="card white"><h2>Методика</h2><details class="family-method" open><summary>Как рассчитаны показатели</summary><p>В основу положены четыре загруженные статистические выгрузки: число браков, число разводов, число браков на 1000 населения и число разводов на 1000 населения. Индекс разводимости рассчитывается как число разводов, делённое на число браков, умноженное на 100. Баланс брачности — разность коэффициентов брачности и разводимости на 1000 населения. Для федеральных округов с изменением границ ряды соединены по соответствующим историческим периодам.</p></details></section>
+  </main>
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/family.js" defer></script>
+</body>
+</html>

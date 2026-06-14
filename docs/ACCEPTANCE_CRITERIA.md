@@ -5,9 +5,10 @@
 ## Архитектура
 
 - [ ] Публикуемая директория — `docs/`.
-- [ ] Есть 6 HTML-страниц: `index.html`, `settlement.html`, `estate.html`, `capital.html`, `mortgage.html`, `payments.html`.
+- [ ] Есть 9 HTML-страниц: `index.html`, `skr.html`, `settlement.html`, `estate.html`, `capital.html`, `mortgage.html`, `payments.html`, `family.html`, `abortions.html`.
 - [ ] Навигация единая на всех страницах.
-- [ ] Навигация содержит шесть разделов без отвлекающих числовых префиксов.
+- [ ] Навигация содержит восемь разделов без пункта `Главная` и без отвлекающих числовых префиксов.
+- [ ] Логотип и название сайта на всех страницах ведут на `index.html`.
 - [ ] Runtime-зависимостей от внешнего интернета нет.
 - [ ] Все библиотеки лежат в `docs/assets/vendor/`.
 - [ ] Все данные лежат в `docs/data/`.
@@ -28,7 +29,7 @@
 - [ ] Нет `baseline`, `debug`, `TODO`, `prototype`, `RPN`, `CSV`, `XLSX`, `download`, `fetch`, `GitHub Raw`, `NaN`, `undefined`, `null` в видимом UI.
 - [ ] Plotly modebar отключён или полностью русифицирован.
 - [ ] Технические методики спрятаны в раскрываемые блоки.
-- [ ] Первая страница имеет `Краткий вид` и `Подробный вид`.
+- [ ] Главная страница открывается на `index.html`; страница СКР открывается на `skr.html` и имеет `Краткий вид` и `Подробный вид`.
 
 ## Страница СКР
 
@@ -77,10 +78,27 @@
 - [ ] Верхний итоговый вывод написан простым управленческим языком.
 - [ ] Технические параметры спрятаны в дополнительных настройках.
 
+## Страница Семья
+
+- [ ] Runtime использует локальные `family_dashboard.json`, `family_subjects.geojson`, `family.sqlite` и `family_summary.csv`.
+- [ ] Есть режимы `Россия`, `Федеральный округ`, `Субъект РФ`.
+- [ ] Графики, KPI и таблицы пересчитываются при изменении территории, года, показателя и сценарной доли.
+- [ ] `window.FamilyModule.getState()` возвращает состояние загрузки, выбранную территорию, список графиков и табличные итоги.
+
+## Страница Аборты
+
+- [ ] Runtime использует локальные `abortions_dashboard.json`, `abortions_subjects.geojson`, `abortions.sqlite` и `abortions_summary.csv`.
+- [ ] Есть режимы `Россия`, `Федеральный округ`, `Субъект РФ`.
+- [ ] Графики, KPI и таблицы пересчитываются при изменении территории, года, показателя и сценарной доли.
+- [ ] `window.AbortionsModule.getState()` возвращает состояние загрузки, выбранную территорию, список графиков и табличные итоги.
+
 ## Автотесты
 
 - [ ] `python scripts/check_json.py` проходит.
 - [ ] `python scripts/check_no_external_runtime.py` проходит.
 - [ ] `python scripts/check_russian_ui.py` проходит.
+- [ ] `python scripts/check_nav_numbering.py` проходит.
+- [ ] `python scripts/check_family_module.py` проходит.
+- [ ] `python scripts/check_abortions_module.py` проходит.
 - [ ] `bash scripts/check_js_syntax.sh` проходит.
 - [ ] Если доступен Playwright, `npm run test:smoke` проходит.
