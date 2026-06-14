@@ -213,6 +213,15 @@ test.describe('самодостаточный релиз', () => {
     expect(initial.featureCounts.roads).toBeGreaterThan(1000000);
     expect(initial.featureCounts.education).toBeGreaterThan(10000);
     expect(initial.mapMode).toContain('картограмма');
+    const chartColors = await page.evaluate(() => ['infraClassChart', 'infraMunicipalChart', 'infraComponentsChart'].flatMap(id => {
+      const gd = document.getElementById(id);
+      return (gd?.data || []).flatMap(trace => Array.isArray(trace.marker?.color) ? trace.marker.color : [trace.marker?.color]).filter(Boolean);
+    }));
+    const allowedChartColors = ['#2f7d5c', '#d8a238', '#d98f45', '#b94b4b', '#145b61', '#0f4f55'];
+    expect(chartColors.length).toBeGreaterThan(3);
+    expect(chartColors.map(c => String(c).toLowerCase()).every(c => allowedChartColors.includes(c))).toBe(true);
+    expect(chartColors).toEqual(expect.arrayContaining(['#2f7d5c', '#d8a238']));
+    expect(chartColors.map(c => String(c).toLowerCase())).not.toEqual(expect.arrayContaining(['#1f77b4', '#636efa', 'rgb(31, 119, 180)']));
     const countryMapCoverage = await page.locator('#infraMapCanvas').evaluate(el => {
       const ctx = el.getContext('2d');
       const image = ctx.getImageData(0, 0, el.width, Math.max(1, el.height - 90));

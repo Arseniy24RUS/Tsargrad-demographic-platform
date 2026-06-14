@@ -9,6 +9,7 @@
   const COMPONENT_INDEX = {roads:0,power:1,gas:2,water:3,sewer:4,digital:5,education:6,medical:7,services:8,demographic:9};
   const INDICATOR_LABELS = {s:'индекс готовности',e:'инженерная готовность',so:'социальная доступность',dm:'демографическая значимость',q:'достоверность данных'};
   const CLASS_LABELS = {A:'готово к семейному расселению',B:'быстрая достройка',C:'инженерный дефицит',D:'низкая готовность'};
+  const CHART_COLORS = {teal:'#0f4f55', teal2:'#145b61', green:'#2f7d5c', gold:'#d8a238', amber:'#d98f45', red:'#b94b4b', cream:'#fffaf0', grid:'rgba(216,162,56,.22)'};
   const state = {
     summary:void 0,
     geo:void 0,
@@ -44,6 +45,20 @@
     if(v < 60) return '#d98f45';
     if(v < 75) return '#d8a238';
     return '#2f7d5c';
+  }
+  function classColor(code){
+    return {A:CHART_COLORS.green, B:CHART_COLORS.gold, C:CHART_COLORS.amber, D:CHART_COLORS.red}[code] || CHART_COLORS.teal;
+  }
+  function chartColorForScore(v){
+    v = Number(v) || 0;
+    if(v < 45) return CHART_COLORS.red;
+    if(v < 60) return CHART_COLORS.amber;
+    if(v < 75) return CHART_COLORS.gold;
+    if(v < 90) return CHART_COLORS.teal2;
+    return CHART_COLORS.green;
+  }
+  function textColorForFill(color){
+    return (color === CHART_COLORS.gold || color === CHART_COLORS.amber) ? '#111820' : CHART_COLORS.cream;
   }
   function classBadge(code){ return `<span class="class-badge class-${code}">${code} · ${CLASS_LABELS[code] || ''}</span>`; }
 
@@ -253,23 +268,47 @@
     if(!window.Plotly) return;
     const arr=state.filtered;
     state.renderedCharts=[];
-    const layoutBase={paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'#fff', margin:{l:44,r:18,t:24,b:48}, font:{family:'system-ui, sans-serif', color:'#172427'}, displayModeBar:false};
+    const layoutBase={
+      paper_bgcolor:'rgba(0,0,0,0)',
+      plot_bgcolor:'rgba(255,250,240,.72)',
+      margin:{l:44,r:18,t:24,b:48},
+      font:{family:'system-ui, sans-serif', color:'#172427'},
+      xaxis:{gridcolor:CHART_COLORS.grid, zerolinecolor:'rgba(15,79,85,.30)', linecolor:'rgba(15,79,85,.34)', tickfont:{color:'#334845'}, titlefont:{color:'#0f4f55'}},
+      yaxis:{gridcolor:CHART_COLORS.grid, zerolinecolor:'rgba(15,79,85,.30)', linecolor:'rgba(15,79,85,.34)', tickfont:{color:'#334845'}, titlefont:{color:'#0f4f55'}},
+      displayModeBar:false
+    };
     const classOrder=['A','B','C','D'];
     const classPop=state.regionData
       ? classOrder.map(c=>arr.filter(r=>r.cc===c).reduce((a,r)=>a+(r.p||0),0))
       : classOrder.map(c=>(state.summary?.regions||[]).reduce((a,r)=>a+((r.class_population||{})[c]||0),0));
+    const classColors=classOrder.map(classColor);
     Plotly.newPlot('infraClassChart',[{
       type:'bar',
       x:classOrder,
       y:classPop,
       text:classPop.map(v=>fmt(v)),
       customdata:classOrder.map(c=>CLASS_LABELS[c]),
+      marker:{color:classColors, line:{color:'rgba(255,250,240,.95)', width:1}},
+      textposition:'auto',
+      textfont:{color:classColors.map(textColorForFill)},
       hovertemplate:'Класс %{x}: %{customdata}<br>%{text} чел.<extra></extra>'
-    }],{...layoutBase,yaxis:{title:'население'},xaxis:{title:'класс готовности'}}, {displayModeBar:false,responsive:true});
+    }],{...layoutBase,yaxis:{...layoutBase.yaxis,title:'население'},xaxis:{...layoutBase.xaxis,title:'класс готовности'}}, {displayModeBar:false,responsive:true});
     state.renderedCharts.push('infraClassChart');
     const munis = state.regionData ? (state.regionData.municipalities||[]).slice() : (state.summary?.regions||[]).map(r=>({n:r.subject,p:r.population,s:r.avg_score}));
     const top = munis.sort((a,b)=>b.s-a.s).slice(0,10).reverse();
-    Plotly.newPlot('infraMunicipalChart',[{type:'bar',orientation:'h',y:top.map(x=>x.n),x:top.map(x=>x.s),text:top.map(x=>fmt(x.s,1)),hovertemplate:'%{y}<br>Индекс %{text}<extra></extra>'}],{...layoutBase,xaxis:{range:[0,100],title:'баллы'},yaxis:{automargin:true}}, {displayModeBar:false,responsive:true});
+    const topColors=top.map(x=>chartColorForScore(x.s));
+    Plotly.newPlot('infraMunicipalChart',[{
+      type:'bar',
+      orientation:'h',
+      y:top.map(x=>x.n),
+      x:top.map(x=>x.s),
+      text:top.map(x=>fmt(x.s,1)),
+      marker:{color:topColors, line:{color:'rgba(255,250,240,.95)', width:1}},
+      textposition:'inside',
+      insidetextanchor:'end',
+      textfont:{color:topColors.map(textColorForFill)},
+      hovertemplate:'%{y}<br>Индекс %{text}<extra></extra>'
+    }],{...layoutBase,xaxis:{...layoutBase.xaxis,range:[0,100],title:'баллы'},yaxis:{...layoutBase.yaxis,automargin:true}}, {displayModeBar:false,responsive:true});
     state.renderedCharts.push('infraMunicipalChart');
     const avgComponents=state.regionData
       ? COMPONENTS.map(([k])=>{
@@ -281,14 +320,19 @@
         if(['education','medical','services'].includes(k)) return country.social_score || 0;
         return country.avg_score || 0;
       });
+    const componentColors=avgComponents.slice().reverse().map(chartColorForScore);
     Plotly.newPlot('infraComponentsChart',[{
       type:'bar',
       orientation:'h',
       y:COMPONENTS.map(c=>c[1]).reverse(),
       x:avgComponents.slice().reverse(),
       text:avgComponents.slice().reverse().map(v=>fmt(v,1)),
+      marker:{color:componentColors, line:{color:'rgba(255,250,240,.95)', width:1}},
+      textposition:'inside',
+      insidetextanchor:'end',
+      textfont:{color:componentColors.map(textColorForFill)},
       hovertemplate:'%{y}<br>%{text} баллов<extra></extra>'
-    }],{...layoutBase,margin:{l:118,r:18,t:24,b:42},xaxis:{range:[0,100],title:'баллы'},yaxis:{automargin:true}}, {displayModeBar:false,responsive:true});
+    }],{...layoutBase,margin:{l:118,r:18,t:24,b:42},xaxis:{...layoutBase.xaxis,range:[0,100],title:'баллы'},yaxis:{...layoutBase.yaxis,automargin:true}}, {displayModeBar:false,responsive:true});
     state.renderedCharts.push('infraComponentsChart');
   }
 
