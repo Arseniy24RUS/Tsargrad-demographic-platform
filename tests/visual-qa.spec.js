@@ -334,12 +334,33 @@ async function expectLocalGeoMap(page, target) {
     const canvas = await page.locator(`#${target.mapId}`).evaluate(el => {
       const box = el.getBoundingClientRect();
       const ctx = el.getContext('2d');
-      const data = ctx.getImageData(Math.floor(el.width / 2), Math.floor(el.height / 2), 1, 1).data;
-      return { width: box.width, height: box.height, pixelAlpha: data[3] };
+      const image = ctx.getImageData(0, 0, el.width, Math.max(1, el.height - 90));
+      let left = el.width, top = el.height, right = 0, bottom = 0, alphaPixels = 0;
+      for (let y = 0; y < image.height; y += 1) {
+        for (let x = 0; x < image.width; x += 1) {
+          const alpha = image.data[(y * image.width + x) * 4 + 3];
+          if (alpha > 8) {
+            alphaPixels += 1;
+            left = Math.min(left, x);
+            top = Math.min(top, y);
+            right = Math.max(right, x);
+            bottom = Math.max(bottom, y);
+          }
+        }
+      }
+      return {
+        width: box.width,
+        height: box.height,
+        alphaPixels,
+        inkWidthRatio: alphaPixels ? (right - left) / el.width : 0,
+        inkHeightRatio: alphaPixels ? (bottom - top) / el.height : 0
+      };
     });
     expect(canvas.width, `${target.slug} canvas width`).toBeGreaterThan(320);
     expect(canvas.height, `${target.slug} canvas height`).toBeGreaterThan(300);
-    expect(canvas.pixelAlpha, `${target.slug} canvas nonblank`).toBeGreaterThan(0);
+    expect(canvas.alphaPixels, `${target.slug} canvas nonblank`).toBeGreaterThan(5000);
+    expect(canvas.inkWidthRatio, `${target.slug} canvas map width fill`).toBeGreaterThan(0.45);
+    expect(canvas.inkHeightRatio, `${target.slug} canvas map height fill`).toBeGreaterThan(0.32);
     return;
   }
   expect(state.mapEngine, `${target.slug} map engine`).toBe('svg-geojson');

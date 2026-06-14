@@ -47,10 +47,13 @@
   }
   function classBadge(code){ return `<span class="class-badge class-${code}">${code} · ${CLASS_LABELS[code] || ''}</span>`; }
 
-  function normalizedLon(lon){ lon = Number(lon); return lon < 20 ? lon + 360 : lon; }
+  function normalizedLon(lon){
+    lon = Number(lon);
+    return lon < 0 ? lon + 360 : lon;
+  }
   function mercY(lat){
     const rad = Math.max(-85, Math.min(85, Number(lat))) * Math.PI / 180;
-    return Math.log(Math.tan(Math.PI/4 + rad/2));
+    return Math.log(Math.tan(Math.PI/4 + rad/2)) * 180 / Math.PI;
   }
   function projectPoint(lon, lat, transform){
     const x = normalizedLon(lon); const y = mercY(lat);

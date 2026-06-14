@@ -213,6 +213,31 @@ test.describe('самодостаточный релиз', () => {
     expect(initial.featureCounts.roads).toBeGreaterThan(1000000);
     expect(initial.featureCounts.education).toBeGreaterThan(10000);
     expect(initial.mapMode).toContain('картограмма');
+    const countryMapCoverage = await page.locator('#infraMapCanvas').evaluate(el => {
+      const ctx = el.getContext('2d');
+      const image = ctx.getImageData(0, 0, el.width, Math.max(1, el.height - 90));
+      let left = el.width, top = el.height, right = 0, bottom = 0, alphaPixels = 0;
+      for (let y = 0; y < image.height; y += 1) {
+        for (let x = 0; x < image.width; x += 1) {
+          const alpha = image.data[(y * image.width + x) * 4 + 3];
+          if (alpha > 8) {
+            alphaPixels += 1;
+            left = Math.min(left, x);
+            top = Math.min(top, y);
+            right = Math.max(right, x);
+            bottom = Math.max(bottom, y);
+          }
+        }
+      }
+      return {
+        alphaPixels,
+        widthRatio: alphaPixels ? (right - left) / el.width : 0,
+        heightRatio: alphaPixels ? (bottom - top) / el.height : 0
+      };
+    });
+    expect(countryMapCoverage.alphaPixels).toBeGreaterThan(5000);
+    expect(countryMapCoverage.widthRatio).toBeGreaterThan(0.45);
+    expect(countryMapCoverage.heightRatio).toBeGreaterThan(0.32);
 
     await page.locator('#infraSubject').selectOption('moskovskaya_oblast');
     await page.waitForFunction(() => window.InfrastructureModule.getState().selectedRegion === 'moskovskaya_oblast' && window.InfrastructureModule.getState().filteredSettlements > 0);

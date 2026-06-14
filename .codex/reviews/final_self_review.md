@@ -8,10 +8,12 @@
 - Навигация на 10 страницах содержит 9 разделов без пункта `Главная` и без числовых префиксов: `СКР`, `Расселение`, `Инфраструктура`, `Усадьба`, `Маткапитал`, `Ипотека`, `Выплаты`, `Семья`, `Аборты`.
 - Логотип и название сайта на всех страницах ведут на `index.html`.
 - `docs/skr.html` и `docs/assets/js/skr.js` сохранены с текущим `policyLagDragBand`; старый `policyStartDragHandle` отсутствует.
+- Декоративный знак в hero-блоках заменён на локальный силуэт логотипа Царьграда из `favicon.png` с прежним полупрозрачным цветом фона.
 - Инфраструктурные данные пересчитаны офлайн из локального PBF и сохранены компактно в `docs/data/infrastructure/`.
 - Runtime инфраструктуры загружает только локальные JSON/GeoJSON/JS/CSS из `docs/`, без PBF и без внешних URL.
 - `InfrastructureModule.getState()` отдаёт статус загрузки, runtime-флаг, выбранные фильтры, число отрисованных объектов, готовность графиков, покрытие слоёв и выбранный паспорт поселения.
 - Таблицы, карта, KPI, графики и паспорт поселения проверены на desktop, wide и mobile через Playwright.
+- Картограмма России в инфраструктурном canvas проверена по пиксельному покрытию: карта занимает рабочую область, а не схлопывается в линию.
 - OpenStreetMap атрибуция добавлена в `docs/THIRD_PARTY_NOTICES.md`; методика и контракт данных обновлены.
 - Ревью субагентом `gpt-5.5 xHigh` выполнено, release blocker'ов не найдено.
 
@@ -28,6 +30,7 @@
 - `python scripts/check_infrastructure_module.py` — пройдено.
 - `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh` — пройдено.
 - `npx playwright test tests/visual-qa.spec.js -g "03-infrastructure|infrastructure"` — 5 тестов пройдены.
+- `npx playwright test tests/smoke.spec.js -g "Инфраструктура"` — 2 теста пройдены.
 - `npm run test:smoke` — 62 теста пройдены.
 
 ## Ограничения
