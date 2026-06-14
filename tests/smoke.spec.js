@@ -407,6 +407,10 @@ test.describe('самодостаточный релиз', () => {
     expect(before.runtimeExternalFetch).toBe(false);
     expect(before.seriesCount).toBeGreaterThan(1000);
     expect(before.geoFeatureCount).toBeGreaterThan(70);
+    expect(before.mapEngine).toBe('svg-geojson');
+    expect(before.mapRenderedPaths).toBeGreaterThanOrEqual(83);
+    expect(before.mapValueCount).toBeGreaterThanOrEqual(80);
+    expect(before.mapDomain.max).toBeGreaterThan(before.mapDomain.min);
     expect(before.renderedCharts).toEqual(expect.arrayContaining(before.chartIds));
     expect(before.territoryTableRows).toBeGreaterThan(0);
     await page.locator('#territoryMode').selectOption('subject');
@@ -417,6 +421,8 @@ test.describe('самодостаточный релиз', () => {
     expect(after.scenarioShare).toBe(25);
     expect(after.selectedTerritoryId).not.toBe(before.selectedTerritoryId);
     expect(after.kpiScenarioText).not.toBe(before.kpiScenarioText);
+    expect(after.mapEngine).toBe('svg-geojson');
+    expect(after.mapRenderedPaths).toBe(before.mapRenderedPaths);
     await expectCleanRuntime(runtime);
   });
 
@@ -428,6 +434,10 @@ test.describe('самодостаточный релиз', () => {
     expect(before.runtimeExternalFetch).toBe(false);
     expect(before.seriesCount).toBeGreaterThan(1000);
     expect(before.geoFeatureCount).toBeGreaterThan(70);
+    expect(before.mapEngine).toBe('svg-geojson');
+    expect(before.mapRenderedPaths).toBeGreaterThanOrEqual(83);
+    expect(before.mapValueCount).toBeGreaterThanOrEqual(80);
+    expect(before.mapDomain.max).toBeGreaterThan(before.mapDomain.min);
     expect(before.renderedCharts).toEqual(expect.arrayContaining(before.chartIds));
     expect(before.territoryTableRows).toBeGreaterThan(0);
     await page.locator('#territoryMode').selectOption('subject');
@@ -438,6 +448,8 @@ test.describe('самодостаточный релиз', () => {
     expect(after.scenarioShare).toBe(25);
     expect(after.selectedTerritoryId).not.toBe(before.selectedTerritoryId);
     expect(after.kpiPotentialText).not.toBe(before.kpiPotentialText);
+    expect(after.mapEngine).toBe('svg-geojson');
+    expect(after.mapRenderedPaths).toBe(before.mapRenderedPaths);
     await expectCleanRuntime(runtime);
   });
 

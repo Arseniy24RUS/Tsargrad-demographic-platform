@@ -19,6 +19,69 @@ const viewports = [
   { name: 'mobile', width: 390, height: 844 }
 ];
 
+const fullPageViewports = [
+  { name: 'desktop', width: 1440, height: 1000 },
+  { name: 'wide', width: 1920, height: 1080 },
+  { name: 'mobile', width: 390, height: 844 }
+];
+
+const fullPageTargets = [
+  {
+    slug: 'home',
+    path: '/index.html',
+    title: 'Россия 2050',
+    sections: [
+      ['header', 'header'],
+      ['hero', '.hero'],
+      ['logic', '#logic'],
+      ['evidence', '#evidence'],
+      ['structure', '#structure'],
+      ['footer', '.footer']
+    ],
+    contrastSelectors: ['.hero-card h2', '.metric .num', '.metric .label', '.section-title h2', '.module h3', '.module p', '.quote h3', '.quote p']
+  },
+  {
+    slug: 'family',
+    path: '/family.html',
+    title: 'Семья',
+    waitFor: () => window.FamilyModule?.getState?.().loaded,
+    moduleName: 'FamilyModule',
+    mapId: 'familyMap',
+    sections: [
+      ['hero', '.family-hero'],
+      ['purpose', '.family-purpose'],
+      ['controls', 'section.card.white:has-text("Параметры анализа")'],
+      ['map', '.map-card'],
+      ['scenario', 'section.grid.two .card.white:has-text("Сценарная оценка")'],
+      ['trends', 'section.grid.three'],
+      ['rating', 'section.grid.two .card.white:has-text("Рейтинг субъектов")'],
+      ['territory-passport', 'section.grid.two .card.white:has-text("Паспорт выбранной территории")'],
+      ['method', 'section.card.white:has-text("Методика")']
+    ],
+    contrastSelectors: ['.family-hero h1', '.family-hero .lead', '.family-purpose h2', '.family-purpose .lead', '.family-kpi b', '.family-kpi small', '.map-card h2']
+  },
+  {
+    slug: 'abortions',
+    path: '/abortions.html',
+    title: 'Аборты',
+    waitFor: () => window.AbortionsModule?.getState?.().loaded,
+    moduleName: 'AbortionsModule',
+    mapId: 'abortionsMap',
+    sections: [
+      ['hero', '.abortions-hero'],
+      ['purpose', '.abortions-purpose'],
+      ['controls', 'section.card.white:has-text("Параметры анализа")'],
+      ['map', '.map-card'],
+      ['scenario', 'section.grid.two .card.white:has-text("Сценарная оценка")'],
+      ['trends', 'section.grid.three'],
+      ['rating', 'section.grid.two .card.white:has-text("Рейтинг субъектов")'],
+      ['territory-passport', 'section.grid.two .card.white:has-text("Паспорт выбранной территории")'],
+      ['method', 'section.card.white:has-text("Методика")']
+    ],
+    contrastSelectors: ['.abortions-hero h1', '.abortions-hero .lead', '.abortions-purpose h2', '.abortions-purpose .lead', '.abortion-kpi b', '.abortion-kpi small', '.map-card h2']
+  }
+];
+
 async function guardRuntime(page) {
   const external = [];
   const consoleErrors = [];
@@ -87,6 +150,133 @@ async function visibleChartOverlapReport(page) {
       return { id: chart.id, width: Math.round(chartRect.width), height: Math.round(chartRect.height), overlaps };
     }).filter(Boolean);
   });
+}
+
+async function expectNoHorizontalOverflow(page, context) {
+  const report = await page.evaluate(() => {
+    const clientWidth = document.documentElement.clientWidth;
+    const scrollWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+    const visible = el => {
+      const style = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return rect.width > 1 && rect.height > 1 && style.display !== 'none' && style.visibility !== 'hidden';
+    };
+    const offenders = [...document.querySelectorAll('body *')].filter(visible).map(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.right <= clientWidth + 2 || rect.width > clientWidth * 2) return null;
+      const cls = typeof el.className === 'string' ? el.className : '';
+      if (cls.includes('modebar') || cls.includes('table-scroll')) return null;
+      return {
+        tag: el.tagName.toLowerCase(),
+        id: el.id || '',
+        className: cls.split(/\s+/).slice(0, 3).join('.'),
+        right: Math.round(rect.right),
+        width: Math.round(rect.width),
+        text: (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80)
+      };
+    }).filter(Boolean).slice(0, 8);
+    return { clientWidth, scrollWidth, overflow: scrollWidth - clientWidth, offenders };
+  });
+  expect(report.overflow, `${context} horizontal overflow: ${JSON.stringify(report.offenders)}`).toBeLessThanOrEqual(2);
+}
+
+async function expectSelectorsReadable(page, selectors, context) {
+  const failures = await page.evaluate((items) => {
+    function rgb(value) {
+      const match = String(value || '').match(/rgba?\(([^)]+)\)/);
+      if (!match) return null;
+      const parts = match[1].split(',').map(v => Number.parseFloat(v.trim()));
+      return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+    }
+    function blend(fg, bg) {
+      const a = fg.a == null ? 1 : fg.a;
+      return {
+        r: fg.r * a + bg.r * (1 - a),
+        g: fg.g * a + bg.g * (1 - a),
+        b: fg.b * a + bg.b * (1 - a),
+        a: 1
+      };
+    }
+    function luminance(c) {
+      return [c.r, c.g, c.b].map(v => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      }).reduce((acc, v, i) => acc + v * [0.2126, 0.7152, 0.0722][i], 0);
+    }
+    function contrast(a, b) {
+      const l1 = luminance(a), l2 = luminance(b);
+      return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    }
+    function effectiveBg(el) {
+      let bg = { r: 255, g: 255, b: 255, a: 1 };
+      const stack = [];
+      let node = el;
+      while (node && node.nodeType === 1) {
+        stack.push(node);
+        node = node.parentElement;
+      }
+      stack.reverse().forEach(item => {
+        const color = rgb(getComputedStyle(item).backgroundColor);
+        if (color && color.a > 0) bg = blend(color, bg);
+      });
+      return bg;
+    }
+    return items.flatMap(selector => [...document.querySelectorAll(selector)].map(el => {
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!text) return null;
+      const style = getComputedStyle(el);
+      const color = rgb(style.color);
+      if (!color) return null;
+      const ratio = contrast(color, effectiveBg(el));
+      const fontSize = Number.parseFloat(style.fontSize);
+      const weight = Number.parseInt(style.fontWeight, 10) || 400;
+      const large = fontSize >= 24 || (fontSize >= 18.66 && weight >= 700);
+      const min = large ? 3 : 4.5;
+      if (ratio >= min) return null;
+      return { selector, text: text.slice(0, 90), ratio: Number(ratio.toFixed(2)), min };
+    }).filter(Boolean));
+  }, selectors);
+  expect(failures, `${context} contrast failures`).toEqual([]);
+}
+
+async function captureAndCheckSections(page, target, viewportName) {
+  for (const [name, selector] of target.sections) {
+    const section = page.locator(selector).first();
+    await expect(section, `${target.slug} ${name}`).toBeVisible();
+    await section.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(120);
+    const box = await section.boundingBox();
+    expect(box, `${target.slug} ${name} box`).toBeTruthy();
+    expect(box.width, `${target.slug} ${name} width`).toBeGreaterThan(220);
+    expect(box.height, `${target.slug} ${name} height`).toBeGreaterThan(36);
+    await section.screenshot({ path: `artifacts/visual-qa/${target.slug}-${viewportName}-${name}.png` });
+    await expectNoHorizontalOverflow(page, `${target.slug} ${viewportName} after ${name}`);
+  }
+}
+
+async function expectLocalGeoMap(page, target) {
+  if (!target.mapId) return;
+  const state = await page.evaluate((moduleName) => window[moduleName].getState(), target.moduleName);
+  expect(state.mapEngine, `${target.slug} map engine`).toBe('svg-geojson');
+  expect(state.mapRenderedPaths, `${target.slug} rendered map paths`).toBeGreaterThanOrEqual(83);
+  expect(state.mapValueCount, `${target.slug} map values`).toBeGreaterThanOrEqual(80);
+  expect(state.mapDomain.max, `${target.slug} map domain`).toBeGreaterThan(state.mapDomain.min);
+  const mapBox = await page.locator(`#${target.mapId} .geo-map svg`).evaluate(svg => {
+    const boxes = [...svg.querySelectorAll('path')].map(path => path.getBBox()).filter(box => box.width > 0 && box.height > 0);
+    const left = Math.min(...boxes.map(box => box.x));
+    const top = Math.min(...boxes.map(box => box.y));
+    const right = Math.max(...boxes.map(box => box.x + box.width));
+    const bottom = Math.max(...boxes.map(box => box.y + box.height));
+    const view = svg.viewBox.baseVal;
+    return {
+      paths: boxes.length,
+      widthRatio: (right - left) / view.width,
+      heightRatio: (bottom - top) / view.height
+    };
+  });
+  expect(mapBox.paths, `${target.slug} svg paths`).toBeGreaterThanOrEqual(83);
+  expect(mapBox.widthRatio, `${target.slug} map width fill`).toBeGreaterThan(0.72);
+  expect(mapBox.heightRatio, `${target.slug} map height fill`).toBeGreaterThan(0.55);
 }
 
 function expectEstateFrame(state, context) {
@@ -358,6 +548,122 @@ test.describe('Playwright visual QA', () => {
       });
     }
   }
+
+  for (const target of fullPageTargets) {
+    for (const viewport of fullPageViewports) {
+      test(`${target.slug} ${viewport.name}: вся страница и секции проходят visual QA`, async ({ page }) => {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height });
+        const runtime = await guardRuntime(page);
+        await page.goto(target.path, { waitUntil: 'networkidle' });
+        await expect(page.locator('body')).toContainText(target.title);
+        if (target.moduleName) {
+          await page.waitForFunction((moduleName) => window[moduleName]?.getState?.().loaded, target.moduleName);
+        }
+        await expectNoHorizontalOverflow(page, `${target.slug} ${viewport.name} initial`);
+        await expectSelectorsReadable(page, target.contrastSelectors, `${target.slug} ${viewport.name}`);
+        await page.screenshot({ path: `artifacts/visual-qa/${target.slug}-${viewport.name}-full-page.png`, fullPage: true });
+        await captureAndCheckSections(page, target, viewport.name);
+        await expectLocalGeoMap(page, target);
+        expect(runtime.external, 'external runtime requests').toEqual([]);
+        expect(runtime.consoleErrors, 'console errors').toEqual([]);
+      });
+    }
+  }
+
+  test('Главная: все переходы в структуре ведут на рабочие разделы', async ({ page }) => {
+    await page.goto('/index.html', { waitUntil: 'networkidle' });
+    const hrefs = await page.locator('#structure .module').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
+    expect(hrefs).toEqual([
+      'skr.html',
+      'settlement.html',
+      'estate.html',
+      'capital.html',
+      'mortgage.html',
+      'payments.html',
+      'family.html',
+      'abortions.html'
+    ]);
+  });
+
+  test('Семья: интерактивность обновляет KPI, SVG-карту, графики и таблицы', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/family.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.FamilyModule?.getState?.().loaded);
+    const before = await page.evaluate(() => window.FamilyModule.getState());
+    await page.locator('#territoryMode').selectOption('subject');
+    await page.locator('#subjectSelect').selectOption({ index: 4 });
+    await page.locator('#indicatorSelect').selectOption('marriage_rate_per_1000');
+    await page.locator('#yearSelect').selectOption({ index: 2 });
+    await page.locator('#scenarioReduceRange').evaluate(el => {
+      el.value = '31';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    const after = await page.evaluate(() => window.FamilyModule.getState());
+    expect(after.analysisMode).toBe('subject');
+    expect(after.indicator).toBe('marriage_rate_per_1000');
+    expect(after.scenarioShare).toBe(31);
+    expect(after.selectedTerritoryId).not.toBe(before.selectedTerritoryId);
+    expect(after.kpiScenarioText).not.toBe(before.kpiScenarioText);
+    expect(after.mapEngine).toBe('svg-geojson');
+    expect(after.mapRenderedPaths).toBeGreaterThanOrEqual(83);
+    expect(after.mapDomain.max).not.toBe(before.mapDomain.max);
+    expect(after.renderedCharts).toEqual(expect.arrayContaining(after.chartIds));
+    expect(after.topTableRows).toBeGreaterThan(0);
+    expect(after.territoryTableRows).toBeGreaterThan(0);
+    await expectNoHorizontalOverflow(page, 'family interactive');
+    expect(runtime.external, 'external runtime requests').toEqual([]);
+    expect(runtime.consoleErrors, 'console errors').toEqual([]);
+  });
+
+  test('Аборты: интерактивность обновляет KPI, SVG-карту, графики и таблицы', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/abortions.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.AbortionsModule?.getState?.().loaded);
+    const before = await page.evaluate(() => window.AbortionsModule.getState());
+    await page.locator('#territoryMode').selectOption('subject');
+    await page.locator('#subjectSelect').selectOption({ index: 4 });
+    await page.locator('#indicatorSelect').selectOption('abortions_per_1000_women_15_49');
+    await page.locator('#yearSelect').selectOption({ index: 2 });
+    await page.locator('#savedShareRange').evaluate(el => {
+      el.value = '31';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    const after = await page.evaluate(() => window.AbortionsModule.getState());
+    expect(after.analysisMode).toBe('subject');
+    expect(after.indicator).toBe('abortions_per_1000_women_15_49');
+    expect(after.scenarioShare).toBe(31);
+    expect(after.selectedTerritoryId).not.toBe(before.selectedTerritoryId);
+    expect(after.kpiPotentialText).not.toBe(before.kpiPotentialText);
+    expect(after.mapEngine).toBe('svg-geojson');
+    expect(after.mapRenderedPaths).toBeGreaterThanOrEqual(83);
+    expect(after.mapDomain.max).not.toBe(before.mapDomain.max);
+    expect(after.renderedCharts).toEqual(expect.arrayContaining(after.chartIds));
+    expect(after.topTableRows).toBeGreaterThan(0);
+    expect(after.territoryTableRows).toBeGreaterThan(0);
+    await expectNoHorizontalOverflow(page, 'abortions interactive');
+    expect(runtime.external, 'external runtime requests').toEqual([]);
+    expect(runtime.consoleErrors, 'console errors').toEqual([]);
+  });
+
+  test('СКР: ВЦИОМ-блок на мобильном не ломает ширину страницы и lag-band сохранён', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    const runtime = await guardRuntime(page);
+    await page.goto('/skr.html', { waitUntil: 'networkidle' });
+    await expect(page.locator('#policyStartDragHandle')).toHaveCount(0);
+    await expect(page.locator('#policyLagDragBand')).toBeVisible();
+    await page.waitForFunction(() => window.SkrModule?.getState?.().interactionMode === 'lag-band');
+    await page.waitForFunction(() => window.VciomFertilityBlock?.getState?.().loaded);
+    await page.locator('#vciom-2025-intentions').scrollIntoViewIfNeeded();
+    await expectNoHorizontalOverflow(page, 'skr mobile vciom');
+    const chartBox = await page.locator('#vciom-2025-intentions .vciom-chart').boundingBox();
+    const svgBox = await page.locator('#vciom-2025-intentions .vciom-chart svg').boundingBox();
+    expect(chartBox).toBeTruthy();
+    expect(svgBox).toBeTruthy();
+    expect(svgBox.x + svgBox.width).toBeLessThanOrEqual(chartBox.x + chartBox.width + 1);
+    await page.locator('#vciom-2025-intentions').screenshot({ path: 'artifacts/visual-qa/01-skr-mobile-vciom-section.png' });
+    expect(runtime.external, 'external runtime requests').toEqual([]);
+    expect(runtime.consoleErrors, 'console errors').toEqual([]);
+  });
 
   test('СКР: картограмма занимает рабочую область, а лаг-зона синхронизирована с графиком', async ({ page }) => {
     await page.goto('/skr.html', { waitUntil: 'networkidle' });

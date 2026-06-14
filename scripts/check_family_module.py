@@ -45,7 +45,7 @@ def main() -> None:
         if word not in html:
             fail(f'в family.html нет обязательной строки: {word}')
     js = (DOCS / 'assets/js/family.js').read_text(encoding='utf-8')
-    for token in ['window.FamilyModule', 'getState', 'runtimeExternalFetch', 'renderedCharts']:
+    for token in ['window.FamilyModule', 'getState', 'runtimeExternalFetch', 'renderedCharts', 'mapEngine', 'mapRenderedPaths', 'mapValueCount', 'mapDomain']:
         if token not in js:
             fail(f'в family.js нет проверочного контракта {token}')
     print('OK: модуль «Семья» прошёл проверку')

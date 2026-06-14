@@ -21,6 +21,7 @@
 
 - [x] Все новые данные лежат локально в `docs/data/`.
 - [x] `family_dashboard.json`, `abortions_dashboard.json` и `vciom_reproductive_intentions_2025.json` имеют `runtime_external_fetch:false`.
+- [x] Картограммы `Семья` и `Аборты` строятся как локальные SVG из GeoJSON, без внешнего гео-запроса.
 - [x] Plotly подключается локально из `assets/vendor/plotly/plotly.min.js`.
 - [x] В runtime нет CDN, GitHub Raw, удалённых API, удалённых шрифтов и внешних изображений.
 
@@ -43,11 +44,12 @@
 - [x] `python scripts/check_abortions_module.py`
 - [x] `bash scripts/check_js_syntax.sh`
 - [x] `npm run test:smoke`
-- [x] Targeted Playwright QA для `index.html`, `skr.html`, `family.html`, `abortions.html`
+- [x] Full-page Playwright visual QA для всех секций `index.html`, `family.html`, `abortions.html` и ВЦИОМ-блока на `skr.html`
 - [x] `python scripts/make_release_zip.py`
 
 ## Публикация
 
 - [x] Коммит `Integrate home family abortions patch`.
+- [x] Коммит `Fix full-page visual QA for new pages`.
 - [x] Push в `main`.
 - [x] GitHub Pages: корень сайта открывает главную, СКР доступен по `/skr.html`.

@@ -6,14 +6,14 @@
 - СКР перенесён на `docs/skr.html` без отката `policyLagDragBand` и помесячного прогноза.
 - Добавлены `docs/family.html`, `docs/abortions.html`, локальные данные, CSS и JS из патча.
 - Добавлены runtime-контракты `FamilyModule.getState()`, `AbortionsModule.getState()` и `VciomFertilityBlock.getState()`.
-- Для новых Plotly-картограмм добавлен локальный `docs/assets/vendor/plotly/world_110m.json`, чтобы исключить запросы к CDN.
+- Картограммы `Семья` и `Аборты` переведены на локальные SVG из GeoJSON; контракт `getState()` отдаёт `mapEngine`, число SVG-путей, число значений и домен шкалы.
 - Навигация обновлена на 9 страницах без пункта `Главная`.
 
 ## Проверки
 
 - Статические проверки и `audit_all.py` пройдены.
-- `npm run test:smoke` пройден: 42 теста.
-- Targeted Playwright QA для новых страниц и СКР пройден.
+- `npm run test:smoke` пройден: 55 тестов.
+- Full-page Playwright QA для всех секций `index.html`, `family.html`, `abortions.html` и мобильного ВЦИОМ-блока на `skr.html` пройден.
 
 ## Примечания
 

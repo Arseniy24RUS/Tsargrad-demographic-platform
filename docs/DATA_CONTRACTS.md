@@ -213,7 +213,7 @@
 }
 ```
 
-Страница `family.html` также использует `family_subjects.geojson`, `family.sqlite`, `family_summary.csv`, `family_join_audit.json` и `family_join_audit.csv`.
+Страница `family.html` также использует `family_subjects.geojson`, `family.sqlite`, `family_summary.csv`, `family_join_audit.json` и `family_join_audit.csv`. Карта строится локальным SVG-движком; `FamilyModule.getState()` отдаёт `mapEngine: "svg-geojson"`, число путей, число значений и домен шкалы.
 
 ## `docs/data/abortions_dashboard.json`
 
@@ -232,4 +232,4 @@
 }
 ```
 
-Страница `abortions.html` также использует `abortions_subjects.geojson`, `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json` и `abortions_join_audit.csv`.
+Страница `abortions.html` также использует `abortions_subjects.geojson`, `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json` и `abortions_join_audit.csv`. Карта строится локальным SVG-движком; `AbortionsModule.getState()` отдаёт `mapEngine: "svg-geojson"`, число путей, число значений и домен шкалы.

@@ -11,6 +11,7 @@
     districts: [],
     subjects: [],
     countryId: 'terr_rf_bez_novyh_subektov',
+    mapStats: { engine: 'svg-geojson', renderedPaths: 0, valueCount: 0, domain: null },
   };
 
   const el = (id) => document.getElementById(id);
@@ -65,6 +66,123 @@
       yaxis: { gridcolor: 'rgba(20,40,45,.10)', zeroline: false },
       legend: { orientation: 'h', x: 0, y: -0.22 },
       hoverlabel: { bgcolor: '#fff', bordercolor: '#d6a436', font: { color: '#111' } },
+    };
+  }
+
+  function percentile(sorted, p) {
+    if (!sorted.length) return null;
+    const idx = Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * p)));
+    return sorted[idx];
+  }
+
+  function interpolateColor(a, b, t) {
+    return a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  }
+
+  function mapColor(value, domain) {
+    if (!Number.isFinite(value) || !domain) return '#dfd8c9';
+    const t = Math.max(0, Math.min(1, (value - domain.min) / (domain.max - domain.min || 1)));
+    const stops = [
+      { t: 0, rgb: [248, 230, 180] },
+      { t: 0.48, rgb: [214, 164, 54] },
+      { t: 1, rgb: [15, 79, 87] },
+    ];
+    let left = stops[0];
+    let right = stops[stops.length - 1];
+    for (let i = 1; i < stops.length; i += 1) {
+      if (t <= stops[i].t) {
+        left = stops[i - 1];
+        right = stops[i];
+        break;
+      }
+    }
+    const k = (t - left.t) / (right.t - left.t || 1);
+    const rgb = interpolateColor(left.rgb, right.rgb, k);
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+  }
+
+  function collectCoordinates(coords, out) {
+    if (!Array.isArray(coords)) return;
+    if (typeof coords[0] === 'number') {
+      out.push(coords);
+      return;
+    }
+    coords.forEach((child) => collectCoordinates(child, out));
+  }
+
+  function geometryPath(geometry, project) {
+    const ringPath = (ring) => ring.map((pt, idx) => {
+      const p = project(pt);
+      return `${idx ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+    }).join(' ') + ' Z';
+    if (!geometry) return '';
+    if (geometry.type === 'Polygon') return geometry.coordinates.map(ringPath).join(' ');
+    if (geometry.type === 'MultiPolygon') return geometry.coordinates.flatMap((poly) => poly.map(ringPath)).join(' ');
+    return '';
+  }
+
+  function renderGeoMap(targetId, features, valuesById, metric, year) {
+    const mount = el(targetId);
+    if (!mount) return;
+    const coords = [];
+    features.forEach((feature) => collectCoordinates(feature.geometry.coordinates, coords));
+    const lons = coords.map((c) => Number(c[0])).filter(Number.isFinite);
+    const lats = coords.map((c) => Number(c[1])).filter(Number.isFinite);
+    const finiteValues = Array.from(valuesById.values()).filter(Number.isFinite).sort((a, b) => a - b);
+    const domain = finiteValues.length ? {
+      min: percentile(finiteValues, 0.05),
+      max: percentile(finiteValues, 0.95),
+    } : null;
+    if (domain && domain.max <= domain.min) domain.max = domain.min + 1;
+
+    const width = 980;
+    const height = 640;
+    const pad = 28;
+    const minLon = Math.min(...lons);
+    const maxLon = Math.max(...lons);
+    const minLat = Math.min(...lats);
+    const maxLat = Math.max(...lats);
+    const project = ([lon, lat]) => ({
+      x: pad + ((lon - minLon) / (maxLon - minLon || 1)) * (width - pad * 2),
+      y: pad + ((maxLat - lat) / (maxLat - minLat || 1)) * (height - pad * 2),
+    });
+
+    mount.innerHTML = '';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'geo-map';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', `Картограмма субъектов: ${metricLabel(metric)}, ${year}`);
+    features.forEach((feature) => {
+      const id = feature.properties.territory_id;
+      const value = valuesById.get(id);
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', geometryPath(feature.geometry, project));
+      path.setAttribute('fill', mapColor(value, domain));
+      path.setAttribute('stroke', '#fffaf0');
+      path.setAttribute('stroke-width', '.75');
+      path.setAttribute('vector-effect', 'non-scaling-stroke');
+      path.setAttribute('tabindex', '0');
+      if (!Number.isFinite(value)) path.classList.add('no-data');
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = `${feature.properties.territory_name}: ${Number.isFinite(value) ? metricFormat(metric, value) : 'нет данных'} (${year})`;
+      path.appendChild(title);
+      svg.appendChild(path);
+    });
+    wrapper.appendChild(svg);
+    const legend = document.createElement('div');
+    legend.className = 'map-legend-local';
+    const minText = domain ? metricFormat(metric, domain.min) : '—';
+    const maxText = domain ? metricFormat(metric, domain.max) : '—';
+    legend.innerHTML = `<span>${metricLabel(metric)}</span><i class="map-legend-ramp" aria-hidden="true"></i><span>${minText}</span><span>${maxText}</span>`;
+    mount.appendChild(wrapper);
+    mount.appendChild(legend);
+    state.mapStats = {
+      engine: 'svg-geojson',
+      renderedPaths: features.length,
+      valueCount: finiteValues.length,
+      domain,
     };
   }
 
@@ -195,32 +313,13 @@
   }
 
   function renderMap() {
-    if (!window.Plotly || !state.geo) return;
+    if (!state.geo) return;
     const year = Number(el('yearSelect').value);
     const metric = el('indicatorSelect').value;
     const features = state.geo.features || [];
     const rows = features.map((f) => rowForYear(f.properties.territory_id, year));
-    const locations = features.map((f) => f.properties.territory_id);
-    const values = rows.map((r) => metricValue(r, metric));
-    const hover = features.map((f, i) => {
-      const r = rows[i];
-      if (!r) return `${f.properties.territory_name}<br>нет сопоставимых данных`;
-      return [`<b>${f.properties.territory_name}</b>`, `Год: ${year}`, `Браки: ${fmtInt(r.marriages_count)}`, `Разводы: ${fmtInt(r.divorces_count)}`, `Браков на 1000: ${fmt1(r.marriage_rate_per_1000)}`, `Разводов на 1000: ${fmt1(r.divorce_rate_per_1000)}`, `Разводов на 100 браков: ${fmt1(r.divorces_per_100_marriages)}`].join('<br>');
-    });
-    const trace = {
-      type: 'choropleth',
-      geojson: state.geo,
-      featureidkey: 'properties.territory_id',
-      locations,
-      z: values,
-      text: hover,
-      hoverinfo: 'text',
-      colorscale: [[0, '#f6ead0'], [0.45, '#d6a436'], [1, '#0f4f57']],
-      marker: { line: { width: 0.35, color: 'rgba(0,0,0,.35)' } },
-      colorbar: { title: metricLabel(metric), thickness: 12, len: 0.72 },
-    };
-    const layout = { ...plotLayout(''), margin: { l: 0, r: 0, t: 0, b: 0 }, geo: { projection: { type: 'mercator' }, fitbounds: 'locations', visible: false, bgcolor: 'rgba(0,0,0,0)' } };
-    Plotly.react('familyMap', [trace], layout, plotConfig());
+    const valuesById = new Map(features.map((f, i) => [f.properties.territory_id, metricValue(rows[i], metric)]));
+    renderGeoMap('familyMap', features, valuesById, metric, year);
   }
 
   function renderLineChart(divId, metricA, metricB, names, title) {
@@ -263,6 +362,7 @@
   }
 
   function chartReady(id) {
+    if (id === 'familyMap') return Boolean(document.querySelector('#familyMap .geo-map svg path'));
     return Boolean(document.querySelector(`#${id} .main-svg`));
   }
 
@@ -284,6 +384,10 @@
       subjectCount: state.subjects.length,
       chartIds,
       renderedCharts: chartIds.filter(chartReady),
+      mapEngine: state.mapStats.engine,
+      mapRenderedPaths: state.mapStats.renderedPaths,
+      mapValueCount: state.mapStats.valueCount,
+      mapDomain: state.mapStats.domain,
       topTableRows: el('topRegionsTable')?.querySelectorAll('tbody tr').length || 0,
       territoryTableRows: el('territoryTable')?.querySelectorAll('tbody tr').length || 0,
       kpiScenarioText: el('kpiScenario')?.textContent || '',

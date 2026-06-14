@@ -67,7 +67,7 @@ geo = json.loads((ROOT/'docs'/'data'/'abortions_subjects.geojson').read_text(enc
 if len(geo.get('features') or []) < 80:
     fail('geojson содержит слишком мало субъектов')
 js = (ROOT/'docs'/'assets'/'js'/'abortions.js').read_text(encoding='utf-8')
-for token in ['window.AbortionsModule', 'getState', 'runtimeExternalFetch', 'renderedCharts']:
+for token in ['window.AbortionsModule', 'getState', 'runtimeExternalFetch', 'renderedCharts', 'mapEngine', 'mapRenderedPaths', 'mapValueCount', 'mapDomain']:
     if token not in js:
         fail(f'в abortions.js нет проверочного контракта {token}')
 conn = sqlite3.connect(ROOT/'docs'/'data'/'abortions.sqlite')

@@ -1,2 +1,325 @@
-:root{--ts-bg:#0f4f55;--ts-gold:#d8a238;--ts-paper:#fffaf0;--ts-ink:#111820;--ts-muted:#6d675a;--ts-line:rgba(216,162,56,.35);--ts-red:#b94b4b}.abortions-page .abortion-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:12px 0 4px}.abortions-page .abortion-controls label{font-weight:800;color:#184a50;font-size:13px;text-transform:uppercase;letter-spacing:.04em}.abortions-page .abortion-controls select{width:100%;margin-top:6px;border:1px solid var(--ts-line);border-radius:14px;padding:11px 12px;background:#fff;color:#102327;font-weight:700}.abortions-page .abortion-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}.abortions-page .abortion-kpi{background:#fff;border:1px solid rgba(216,162,56,.28);border-radius:18px;padding:16px}.abortions-page .abortion-kpi span{display:block;color:var(--ts-muted);font-size:12px;text-transform:uppercase;font-weight:900;letter-spacing:.06em}.abortions-page .abortion-kpi b{display:block;font-size:28px;color:#0f4f55;margin-top:6px;line-height:1}.abortions-page .abortion-kpi small{display:block;color:#797267;font-weight:700;margin-top:7px}.abortions-page .abortion-map-wrap{position:relative;min-height:520px;border-radius:22px;overflow:hidden;background:linear-gradient(145deg,#f7efdf,#ffffff);border:1px solid rgba(216,162,56,.28)}.abortions-page .abortion-map{width:100%;height:520px;display:block}.abortions-page .abortion-map path{stroke:#fff;stroke-width:.75;cursor:pointer;transition:.15s}.abortions-page .abortion-map path:hover{stroke:#111;stroke-width:1.6;filter:brightness(.96)}.abortions-page .abortion-map path.selected{stroke:#101820;stroke-width:2.2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}.abortions-page .abortion-map-legend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;color:#6e665b;font-size:13px;font-weight:800}.abortions-page .legend-gradient{width:180px;height:12px;border-radius:999px;background:linear-gradient(90deg,#fff3d6,#e0a84b,#b94b4b);border:1px solid rgba(0,0,0,.12)}.abortions-page .chart-svg{width:100%;height:360px;display:block;background:#fff;border-radius:22px;border:1px solid rgba(216,162,56,.26)}.abortions-page .mini-table{width:100%;border-collapse:collapse;background:#fff;border-radius:18px;overflow:hidden}.abortions-page .mini-table th,.abortions-page .mini-table td{padding:10px 12px;border-bottom:1px solid #efe7d8;text-align:right}.abortions-page .mini-table th:first-child,.abortions-page .mini-table td:first-child{text-align:left}.abortions-page .mini-table th{background:#f4ead7;color:#0f4f55;font-size:12px;text-transform:uppercase;letter-spacing:.05em}.abortions-page .abortion-note{font-size:13px;color:#756d61;font-weight:700;line-height:1.45}.abortions-page .abortion-method{margin-top:18px}.abortions-page .abortion-method summary{cursor:pointer;font-weight:900;color:#0f4f55}.abortions-page .abortions-mode-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.abortions-page .mode-chip{border:1px solid var(--ts-line);background:#fff;border-radius:999px;padding:8px 12px;font-weight:900;color:#0f4f55;cursor:pointer}.abortions-page .mode-chip.active{background:var(--ts-gold);border-color:var(--ts-gold);color:#171103}.abortions-page .abortions-tooltip{position:absolute;z-index:20;background:#0c343a;color:#fff;padding:10px 12px;border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.3);font-size:13px;pointer-events:none;max-width:260px;display:none}.abortions-page .abortions-tooltip b{color:#f5d596}.abortions-page .abortion-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.abortions-page .abortion-pills span{background:#fff;border:1px solid rgba(216,162,56,.35);border-radius:999px;padding:8px 10px;font-size:12px;font-weight:900;color:#0f4f55}.abortions-page .download-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.abortions-page .download-row a{border:1px solid rgba(216,162,56,.55);background:#fff;border-radius:14px;padding:10px 13px;font-weight:900;color:#0f4f55;text-decoration:none}.abortions-page .download-row a:hover{background:#f4ead7}@media (max-width:1000px){.abortions-page .abortion-controls,.abortions-page .abortion-summary{grid-template-columns:1fr 1fr}.abortions-page .abortion-map-wrap{min-height:420px}.abortions-page .abortion-map{height:420px}}@media (max-width:640px){.abortions-page .abortion-controls,.abortions-page .abortion-summary{grid-template-columns:1fr}.abortions-page .chart-svg{height:320px}.abortions-page .abortion-map{height:360px}.abortions-page .abortion-map-wrap{min-height:360px}}
-.abortions-page .plot-box{width:100%;min-height:370px}.abortions-page .map-plot{min-height:520px}.abortions-page .small-plot{min-height:370px}.abortions-page .data-table{width:100%;border-collapse:collapse;margin-top:14px}.abortions-page .data-table th,.abortions-page .data-table td{padding:10px 12px;border-bottom:1px solid rgba(216,162,56,.22);text-align:left}.abortions-page .data-table th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#0f4f55;background:#f7eedc}.abortions-page .data-table td.num,.abortions-page .data-table th.num{text-align:right}.abortions-page .download-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}.abortions-page .download-row a{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;background:#0f4f55;color:#fff;text-decoration:none;font-weight:900}.abortions-page .download-row a:hover{filter:brightness(1.08)}.abortions-page .grid.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.abortions-page .abortion-note{font-weight:700;color:#615b50}.abortions-page .abortion-method summary{font-weight:900;color:#0f4f55;cursor:pointer}.abortions-page .abortion-method p{line-height:1.65;color:#362f25}.abortions-page .abortions-hero-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.abortions-page .abortions-purpose{margin-top:18px}@media(max-width:1100px){.abortions-page .grid.three{grid-template-columns:1fr}.abortions-page .abortions-hero-kpis{grid-template-columns:1fr}.abortions-page .plot-box{min-height:370px}.abortions-page .map-plot{min-height:420px}}
+:root {
+  --ts-bg: #0f4f55;
+  --ts-gold: #d8a238;
+  --ts-paper: #fffaf0;
+  --ts-ink: #111820;
+  --ts-muted: #6d675a;
+  --ts-line: rgba(216,162,56,.35);
+  --ts-red: #b94b4b;
+}
+
+.abortions-page h1,
+.abortions-page h2,
+.abortions-page h3,
+.abortions-page .kpi-value,
+.abortions-page .abortion-kpi b {
+  overflow-wrap: anywhere;
+}
+
+.abortions-page .abortions-hero {
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, .82fr);
+}
+
+.abortions-page .abortions-hero-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  min-width: 0;
+}
+
+.abortions-page .abortions-hero-kpis .kpi-card {
+  min-width: 0;
+  padding: 22px 20px;
+}
+
+.abortions-page .abortions-hero-kpis .kpi-value {
+  font-size: clamp(31px, 3.1vw, 48px);
+  white-space: normal;
+}
+
+.abortions-page .abortions-purpose {
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.abortions-page .abortions-purpose h2,
+.abortions-page .abortions-purpose .lead,
+.abortions-page .abortions-purpose .text-note {
+  color: var(--tg-cream);
+}
+
+.abortions-page .abortions-purpose .lead {
+  max-width: 980px;
+}
+
+.abortions-page .abortion-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 12px 0 4px;
+}
+
+.abortions-page .abortion-controls .control {
+  min-width: 0;
+}
+
+.abortions-page .abortion-controls label {
+  font-weight: 800;
+  color: #184a50;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.abortions-page .abortion-controls select {
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--ts-line);
+  border-radius: 14px;
+  padding: 11px 12px;
+  background: #fff;
+  color: #102327;
+  font-weight: 700;
+}
+
+.abortions-page .abortion-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.abortions-page .abortion-kpi {
+  background: #fff;
+  border: 1px solid rgba(216,162,56,.28);
+  border-radius: 18px;
+  padding: 16px;
+  min-width: 0;
+}
+
+.abortions-page .abortion-kpi span {
+  display: block;
+  color: var(--ts-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.abortions-page .abortion-kpi b {
+  display: block;
+  font-size: clamp(23px, 2.2vw, 30px);
+  color: #0f4f55;
+  margin-top: 6px;
+  line-height: 1.08;
+}
+
+.abortions-page .abortion-kpi small {
+  display: block;
+  color: #625b50;
+  font-weight: 700;
+  margin-top: 7px;
+}
+
+.abortions-page .plot-box {
+  width: 100%;
+  min-height: 370px;
+}
+
+.abortions-page .map-plot {
+  min-height: 520px;
+}
+
+.abortions-page .small-plot {
+  min-height: 370px;
+}
+
+.abortions-page .geo-map {
+  width: 100%;
+  min-height: 520px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fff8e7 0%, #fff4dc 100%);
+  border: 1px solid rgba(216,162,56,.24);
+  overflow: hidden;
+}
+
+.abortions-page .geo-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+}
+
+.abortions-page .geo-map path {
+  cursor: pointer;
+  transition: filter .15s ease, stroke-width .15s ease;
+}
+
+.abortions-page .geo-map path:hover,
+.abortions-page .geo-map path:focus {
+  filter: brightness(.93);
+  stroke: #102f36;
+  stroke-width: 1.2;
+  outline: none;
+}
+
+.abortions-page .geo-map .no-data {
+  fill: #dfd8c9;
+}
+
+.abortions-page .map-legend-local {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  color: #526468;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.abortions-page .map-legend-ramp {
+  width: 190px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: linear-gradient(90deg, #f8e6b4, #d6a436, #0f4f57);
+}
+
+.abortions-page .data-table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+.abortions-page .data-table th,
+.abortions-page .data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(216,162,56,.22);
+  text-align: left;
+}
+
+.abortions-page .data-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #0f4f55;
+  background: #f7eedc;
+}
+
+.abortions-page .data-table td.num,
+.abortions-page .data-table th.num {
+  text-align: right;
+}
+
+.abortions-page .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(216,162,56,.22);
+  border-radius: 14px;
+  background: #fff;
+  margin-top: 14px;
+}
+
+.abortions-page .download-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.abortions-page .download-row a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #0f4f55;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.abortions-page .download-row a:hover {
+  filter: brightness(1.08);
+}
+
+.abortions-page .grid.three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.abortions-page .abortion-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.abortions-page .abortion-pills span {
+  background: #fff;
+  border: 1px solid rgba(216,162,56,.35);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #0f4f55;
+}
+
+.abortions-page .abortion-note {
+  font-weight: 700;
+  color: #615b50;
+  line-height: 1.45;
+}
+
+.abortions-page .abortion-method summary {
+  font-weight: 900;
+  color: #0f4f55;
+  cursor: pointer;
+}
+
+.abortions-page .abortion-method p {
+  line-height: 1.65;
+  color: #362f25;
+}
+
+@media (max-width: 1260px) {
+  .abortions-page .abortions-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .abortions-page .abortions-hero-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .abortions-page .grid.three {
+    grid-template-columns: 1fr;
+  }
+
+  .abortions-page .abortion-controls,
+  .abortions-page .abortion-summary {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .abortions-page .abortion-controls,
+  .abortions-page .abortion-summary,
+  .abortions-page .abortions-hero-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .abortions-page .map-plot,
+  .abortions-page .geo-map,
+  .abortions-page .geo-map svg {
+    min-height: 380px;
+  }
+
+  .abortions-page .data-table {
+    min-width: 520px;
+  }
+}

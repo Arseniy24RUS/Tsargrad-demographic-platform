@@ -11,7 +11,7 @@
 - Блок ВЦИОМ-2025 подключён к СКР через явный контейнер `vciom2025Mount`.
 - `policyStartDragHandle` отсутствует, `policyLagDragBand` сохранён, `SkrModule.getState().interactionMode === "lag-band"`.
 - `family.html` и `abortions.html` используют локальные JSON/GeoJSON/SQLite/CSV и имеют `FamilyModule.getState()` / `AbortionsModule.getState()`.
-- Для Plotly-картограмм новых страниц локализован `world_110m.json`, поэтому нет runtime-запросов к `cdn.plot.ly`.
+- Картограммы новых страниц строятся как локальные SVG из GeoJSON; для карт нет runtime-запросов к `cdn.plot.ly` или другим внешним гео-источникам.
 - Новых runtime-библиотек, CDN, удалённых шрифтов и внешних изображений не добавлено.
 
 ## Проверки
@@ -25,7 +25,7 @@
 - `python scripts/check_abortions_module.py` — пройдено.
 - `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh` — пройдено.
 - `python scripts/audit_all.py` — пройдено.
-- `npm run test:smoke` — 42 теста пройдены.
+- `npm run test:smoke` — 55 тестов пройдены, включая full-page visual QA новых страниц.
 
 ## Ограничения
 
