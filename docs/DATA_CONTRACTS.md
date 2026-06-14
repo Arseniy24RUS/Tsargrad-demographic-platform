@@ -233,3 +233,47 @@
 ```
 
 Страница `abortions.html` также использует `abortions_subjects.geojson`, `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json` и `abortions_join_audit.csv`. Карта строится локальным SVG-движком; `AbortionsModule.getState()` отдаёт `mapEngine: "svg-geojson"`, число путей, число значений и домен шкалы.
+
+## `docs/data/infrastructure/`
+
+Подробный контракт: `docs/methodology/DATA_CONTRACT_INFRASTRUCTURE.md`.
+
+Минимальные требования runtime:
+
+```json
+{
+  "regions_summary.json": {
+    "metadata": {
+      "runtime_external_fetch": false,
+      "feature_counts": {}
+    },
+    "country": {
+      "regions": 85,
+      "settlements": 155741,
+      "avg_score": 0
+    },
+    "regions": []
+  },
+  "by_region/*.json": {
+    "summary": {},
+    "municipalities": [],
+    "settlements": [
+      {
+        "i": "region_slug_id",
+        "n": "Название",
+        "lat": 0,
+        "lon": 0,
+        "p": 0,
+        "s": 0,
+        "e": 0,
+        "so": 0,
+        "cc": "A",
+        "c": [],
+        "dk": []
+      }
+    ]
+  }
+}
+```
+
+Страница `infrastructure.html` использует локальную canvas-карту, три локальных Plotly-графика и отдаёт `InfrastructureModule.getState()` со статусом загрузки, выбранным регионом, фильтрами, числом точек карты, списком графиков, количеством регионов/поселений, счётчиками инфраструктурных слоёв и `runtimeExternalFetch:false`.

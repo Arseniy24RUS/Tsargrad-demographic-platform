@@ -5,12 +5,13 @@ const pages = [
   { path: '/index.html', title: 'Россия 2050', slug: '00-home' },
   { path: '/skr.html', title: 'СКР', slug: '01-skr' },
   { path: '/settlement.html', title: 'Расселение', slug: '02-settlement' },
-  { path: '/estate.html', title: 'Усадьба', slug: '03-estate' },
-  { path: '/capital.html', title: 'Маткапитал', slug: '04-capital' },
-  { path: '/mortgage.html', title: 'Ипотека', slug: '05-mortgage' },
-  { path: '/payments.html', title: 'Выплаты', slug: '06-payments' },
-  { path: '/family.html', title: 'Семья', slug: '07-family' },
-  { path: '/abortions.html', title: 'Аборты', slug: '08-abortions' }
+  { path: '/infrastructure.html', title: 'Инфраструктура', slug: '03-infrastructure' },
+  { path: '/estate.html', title: 'Усадьба', slug: '04-estate' },
+  { path: '/capital.html', title: 'Маткапитал', slug: '05-capital' },
+  { path: '/mortgage.html', title: 'Ипотека', slug: '06-mortgage' },
+  { path: '/payments.html', title: 'Выплаты', slug: '07-payments' },
+  { path: '/family.html', title: 'Семья', slug: '08-family' },
+  { path: '/abortions.html', title: 'Аборты', slug: '09-abortions' }
 ];
 
 const forbiddenText = [
@@ -86,6 +87,7 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('body')).toContainText('Малоэтажная и многодетная Россия');
     await expect(page.locator('nav a', { hasText: 'Главная' })).toHaveCount(0);
     await expect(page.locator('nav a[href="skr.html"]')).toContainText('СКР');
+    await expect(page.locator('nav a[href="infrastructure.html"]')).toContainText('Инфраструктура');
     await expect(page.locator('a.brand').first()).toHaveAttribute('href', /index\.html/);
     await page.goto('/index.html', { waitUntil: 'networkidle' });
     await expect(page.locator('body')).toContainText('Малоэтажная и многодетная Россия');
@@ -191,6 +193,47 @@ test.describe('самодостаточный релиз', () => {
     const downloadPromise = page.waitForEvent('download');
     await page.locator('#downloadSettlementCsv').click();
     await downloadPromise;
+    await expectCleanRuntime(runtime);
+  });
+
+  test('Инфраструктура: карта, графики, фильтры и паспорт поселения работают локально', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/infrastructure.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.InfrastructureModule?.getState?.().loaded);
+    await expect(page.locator('#infraMapCanvas')).toBeVisible();
+    for (const selector of ['#infraClassChart .main-svg', '#infraMunicipalChart .main-svg', '#infraComponentsChart .main-svg']) {
+      await expect(page.locator(selector).first()).toBeVisible();
+    }
+    const initial = await page.evaluate(() => window.InfrastructureModule.getState());
+    expect(initial.runtimeExternalFetch).toBe(false);
+    expect(initial.regionCount).toBe(85);
+    expect(initial.countrySettlements).toBe(155741);
+    expect(initial.chartCount).toBe(3);
+    expect(initial.renderedCharts).toEqual(expect.arrayContaining(['infraClassChart', 'infraMunicipalChart', 'infraComponentsChart']));
+    expect(initial.featureCounts.roads).toBeGreaterThan(1000000);
+    expect(initial.featureCounts.education).toBeGreaterThan(10000);
+    expect(initial.mapMode).toContain('картограмма');
+
+    await page.locator('#infraSubject').selectOption('moskovskaya_oblast');
+    await page.waitForFunction(() => window.InfrastructureModule.getState().selectedRegion === 'moskovskaya_oblast' && window.InfrastructureModule.getState().filteredSettlements > 0);
+    const region = await page.evaluate(() => window.InfrastructureModule.getState());
+    expect(region.selectedSubject).toBe('Московская область');
+    expect(region.filteredSettlements).toBeGreaterThan(1000);
+    expect(region.renderedPoints).toBeGreaterThan(1000);
+    expect(region.mapMode).toContain('поселения');
+
+    await page.locator('#infraClassFilter').selectOption('A');
+    await page.locator('#infraSearch').fill('Королев');
+    await page.waitForFunction(() => window.InfrastructureModule.getState().filteredSettlements >= 1);
+    const filtered = await page.evaluate(() => window.InfrastructureModule.getState());
+    expect(filtered.classFilter).toBe('A');
+    expect(filtered.filteredSettlements).toBeGreaterThanOrEqual(1);
+    expect(filtered.filteredSettlements).toBeLessThan(region.filteredSettlements);
+
+    const box = await page.locator('#infraMapCanvas').boundingBox();
+    expect(box).toBeTruthy();
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await expect(page.locator('#infraSettlementPassport')).toBeVisible();
     await expectCleanRuntime(runtime);
   });
 

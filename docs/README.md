@@ -11,6 +11,7 @@ python -m http.server 8000 --directory docs
 - `index.html` — главная
 - `skr.html` — `СКР`
 - `settlement.html` — `Расселение`
+- `infrastructure.html` — `Инфраструктура`
 - `estate.html` — `Усадьба`
 - `capital.html` — `Маткапитал`
 - `mortgage.html` — `Ипотека`

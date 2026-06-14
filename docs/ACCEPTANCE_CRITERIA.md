@@ -5,9 +5,9 @@
 ## Архитектура
 
 - [ ] Публикуемая директория — `docs/`.
-- [ ] Есть 9 HTML-страниц: `index.html`, `skr.html`, `settlement.html`, `estate.html`, `capital.html`, `mortgage.html`, `payments.html`, `family.html`, `abortions.html`.
+- [ ] Есть 10 HTML-страниц: `index.html`, `skr.html`, `settlement.html`, `infrastructure.html`, `estate.html`, `capital.html`, `mortgage.html`, `payments.html`, `family.html`, `abortions.html`.
 - [ ] Навигация единая на всех страницах.
-- [ ] Навигация содержит восемь разделов без пункта `Главная` и без отвлекающих числовых префиксов.
+- [ ] Навигация содержит девять разделов без пункта `Главная` и без отвлекающих числовых префиксов.
 - [ ] Логотип и название сайта на всех страницах ведут на `index.html`.
 - [ ] Runtime-зависимостей от внешнего интернета нет.
 - [ ] Все библиотеки лежат в `docs/assets/vendor/`.
@@ -46,6 +46,14 @@
 - [ ] Нет главного термина `дезурбанизация` в основном UI.
 - [ ] Базовая численность берётся из локального авторского прогноза.
 - [ ] Эффект структуры расселения называется оценкой, а не полным прогнозом.
+
+## Страница Инфраструктура
+
+- [ ] Runtime использует только локальные файлы `docs/data/infrastructure/`.
+- [ ] Есть 85 региональных JSON и 155 741 поселение с координатами, индексом, классом готовности и расстояниями до инфраструктурных слоёв.
+- [ ] Инфраструктурные расстояния рассчитаны офлайн по локальной PBF-выгрузке открытых геоданных; PBF и промежуточные слои не входят в runtime.
+- [ ] Карта поселений строится локальным canvas-кодом, графики — локальным Plotly.
+- [ ] `window.InfrastructureModule.getState()` возвращает статус загрузки, число регионов/поселений, выбранный регион, фильтры, число точек карты, графики и `runtimeExternalFetch:false`.
 
 ## Страница Усадьба
 
@@ -98,6 +106,7 @@
 - [ ] `python scripts/check_no_external_runtime.py` проходит.
 - [ ] `python scripts/check_russian_ui.py` проходит.
 - [ ] `python scripts/check_nav_numbering.py` проходит.
+- [ ] `python scripts/check_infrastructure_module.py` проходит.
 - [ ] `python scripts/check_family_module.py` проходит.
 - [ ] `python scripts/check_abortions_module.py` проходит.
 - [ ] `bash scripts/check_js_syntax.sh` проходит.

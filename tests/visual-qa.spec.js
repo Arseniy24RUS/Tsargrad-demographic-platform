@@ -6,12 +6,13 @@ const pages = [
   { path: '/index.html', slug: '00-home', title: 'Россия 2050' },
   { path: '/skr.html', slug: '01-skr', title: 'СКР' },
   { path: '/settlement.html', slug: '02-settlement', title: 'Расселение' },
-  { path: '/estate.html', slug: '03-estate', title: 'Усадьба' },
-  { path: '/capital.html', slug: '04-capital', title: 'Маткапитал' },
-  { path: '/mortgage.html', slug: '05-mortgage', title: 'Ипотека' },
-  { path: '/payments.html', slug: '06-payments', title: 'Выплаты' },
-  { path: '/family.html', slug: '07-family', title: 'Семья' },
-  { path: '/abortions.html', slug: '08-abortions', title: 'Аборты' }
+  { path: '/infrastructure.html', slug: '03-infrastructure', title: 'Инфраструктура' },
+  { path: '/estate.html', slug: '04-estate', title: 'Усадьба' },
+  { path: '/capital.html', slug: '05-capital', title: 'Маткапитал' },
+  { path: '/mortgage.html', slug: '06-mortgage', title: 'Ипотека' },
+  { path: '/payments.html', slug: '07-payments', title: 'Выплаты' },
+  { path: '/family.html', slug: '08-family', title: 'Семья' },
+  { path: '/abortions.html', slug: '09-abortions', title: 'Аборты' }
 ];
 
 const viewports = [
@@ -39,6 +40,26 @@ const fullPageTargets = [
       ['footer', '.footer']
     ],
     contrastSelectors: ['.hero-card h2', '.metric .num', '.metric .label', '.section-title h2', '.module h3', '.module p', '.quote h3', '.quote p']
+  },
+  {
+    slug: 'infrastructure',
+    path: '/infrastructure.html',
+    title: 'Инфраструктура',
+    waitFor: () => window.InfrastructureModule?.getState?.().loaded,
+    moduleName: 'InfrastructureModule',
+    mapId: 'infraMapCanvas',
+    mapKind: 'canvas',
+    sections: [
+      ['hero', '.infrastructure-hero'],
+      ['purpose', '.infrastructure-purpose'],
+      ['controls', 'section.card.white:has-text("Параметры карты")'],
+      ['map', '.map-card'],
+      ['passport', '.infra-passport-card'],
+      ['charts', 'section.grid.three'],
+      ['rating', 'section.grid.two .card.white:has-text("Рейтинг субъектов")'],
+      ['method', 'section.grid.two .card.white:has-text("Методика")']
+    ],
+    contrastSelectors: ['.infrastructure-hero h1', '.infrastructure-hero .lead', '.infrastructure-purpose h2', '.infrastructure-purpose .lead', '.infra-kpi b', '.infra-kpi small', '.map-card h2']
   },
   {
     slug: 'family',
@@ -305,6 +326,22 @@ async function captureAndCheckSections(page, target, viewportName) {
 async function expectLocalGeoMap(page, target) {
   if (!target.mapId) return;
   const state = await page.evaluate((moduleName) => window[moduleName].getState(), target.moduleName);
+  if (target.mapKind === 'canvas') {
+    expect(state.runtimeExternalFetch, `${target.slug} runtime`).toBe(false);
+    expect(state.countrySettlements, `${target.slug} settlements`).toBe(155741);
+    expect(state.regionCount, `${target.slug} regions`).toBe(85);
+    expect(state.chartCount, `${target.slug} charts`).toBeGreaterThanOrEqual(3);
+    const canvas = await page.locator(`#${target.mapId}`).evaluate(el => {
+      const box = el.getBoundingClientRect();
+      const ctx = el.getContext('2d');
+      const data = ctx.getImageData(Math.floor(el.width / 2), Math.floor(el.height / 2), 1, 1).data;
+      return { width: box.width, height: box.height, pixelAlpha: data[3] };
+    });
+    expect(canvas.width, `${target.slug} canvas width`).toBeGreaterThan(320);
+    expect(canvas.height, `${target.slug} canvas height`).toBeGreaterThan(300);
+    expect(canvas.pixelAlpha, `${target.slug} canvas nonblank`).toBeGreaterThan(0);
+    return;
+  }
   expect(state.mapEngine, `${target.slug} map engine`).toBe('svg-geojson');
   expect(state.mapRenderedPaths, `${target.slug} rendered map paths`).toBeGreaterThanOrEqual(83);
   expect(state.mapValueCount, `${target.slug} map values`).toBeGreaterThanOrEqual(80);
@@ -626,6 +663,7 @@ test.describe('Playwright visual QA', () => {
     expect(hrefs).toEqual([
       'skr.html',
       'settlement.html',
+      'infrastructure.html',
       'estate.html',
       'capital.html',
       'mortgage.html',

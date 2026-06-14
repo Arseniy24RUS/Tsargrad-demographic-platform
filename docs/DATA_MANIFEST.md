@@ -24,6 +24,16 @@ ETL: `scripts/build_author_forecasts.py`, `scripts/build_skr_monthly_forecast.py
 
 ETL: `scripts/build_settlement_tfr_forecasts.py`.
 
+## Инфраструктура
+
+- `infrastructure/regions_summary.json` — сводка страны, федеральных округов и субъектов для страницы `Инфраструктура`, `runtime_external_fetch:false`.
+- `infrastructure/by_region/*.json` — 85 региональных файлов с 155 741 поселением, координатами, населением, компонентами индекса, классом готовности и расстояниями до инфраструктурных слоёв.
+- `infrastructure/infrastructure_subjects.geojson` — локальная геометрия субъектов для canvas-картограммы.
+- `infrastructure/infrastructure_layers_catalog.json` — справочник инфраструктурных слоёв и методических ограничений, `runtime_external_fetch:false`.
+- `infrastructure/infrastructure_regions_summary.csv` и `infrastructure/infrastructure_data_manifest.json` — воспроизводимая сводка и паспорт набора данных.
+
+ETL: `data_pipeline/infrastructure/02_extract_osm_layers.py` извлекает признаки из локального `russia-latest.osm.pbf`, `data_pipeline/infrastructure/03_compute_distances.py` пересчитывает расстояния и runtime JSON. PBF и промежуточные CSV в runtime не входят.
+
 ## Основные runtime-файлы
 
 - `tfr_data.json` — месячные ряды СКР, метаданные целей и справочник территорий.
@@ -32,6 +42,7 @@ ETL: `scripts/build_settlement_tfr_forecasts.py`.
 - `subjects.geojson` — локальная геометрия субъектов для SVG-карты СКР.
 - `settlement_data.json` — ряды расселения, городского и сельского СКР.
 - `settlement_tfr_forecast_2050.json` — модельный прогноз городского/сельского СКР и базовой общей траектории для сценария расселения.
+- `infrastructure/regions_summary.json` и `infrastructure/by_region/*.json` — локальный расчёт инфраструктурной готовности поселений.
 - `estate_inputs.json` — параметры усадьбы: состав семьи, этажность, нормы площади, стоимость строительства, участок, отступы, параметры пилота и флаг отдельного дома для прародителей.
 - `matcapital_inputs.json` — сценарные параметры Маткапитала: действующие суммы сертификатов, эквивалент 2007 года в средних зарплатах, подход по стоимости комфортного жилья, охват, использование сертификатов и конверсия в потенциальное рождение. Метаданные: `runtime_external_fetch:false`, горизонт 2050.
 - `mortgage_inputs.json` — параметры ипотеки.

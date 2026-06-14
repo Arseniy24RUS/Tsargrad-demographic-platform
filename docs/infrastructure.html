@@ -1,0 +1,120 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Инфраструктура | Россия 2050</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=infra1" />
+  <link rel="stylesheet" href="assets/css/infrastructure.css?v=infra1" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body data-page="infrastructure" class="infrastructure-page">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="Главная страница платформы">
+        <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
+        <div>
+          <div class="brand-title">Россия 2050</div>
+          <div class="brand-subtitle">расчётная демографическая платформа</div>
+        </div>
+      </a>
+            <nav class="nav-tabs" aria-label="Разделы платформы">
+        <a href="skr.html">СКР</a>
+        <a href="settlement.html">Расселение</a>
+        <a class="active" href="infrastructure.html">Инфраструктура</a>
+        <a href="estate.html">Усадьба</a>
+        <a href="capital.html">Маткапитал</a>
+        <a href="mortgage.html">Ипотека</a>
+        <a href="payments.html">Выплаты</a>
+        <a href="family.html">Семья</a>
+        <a href="abortions.html">Аборты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero infrastructure-hero">
+      <div class="hero-main">
+        <div class="section-number">03 · Инженерная и социальная готовность поселений</div>
+        <h1>Инфраструктура: где можно запускать малоэтажное семейное расселение</h1>
+        <p class="lead">Модуль связывает населённые пункты, их численность и демографическую динамику с предварительной оценкой инфраструктурной готовности: дороги, сети, связь, образование, медицина и повседневные сервисы.</p>
+      </div>
+      <div class="hero-kpis infrastructure-hero-kpis">
+        <div class="kpi-card gold"><div class="kpi-label">поселений в базе</div><div class="kpi-value" id="infraHeroSettlements">—</div><div class="kpi-note">точки с координатами</div></div>
+        <div class="kpi-card"><div class="kpi-label">средний индекс</div><div class="kpi-value" id="infraHeroScore">—</div><div class="kpi-note">0–100 баллов</div></div>
+        <div class="kpi-card"><div class="kpi-label">класс A+B</div><div class="kpi-value" id="infraHeroReadyShare">—</div><div class="kpi-note">население в зонах готовности</div></div>
+      </div>
+    </section>
+
+    <section class="card teal infrastructure-purpose">
+      <div class="card-title-row">
+        <div>
+          <h2>Зачем этот модуль платформе</h2>
+          <p class="lead compact">Если семьи должны переходить в малоэтажную, пригородную и сельскую среду, государству нужно видеть, где уже есть базовая инфраструктура, где требуется быстрая достройка, а где запуск ИЖС без крупных вложений нецелесообразен.</p>
+        </div>
+        <span class="pill inverted">дороги · сети · школа · медицина · связь</span>
+      </div>
+      <div class="infrastructure-pills"><span>координаты поселений</span><span>субъекты РФ</span><span>муниципалитеты</span><span>индекс 0–100</span><span>паспорт поселения</span><span>локальные открытые геоданные</span></div>
+    </section>
+
+    <section class="card white">
+      <div class="card-title-row">
+        <div>
+          <h2>Параметры карты</h2>
+          <div class="text-note">Выберите субъект и муниципальное образование. Размер точки зависит от численности населения, цвет — от выбранного индекса.</div>
+        </div>
+        <span class="pill" id="infraActivePill">Россия</span>
+      </div>
+      <div class="infrastructure-controls">
+        <div class="control"><label for="infraFederalDistrict">Федеральный округ</label><select id="infraFederalDistrict"></select></div>
+        <div class="control"><label for="infraSubject">Субъект РФ</label><select id="infraSubject"></select></div>
+        <div class="control"><label for="infraMunicipal">Муниципальное образование</label><select id="infraMunicipal"></select></div>
+        <div class="control"><label for="infraIndicator">Показатель цвета</label><select id="infraIndicator"><option value="s">Индекс готовности</option><option value="e">Инженерная готовность</option><option value="so">Социальная доступность</option><option value="dm">Демографическая значимость</option><option value="q">Достоверность данных</option></select></div>
+        <div class="control"><label for="infraClassFilter">Класс готовности</label><select id="infraClassFilter"><option value="all">Все классы</option><option value="A">A · готово</option><option value="B">B · быстрая достройка</option><option value="C">C · инженерный дефицит</option><option value="D">D · низкая готовность</option></select></div>
+        <div class="control"><label for="infraSearch">Поиск поселения</label><input id="infraSearch" type="search" placeholder="Название поселения" /></div>
+      </div>
+      <div class="infrastructure-summary">
+        <div class="infra-kpi"><span>Поселений</span><b id="infraKpiSettlements">—</b><small>в выбранном контуре</small></div>
+        <div class="infra-kpi"><span>Население</span><b id="infraKpiPopulation">—</b><small>по данным ВПН-2020</small></div>
+        <div class="infra-kpi"><span>Средний индекс</span><b id="infraKpiScore">—</b><small>взвешено по населению</small></div>
+        <div class="infra-kpi"><span>Главный дефицит</span><b id="infraKpiDeficit">—</b><small>по частоте среди поселений</small></div>
+      </div>
+      <p class="source-note">Текущая сборка содержит реальные координаты, численность, демографические признаки и расстояния до инфраструктурных объектов, рассчитанные офлайн по локальной выгрузке открытых геоданных.</p>
+      <div class="download-row"><a href="data/infrastructure/infrastructure_regions_summary.csv" download>Скачать сводную таблицу</a><a href="data/infrastructure/infrastructure_data_manifest.json" download>Скачать паспорт данных</a></div>
+    </section>
+
+    <section class="grid two infrastructure-main-grid">
+      <div class="card white map-card">
+        <div class="card-title-row"><div><h2>Карта поселений</h2><div class="text-note">Нажмите на точку, чтобы открыть паспорт населённого пункта. Для всей России показана картограмма субъектов; точки загружаются после выбора субъекта.</div></div><span class="pill" id="infraMapModePill">картограмма</span></div>
+        <div class="infra-map-wrap">
+          <canvas id="infraMapCanvas" class="infra-map-canvas" width="1000" height="620" aria-label="Карта инфраструктурной готовности поселений"></canvas>
+          <div id="infraTooltip" class="infra-tooltip"></div>
+        </div>
+        <div class="infra-map-legend"><span>низкая</span><span class="legend-gradient"></span><span>высокая</span><span class="legend-size">размер точки = численность</span></div>
+      </div>
+      <aside class="card white infra-passport-card">
+        <h2>Паспорт поселения</h2>
+        <div id="infraSettlementPassport" class="settlement-passport empty">Выберите субъект и нажмите на точку поселения на карте.</div>
+      </aside>
+    </section>
+
+    <section class="grid three">
+      <div class="card white"><h2>Классы готовности</h2><div id="infraClassChart" class="plot-box small-plot"></div></div>
+      <div class="card white"><h2>Муниципальный рейтинг</h2><div id="infraMunicipalChart" class="plot-box small-plot"></div></div>
+      <div class="card white"><h2>Состав индекса</h2><div id="infraComponentsChart" class="plot-box small-plot"></div></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card white"><h2>Рейтинг субъектов</h2><p class="text-note">Субъекты отсортированы по среднему индексу готовности, взвешенному по численности населения поселений.</p><div class="table-scroll"><table id="infraRegionTable" class="data-table"><thead><tr><th>Субъект</th><th class="num">Индекс</th><th class="num">Поселений</th><th class="num">Население</th></tr></thead><tbody></tbody></table></div></div>
+      <div class="card white"><h2>Методика и следующий шаг</h2><details class="infra-method" open><summary>Как читать индекс</summary><p>Индекс 0–100 показывает готовность поселения к малоэтажному семейному расселению. Он учитывает расстояния до дорог, школ, медицины, энергетики, связи, водных объектов и иных сервисов, а также демографическую значимость поселения.</p></details><details class="infra-method"><summary>Почему показатель требует управленческой проверки</summary><p>Открытые геоданные дают сопоставимую картину по всей стране, но полнота слоёв газа, воды, канализации и связи неодинакова. Поэтому низкий балл означает зону проверки и приоритизации, а не автоматическое решение об отсутствии объекта.</p></details></div>
+    </section>
+  </main>
+
+  <footer class="footer">Расчётная платформа для экспертного обсуждения. Инфраструктурный модуль предназначен для выбора территорий, где проект малоэтажного семейного расселения может быть запущен первым.</footer>
+
+  <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/infrastructure.js?v=infra1"></script>
+</body>
+</html>
+

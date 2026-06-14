@@ -11,6 +11,7 @@ commands = [
     [sys.executable, "scripts/check_matcapital_module.py"],
     [sys.executable, "scripts/check_family_module.py"],
     [sys.executable, "scripts/check_abortions_module.py"],
+    [sys.executable, "scripts/check_infrastructure_module.py"],
     [sys.executable, "scripts/check_settlement_forecast.py"],
     [sys.executable, "scripts/check_json.py"],
     [sys.executable, "scripts/check_no_external_runtime.py"],

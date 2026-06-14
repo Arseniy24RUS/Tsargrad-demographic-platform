@@ -1,0 +1,11 @@
+{
+  "roads": {"title":"Дороги", "filters":["highway=*"], "notes":"для релиза разделить дороги с твёрдым покрытием по surface и tracktype"},
+  "education": {"title":"Образование", "filters":["amenity=school", "amenity=kindergarten", "amenity=college"]},
+  "medical": {"title":"Медицина", "filters":["amenity=hospital", "amenity=clinic", "amenity=doctors", "amenity=pharmacy"]},
+  "power": {"title":"Электроснабжение", "filters":["power=line", "power=substation", "power=transformer"]},
+  "gas": {"title":"Газификация", "filters":["man_made=pipeline", "substance=gas"], "notes":"OSM использовать только как proxy; приоритет официальному статусу газификации"},
+  "water": {"title":"Водоснабжение", "filters":["man_made=water_tower", "man_made=water_works", "pipeline=*", "substance=water"]},
+  "sewer": {"title":"Водоотведение", "filters":["man_made=wastewater_plant", "pipeline=*", "substance=sewage"]},
+  "digital": {"title":"Связь и интернет", "filters":["man_made=mast", "tower:type=communication", "communication=*"]},
+  "services": {"title":"Повседневные сервисы", "filters":["amenity=post_office", "amenity=marketplace", "shop=supermarket", "amenity=community_centre", "amenity=library", "leisure=sports_centre"]}
+}

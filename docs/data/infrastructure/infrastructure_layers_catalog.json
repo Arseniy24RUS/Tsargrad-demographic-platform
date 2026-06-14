@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "title": "Слои инфраструктуры",
+    "generated_at": "2026-06-14",
+    "runtime_external_fetch": false
+  },
+  "layers": [
+    {
+      "key": "roads",
+      "title": "Дороги",
+      "osm_tags": [
+        "highway=*",
+        "surface=*"
+      ],
+      "role": "инженерная",
+      "confidence_after_osm": "средняя/высокая"
+    },
+    {
+      "key": "power",
+      "title": "Электроснабжение",
+      "osm_tags": [
+        "power=line",
+        "power=substation",
+        "power=transformer"
+      ],
+      "role": "инженерная",
+      "confidence_after_osm": "средняя"
+    },
+    {
+      "key": "gas",
+      "title": "Газификация",
+      "osm_tags": [
+        "man_made=pipeline + substance=gas",
+        "pipeline=*"
+      ],
+      "role": "инженерная",
+      "confidence_after_osm": "низкая/средняя; приоритет официальному статусу газификации"
+    },
+    {
+      "key": "water",
+      "title": "Водоснабжение",
+      "osm_tags": [
+        "man_made=water_tower",
+        "man_made=water_works",
+        "waterway=*",
+        "pipeline + substance=water"
+      ],
+      "role": "инженерная",
+      "confidence_after_osm": "низкая/средняя"
+    },
+    {
+      "key": "sewer",
+      "title": "Водоотведение",
+      "osm_tags": [
+        "man_made=wastewater_plant",
+        "pipeline + substance=sewage"
+      ],
+      "role": "инженерная",
+      "confidence_after_osm": "низкая"
+    },
+    {
+      "key": "digital",
+      "title": "Связь и интернет",
+      "osm_tags": [
+        "man_made=mast",
+        "tower:type=communication",
+        "communication=*"
+      ],
+      "role": "инженерная",
+      "confidence_after_osm": "низкая/средняя"
+    },
+    {
+      "key": "education",
+      "title": "Образование",
+      "osm_tags": [
+        "amenity=school",
+        "amenity=kindergarten",
+        "amenity=college"
+      ],
+      "role": "социальная",
+      "confidence_after_osm": "средняя"
+    },
+    {
+      "key": "medical",
+      "title": "Медицина",
+      "osm_tags": [
+        "amenity=hospital",
+        "amenity=clinic",
+        "amenity=doctors",
+        "amenity=pharmacy"
+      ],
+      "role": "социальная",
+      "confidence_after_osm": "средняя"
+    },
+    {
+      "key": "services",
+      "title": "Повседневные сервисы",
+      "osm_tags": [
+        "amenity=post_office",
+        "amenity=marketplace",
+        "shop=supermarket",
+        "amenity=community_centre",
+        "amenity=library",
+        "leisure=sports_centre"
+      ],
+      "role": "социальная",
+      "confidence_after_osm": "средняя"
+    }
+  ],
+  "weights": {
+    "roads": 0.14,
+    "power": 0.13,
+    "gas": 0.12,
+    "water": 0.1,
+    "sewer": 0.09,
+    "digital": 0.1,
+    "education": 0.1,
+    "medical": 0.09,
+    "services": 0.06,
+    "demographic": 0.07
+  },
+  "class_labels": {
+    "A": "готово к семейному расселению",
+    "B": "быстрая достройка",
+    "C": "инженерный дефицит",
+    "D": "низкая готовность"
+  },
+  "important_note": "В текущей сборке компоненты являются предварительными прокси-оценками по данным о населённых пунктах. Реальные расстояния до инфраструктуры рассчитываются офлайн-ETL из OSM PBF и официальных источников."
+}
