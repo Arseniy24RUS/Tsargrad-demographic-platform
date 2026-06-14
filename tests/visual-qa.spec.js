@@ -513,6 +513,7 @@ test.describe('Playwright visual QA', () => {
     await expect(page.locator('#estateWorkModule')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText('микробизнес');
     await expect(page.locator('#estateAdults')).toHaveAttribute('max', '2');
+    await expect(page.locator('#estateFloors')).toHaveAttribute('max', '3');
     await expect(page.locator('.estate-stepper-grid .estate-stepper-card')).toHaveCount(4);
     await expect(page.locator('.estate-stepper-echo')).toHaveCount(5);
     for (let i = 0; i < 5; i++) await expect(page.locator('.estate-stepper-echo').nth(i)).toBeHidden();
@@ -551,7 +552,7 @@ test.describe('Playwright visual QA', () => {
     expect(withSeparateElders.treeCollisionCount).toBe(0);
 
     const floorStates = [];
-    for (const floor of [1, 2, 3, 4]) {
+    for (const floor of [1, 2, 3]) {
       await page.locator('#estateFloors').evaluate((el, value) => {
         el.value = String(value);
         el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -564,6 +565,13 @@ test.describe('Playwright visual QA', () => {
       expectEstateFrontView(state, `estate floor ${floor}`);
       floorStates.push(state);
     }
+    await page.locator('#estateFloors').evaluate(el => {
+      el.value = '4';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    await expect(page.locator('#estateFloors')).toHaveValue('3');
+    const clampedFloorState = await page.evaluate(() => window.Estate3D.getViewState());
+    expect(clampedFloorState.floors).toBe(3);
     for (let i = 1; i < floorStates.length; i++) {
       expect(floorStates[i].mainHouseBoundsSize.y, `floor ${i+1} height grows`).toBeGreaterThan(floorStates[i-1].mainHouseBoundsSize.y);
       expect(floorStates[i].mainFootprintM2, `floor ${i+1} footprint shrinks`).toBeLessThan(floorStates[i-1].mainFootprintM2);

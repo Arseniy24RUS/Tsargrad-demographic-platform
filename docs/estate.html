@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Усадьба | Россия 2050</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=20260613-estate-groundplan1" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260614-estate-controls1" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <link rel="shortcut icon" href="favicon.ico" />
 </head>
@@ -37,8 +37,26 @@
         <p class="lead">трёхмерный конструктор показывает, как стартовый дом дополняется детскими и старшими модулями, а экономический блок считает площадь, стоимость, субсидию и выгоду совместного проживания в расчёте на одного человека.</p>
       </div>
       <div class="hero-kpis">
-        <div class="kpi-card gold"><div class="kpi-label">целевая норма</div><div class="kpi-value" id="estateHeroAreaNorm">30 м²</div><div class="kpi-note">на одного члена семьи</div></div>
-        <div class="kpi-card"><div class="kpi-label">расчётная стоимость</div><div class="kpi-value" id="estateHeroPriceM2">116 тыс. ₽</div><div class="kpi-note">за 1 м², сценарный норматив</div></div>
+        <div class="kpi-card gold estate-hero-control-card">
+          <div class="kpi-label">целевая норма</div>
+          <div class="estate-hero-stepper">
+            <button class="estate-hero-stepper-btn" type="button" data-hero-step-target="estateHeroAreaNorm" data-step-delta="-1" aria-label="уменьшить целевую норму">‹</button>
+            <input id="estateHeroAreaNorm" class="estate-hero-input" type="number" min="18" max="50" step="1" inputmode="numeric" aria-label="целевая норма площади">
+            <button class="estate-hero-stepper-btn" type="button" data-hero-step-target="estateHeroAreaNorm" data-step-delta="1" aria-label="увеличить целевую норму">›</button>
+            <span class="estate-hero-unit">м²</span>
+          </div>
+          <div class="kpi-note">на одного члена семьи</div>
+        </div>
+        <div class="kpi-card estate-hero-control-card">
+          <div class="kpi-label">расчётная стоимость</div>
+          <div class="estate-hero-stepper estate-hero-stepper-price">
+            <button class="estate-hero-stepper-btn" type="button" data-hero-step-target="estateHeroPriceM2" data-step-delta="-1" aria-label="уменьшить расчётную стоимость">‹</button>
+            <input id="estateHeroPriceM2" class="estate-hero-input" type="text" inputmode="decimal" data-min="30" data-max="200" data-step="0.5" aria-label="расчётная стоимость строительства">
+            <button class="estate-hero-stepper-btn" type="button" data-hero-step-target="estateHeroPriceM2" data-step-delta="1" aria-label="увеличить расчётную стоимость">›</button>
+            <span class="estate-hero-unit">тыс. ₽</span>
+          </div>
+          <div class="kpi-note">за 1 м², сценарный норматив</div>
+        </div>
       </div>
     </section>
 
@@ -103,7 +121,7 @@
               <label for="estateFloors">Этажность дома</label>
               <div class="estate-stepper-control">
                 <button class="estate-stepper-btn" type="button" data-step-target="estateFloors" data-step-delta="-1" aria-label="уменьшить этажность дома">‹</button>
-                <input id="estateFloors" class="estate-stepper-input" type="number" min="1" max="4" step="1" inputmode="numeric">
+                <input id="estateFloors" class="estate-stepper-input" type="number" min="1" max="3" step="1" inputmode="numeric">
                 <button class="estate-stepper-btn" type="button" data-step-target="estateFloors" data-step-delta="1" aria-label="увеличить этажность дома">›</button>
               </div>
               <div class="text-note estate-stepper-echo" hidden><b id="estateFloorsLabel">—</b></div>
@@ -159,7 +177,7 @@
         <h2>Настройки субсидии и пилота</h2>
         <div class="grid two" style="grid-template-columns:1fr 1fr;gap:14px;margin:0">
           <div class="control"><label for="estateAreaNorm">Норма площади, м²/чел.</label><input id="estateAreaNorm" type="number" min="18" max="50" step="1"></div>
-          <div class="control"><label for="estatePriceM2">Стоимость строительства 1 м², ₽</label><input id="estatePriceM2" type="number" min="30000" step="1000"></div>
+          <div class="control"><label for="estatePriceM2">Стоимость строительства 1 м², ₽</label><input id="estatePriceM2" type="number" min="30000" step="500"></div>
           <div class="control"><label for="estateChildSubsidy">Субсидия детских модулей, %</label><input id="estateChildSubsidy" type="number" min="0" max="100" step="5"></div>
           <div class="control"><label for="estateElderSubsidy">Субсидия старших модулей, %</label><input id="estateElderSubsidy" type="number" min="0" max="100" step="5"></div>
           <div class="control"><label for="estateInfraCost">Инженерная подготовка, ₽</label><input id="estateInfraCost" type="number" min="0" step="100000"></div>
@@ -189,7 +207,7 @@
   <footer class="footer">Расчётная платформа для экспертного обсуждения. Модуль «Усадьба» показывает сценарную оценку стоимости, субсидии и экономии совместного проживания.</footer>
   <script src="assets/vendor/plotly/plotly.min.js"></script>
   <script src="assets/js/common.js"></script>
-  <script src="assets/js/estate.js?v=20260613-estate-groundplan1"></script>
-  <script type="module" src="assets/js/estate3d.js?v=20260613-estate-groundplan1"></script>
+  <script src="assets/js/estate.js?v=20260614-estate-controls1"></script>
+  <script type="module" src="assets/js/estate3d.js?v=20260614-estate-controls1"></script>
 </body>
 </html>

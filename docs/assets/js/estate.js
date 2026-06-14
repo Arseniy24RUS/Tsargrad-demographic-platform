@@ -26,6 +26,17 @@ function estatePeopleWord(n){ return `${fmtNum(n,0)} чел.`; }
 function estateMeters(x){ return `${fmtNum(x,1)} м`; }
 function estateFloorsWord(n){ return `${fmtNum(n,0)} ${n===1?'этаж':'этажа'}`; }
 function yesNo(value){ return value ? 'да' : 'нет'; }
+function parseEstateNumber(value){
+  const normalized = String(value ?? '').replace(/\s+/g, '').replace(',', '.');
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : NaN;
+}
+
+function formatEstatePriceThousands(priceM2){
+  const thousands = priceM2 / 1000;
+  const decimals = Math.abs(thousands - Math.round(thousands)) < 0.001 ? 0 : 1;
+  return fmtNum(thousands, decimals);
+}
 
 function readClampedNumber(id, fallback){
   const node = el(id);
@@ -47,8 +58,8 @@ function getEstateParams(){
     elders:readClampedNumber('estateElders',d.elders),
     floors:readClampedNumber('estateFloors',d.floors),
     separateElderHouse:el('estateSeparateElderHouse').checked,
-    areaNormM2:+el('estateAreaNorm').value,
-    priceM2:+el('estatePriceM2').value,
+    areaNormM2:readClampedNumber('estateAreaNorm',d.areaNormM2),
+    priceM2:readClampedNumber('estatePriceM2',d.priceM2),
     coreAreaM2:d.coreAreaM2,
     childModuleAreaM2:d.childModuleAreaM2,
     elderModuleAreaM2:d.elderModuleAreaM2,
@@ -178,8 +189,8 @@ function updateEstateKpis(m,p){
   el('estateEldersLabel').textContent = p.elders;
   el('estateFloorsLabel').textContent = estateFloorsWord(p.floors);
   el('estateSiteAreaLabel').textContent = `${fmtNum(p.siteAreaSotka,0)} сот.`;
-  el('estateHeroAreaNorm').textContent = `${fmtNum(p.areaNormM2,0)} м²`;
-  el('estateHeroPriceM2').textContent = `${fmtNum(p.priceM2/1000,0)} тыс. ₽`;
+  el('estateHeroAreaNorm').value = String(fmtNum(p.areaNormM2,0)).replace(/\s+/g, '');
+  el('estateHeroPriceM2').value = formatEstatePriceThousands(p.priceM2);
   el('estateModulePill').textContent = `${estateFloorsWord(p.floors)} · ${zoneCount(m)} зон`;
   el('estateAreaPill').textContent = estateM2(m.totalArea);
   el('estateSavingsPill').textContent = m.savingsAbs>0 ? `${fmtPct(m.savingsPct,1)} экономии` : 'нет экономии';
@@ -347,6 +358,55 @@ function resetEstateValues(){
   updateEstate();
 }
 
+function syncEstateHeroAreaNorm(){
+  const hero = el('estateHeroAreaNorm');
+  const lower = el('estateAreaNorm');
+  const min = Number(hero.min || lower.min || 18);
+  const max = Number(hero.max || lower.max || 50);
+  const value = clamp(Math.round(parseEstateNumber(hero.value) || estateData.defaults.areaNormM2), min, max);
+  hero.value = String(value);
+  lower.value = String(value);
+  updateEstate();
+}
+
+function syncEstateHeroPrice(){
+  const hero = el('estateHeroPriceM2');
+  const lower = el('estatePriceM2');
+  const min = Number(hero.dataset.min || 30);
+  const max = Number(hero.dataset.max || 200);
+  const step = Number(hero.dataset.step || 0.5) || 0.5;
+  const fallback = estateData.defaults.priceM2 / 1000;
+  const raw = parseEstateNumber(hero.value);
+  const roundedThousands = Math.round(clamp(Number.isFinite(raw) ? raw : fallback, min, max) / step) * step;
+  const priceM2 = Math.round(clamp(roundedThousands, min, max) * 1000);
+  lower.value = String(priceM2);
+  hero.value = formatEstatePriceThousands(priceM2);
+  updateEstate();
+}
+
+function adjustEstateHeroStepper(button){
+  const input = el(button.dataset.heroStepTarget);
+  if(!input) return;
+  const delta = Number(button.dataset.stepDelta || 0);
+  if(input.id === 'estateHeroPriceM2'){
+    const step = Number(input.dataset.step || 0.5) || 0.5;
+    const min = Number(input.dataset.min || 30);
+    const max = Number(input.dataset.max || 200);
+    const raw = parseEstateNumber(input.value);
+    const fallback = estateData.defaults.priceM2 / 1000;
+    const next = clamp((Number.isFinite(raw) ? raw : fallback) + delta * step, min, max);
+    input.value = formatEstatePriceThousands(Math.round(next * 1000));
+  } else {
+    const step = Number(input.step || 1) || 1;
+    const min = input.min === '' ? -Infinity : Number(input.min);
+    const max = input.max === '' ? Infinity : Number(input.max);
+    const raw = parseEstateNumber(input.value);
+    input.value = String(clamp((Number.isFinite(raw) ? raw : 0) + delta * step, min, max));
+  }
+  input.dispatchEvent(new Event('input', { bubbles:true }));
+  input.focus();
+}
+
 function adjustEstateStepper(button){
   const input = el(button.dataset.stepTarget);
   if(!input) return;
@@ -364,7 +424,10 @@ async function initEstate(){
   estateData=await loadJSON('data/estate_inputs.json');
   resetEstateValues();
   estateIds.forEach(id=>el(id).addEventListener('input', updateEstate));
+  el('estateHeroAreaNorm').addEventListener('input', syncEstateHeroAreaNorm);
+  el('estateHeroPriceM2').addEventListener('input', syncEstateHeroPrice);
   document.querySelectorAll('[data-step-target]').forEach(b=>b.addEventListener('click',()=>adjustEstateStepper(b)));
+  document.querySelectorAll('[data-hero-step-target]').forEach(b=>b.addEventListener('click',()=>adjustEstateHeroStepper(b)));
   el('estateReset').addEventListener('click', resetEstateValues);
   el('estateDownloadCsv').addEventListener('click',()=>downloadCsv('усадьба_сценарий.csv', window._estateRows||[]));
   el('estateViewReset').addEventListener('click',()=>{ if(window.Estate3D) window.Estate3D.resetView(); });

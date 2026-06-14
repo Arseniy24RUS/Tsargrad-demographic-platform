@@ -147,11 +147,48 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('label[for="estateElders"]')).toContainText('Прародители рядом');
     await expect(page.locator('label[for="estateSiteArea"]')).toContainText('Участок (соток)');
     await expect(page.locator('#estateAdults')).toHaveAttribute('max', '2');
+    await expect(page.locator('#estateFloors')).toHaveAttribute('max', '3');
     await expect(page.locator('#estateSeparateElderHouse')).not.toBeChecked();
     await expect(page.locator('[data-estate-preset]')).toHaveCount(0);
     await expect(page.locator('#estateWorkModule')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText('микробизнес');
     await page.waitForFunction(() => window.Estate3D?.getViewState?.());
+    await expect(page.locator('#estateHeroAreaNorm')).toHaveValue('30');
+    await expect(page.locator('#estateHeroPriceM2')).toHaveValue('83,5');
+    await expect(page.locator('#estateAreaNorm')).toHaveValue('30');
+    await expect(page.locator('#estatePriceM2')).toHaveValue('83500');
+    const defaultEstate = await page.evaluate(() => window._estateModel?.p);
+    expect(defaultEstate.priceM2).toBe(83500);
+    expect(defaultEstate.areaNormM2).toBe(30);
+    const beforeHeroNorm = await page.evaluate(() => ({
+      area: document.querySelector('#estateKpiArea')?.textContent,
+      table: document.querySelector('#estateTable')?.innerText
+    }));
+    await page.locator('[data-hero-step-target="estateHeroAreaNorm"][data-step-delta="1"]').click();
+    await expect(page.locator('#estateHeroAreaNorm')).toHaveValue('31');
+    await expect(page.locator('#estateAreaNorm')).toHaveValue('31');
+    await expect(page.locator('#estateKpiArea')).not.toHaveText(beforeHeroNorm.area);
+    const afterHeroNorm = await page.evaluate(() => ({
+      params: window._estateModel?.p,
+      table: document.querySelector('#estateTable')?.innerText
+    }));
+    expect(afterHeroNorm.params.areaNormM2).toBe(31);
+    expect(afterHeroNorm.table).not.toBe(beforeHeroNorm.table);
+    const beforeHeroPrice = await page.evaluate(() => ({
+      total: document.querySelector('#estateTotalCost')?.textContent,
+      table: document.querySelector('#estateTable')?.innerText
+    }));
+    await page.locator('#estateHeroPriceM2').fill('90');
+    await page.locator('#estateHeroPriceM2').dispatchEvent('input');
+    await expect(page.locator('#estateHeroPriceM2')).toHaveValue('90');
+    await expect(page.locator('#estatePriceM2')).toHaveValue('90000');
+    await expect(page.locator('#estateTotalCost')).not.toHaveText(beforeHeroPrice.total);
+    const afterHeroPrice = await page.evaluate(() => ({
+      params: window._estateModel?.p,
+      table: document.querySelector('#estateTable')?.innerText
+    }));
+    expect(afterHeroPrice.params.priceM2).toBe(90000);
+    expect(afterHeroPrice.table).not.toBe(beforeHeroPrice.table);
     const initialState = await page.evaluate(() => window.Estate3D?.getViewState?.());
     expect(initialState.separateElderHouse).toBe(false);
     expect(initialState.elderHousePresent).toBe(false);
@@ -163,15 +200,16 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('#estateSiteArea')).toHaveValue('13');
     await setRange(page, '#estateChildren', 6);
     await setRange(page, '#estateFloors', 4);
+    await expect(page.locator('#estateFloors')).toHaveValue('3');
     await page.locator('#estateSeparateElderHouse').check();
     await page.waitForTimeout(500);
     const elderHouseState = await page.evaluate(() => window.Estate3D?.getViewState?.());
+    expect(elderHouseState.floors).toBe(3);
     expect(elderHouseState.separateElderHouse).toBe(true);
     expect(elderHouseState.elderHousePresent).toBe(true);
     expect(elderHouseState.fenceGateCount).toBe(2);
     expect(elderHouseState.treeCollisionCount).toBe(0);
     expect(elderHouseState.minTreeClearanceM).toBeGreaterThan(0);
-    await expect(page.locator('#estateFloors')).toHaveValue('4');
     await expect(page.locator('#estateKpiArea')).not.toHaveText('—');
     const canvasCount = await page.locator('#estateThree canvas').count();
     const hint = await page.locator('#estateViewHint').innerText();

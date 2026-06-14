@@ -367,8 +367,13 @@ function clearGroup(g){
   }
 }
 
+function clampEstateFloors(value){
+  return Math.max(1, Math.min(3, Number(value) || 1));
+}
+
 function update(m,p){
   if(!estateGroup) return;
+  p = Object.assign({}, p, { floors:clampEstateFloors(p.floors) });
   currentModel = {m,p};
   clearGroup(estateGroup);
   dimensionLayer = new THREE.Group();
@@ -444,7 +449,7 @@ function makeMainHouse(m,p){
   const g = new THREE.Group();
   const w = m.mainHouseWidthM;
   const d = m.mainHouseDepthM;
-  const floors = Math.max(1, Math.min(4, p.floors));
+  const floors = Math.max(1, Math.min(3, p.floors));
   const floorH = p.floorHeightM;
   const h = floors * floorH;
   const roofH = Math.max(1.25, Math.min(2.4, w * 0.12));
@@ -669,7 +674,7 @@ function addDimensionOverlay(layer, m, p, elderLayout){
     addDimensionLine(layer, new THREE.Vector3(elderLayout.x-elderLayout.w/2,yGround,elderLayout.z-elderLayout.d/2-0.55), new THREE.Vector3(elderLayout.x+elderLayout.w/2,yGround,elderLayout.z-elderLayout.d/2-0.55), `${formatPlanNumber(elderLayout.w)} м`, {scale:1.05, labelSide:'front', guideToZ:elderLayout.z-elderLayout.d/2});
     addDimensionLine(layer, new THREE.Vector3(elderLayout.x+elderLayout.w/2+0.55,yGround,elderLayout.z-elderLayout.d/2), new THREE.Vector3(elderLayout.x+elderLayout.w/2+0.55,yGround,elderLayout.z+elderLayout.d/2), `${formatPlanNumber(elderLayout.d)} м`, {scale:1.02, labelSide:'right'});
   }
-  const floors = Math.max(1, Math.min(4, p.floors));
+  const floors = Math.max(1, Math.min(3, p.floors));
   const roofH = Math.max(1.25, Math.min(2.4, m.mainHouseWidthM * 0.12));
   const houseHeight = floors * p.floorHeightM + 0.28 + roofH;
   addDimensionLine(layer, new THREE.Vector3(-m.mainHouseWidthM/2-1.15,0.05,-m.mainHouseDepthM/2-0.36), new THREE.Vector3(-m.mainHouseWidthM/2-1.15,houseHeight,-m.mainHouseDepthM/2-0.36), `высота ${formatPlanNumber(houseHeight)} м`, {scale:1.02, vertical:true});
