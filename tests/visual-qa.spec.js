@@ -31,6 +31,25 @@ async function guardRuntime(page) {
   return { external, consoleErrors };
 }
 
+async function dragPolicyStartToMonth(page, month) {
+  await page.locator('#policyStartDragHandle').waitFor({ state: 'visible' });
+  await page.locator('#tfrChart').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(100);
+  const plotBox = await page.locator('#tfrChart .nsewdrag').boundingBox();
+  const handleBox = await page.locator('#policyStartDragHandle').boundingBox();
+  expect(plotBox, 'область графика СКР').toBeTruthy();
+  expect(handleBox, 'ручка запуска мер').toBeTruthy();
+  const axisStart = Date.UTC(2025, 0, 1);
+  const axisEnd = Date.UTC(2050, 11, 1);
+  const target = Date.UTC(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1);
+  const x = plotBox.x + ((target - axisStart) / (axisEnd - axisStart)) * plotBox.width;
+  const y = plotBox.y + plotBox.height * 0.52;
+  await page.mouse.move(handleBox.x + handleBox.width / 2, handleBox.y + handleBox.height * 0.52);
+  await page.mouse.down();
+  await page.mouse.move(x, y, { steps: 16 });
+  await page.mouse.up();
+}
+
 async function visibleChartOverlapReport(page) {
   return page.evaluate(() => {
     const visible = el => {
@@ -350,14 +369,21 @@ test.describe('Playwright visual QA', () => {
     expect(map.width).toBeGreaterThan(760);
     expect(map.height).toBeGreaterThan(280);
 
-    await page.locator('#policyMonthChartRange').evaluate(el => {
-      el.value = '43';
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    });
+    await expect(page.locator('#policyMonthRange')).toHaveCount(0);
+    await expect(page.locator('#policyMonthChartRange')).toHaveCount(0);
+    await page.waitForFunction(() => window.SkrModule?.getState?.().policyStart === '2026-06');
+    const initialPolicy = await page.evaluate(() => window.SkrModule.getState());
+    expect(initialPolicy.effectMonth).toBe('2027-03');
+    await dragPolicyStartToMonth(page, '2030-01');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2030-01');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2030-10');
     await expect(page.locator('#policyMonthLabel')).toContainText('2030-01');
     await expect(page.locator('#chartPolicyMonthLabel')).toContainText('2030-01');
     await expect(page.locator('#effectMonthLabel')).toContainText('2030-10');
     await expect(page.locator('#chartEffectMonthLabel')).toContainText('2030-10');
+    await page.locator('#policyStartDragHandle').focus();
+    await page.keyboard.press('Home');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
   });
 
   test('Расселение: прогноз городского и сельского СКР использует локальную модель', async ({ page }) => {

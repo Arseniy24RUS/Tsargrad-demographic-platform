@@ -76,6 +76,13 @@ test.describe('самодостаточный релиз', () => {
     const runtime = await guardRuntime(page);
     await page.goto('/index.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#tfrChart .main-svg').first()).toBeVisible();
+    await expect(page.locator('#policyMonthRange')).toHaveCount(0);
+    await expect(page.locator('#policyMonthChartRange')).toHaveCount(0);
+    await expect(page.locator('#policyStartDragHandle')).toBeVisible();
+    await page.waitForFunction(() => window.SkrModule?.getState?.().policyStart === '2026-06');
+    const policyInitial = await page.evaluate(() => window.SkrModule.getState());
+    expect(policyInitial.effectMonth).toBe('2027-03');
+    expect(policyInitial.policyIndex).toBe(0);
     await expect(page.locator('[data-detail-section]').first()).toBeHidden();
 
     await page.locator('[data-view-mode="detail"]').click();
@@ -90,8 +97,22 @@ test.describe('самодостаточный релиз', () => {
     await page.locator('#territorySelect').selectOption({ index: 2 });
     await expect(page.locator('#selectedKpiTitle')).toContainText('субъект');
 
+    await page.locator('#policyStartDragHandle').focus();
+    await page.keyboard.press('ArrowRight');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-07');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2027-04');
+    await page.keyboard.press('Home');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
+
     await page.locator('#policy2030Btn').click();
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2030-01');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2030-10');
     await expect(page.locator('#policyMonthLabel')).toContainText('2030-01');
+    await expect(page.locator('#effectMonthLabel')).toContainText('2030-10');
+    await expect(page.locator('#policyStartDragHandle')).toHaveAttribute('aria-valuetext', /2030-01/);
+
+    await page.locator('#policyNowBtn').click();
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
     await expectCleanRuntime(runtime);
   });
 

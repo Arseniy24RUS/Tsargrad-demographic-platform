@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>СКР | Россия 2050</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260614-skr-drag2" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <link rel="shortcut icon" href="favicon.ico" />
 </head>
@@ -85,9 +85,12 @@
             <select id="territorySelect"></select>
           </div>
           <div class="control">
-            <label for="policyMonthRange">Месяц введения мер</label>
-            <input id="policyMonthRange" type="range" min="0" max="0" value="0" step="1" />
-            <div class="text-note">Ввод мер: <b id="policyMonthLabel">—</b>; начало демографического эффекта с учётом 9 месяцев: <b id="effectMonthLabel">—</b>.</div>
+            <label>Старт мер</label>
+            <div class="policy-status-row">
+              <span>ввод мер: <b id="policyMonthLabel">—</b></span>
+              <span>начало эффекта: <b id="effectMonthLabel">—</b></span>
+            </div>
+            <div class="text-note">Дата меняется золотой линией на графике или быстрыми кнопками ниже.</div>
           </div>
           <div class="btn-row">
             <button class="gold" id="policyNowBtn" type="button">с июня 2026</button>
@@ -113,22 +116,26 @@
       <div class="card-title-row">
         <div>
           <h2>СКР и требуемая траектория</h2>
-          <div class="text-note">Факт и инерционный прогноз не меняются. Ползунок меняет дату запуска мер, начало эффекта через 9 месяцев, требуемую траекторию и разрыв с планом.</div>
+          <div class="text-note">Факт и инерционный прогноз не меняются. Золотая линия на графике задаёт дату запуска мер; бирюзовая линия показывает начало эффекта через 9 месяцев.</div>
         </div>
         <span class="pill" id="activeTerritoryPill">Россия</span>
       </div>
-      <div class="chart-policy-control" aria-label="Управление датой запуска мер на графике">
+      <div class="chart-policy-control" aria-label="Даты запуска мер и начала эффекта">
         <div>
           <strong>Запуск мер</strong>
-          <span>начало эффекта рассчитывается через 9 месяцев</span>
+          <span>золотая линия задаёт дату; начало эффекта рассчитывается через 9 месяцев</span>
         </div>
-        <input id="policyMonthChartRange" type="range" min="0" max="0" value="0" step="1" />
         <div class="chart-policy-values">
           <span>ввод мер: <b id="chartPolicyMonthLabel">—</b></span>
           <span>начало эффекта: <b id="chartEffectMonthLabel">—</b></span>
         </div>
       </div>
-      <div id="tfrChart" class="chart tall"></div>
+      <div class="tfr-chart-wrap">
+        <div id="tfrChart" class="chart tall"></div>
+        <button id="policyStartDragHandle" class="policy-start-handle" type="button" tabindex="0" aria-label="Линия запуска мер">
+          <span class="policy-start-handle-label">запуск мер</span>
+        </button>
+      </div>
     </section>
 
     <section class="card teal rpn-hero-card">
@@ -265,6 +272,6 @@
 
   <script src="assets/vendor/plotly/plotly.min.js"></script>
   <script src="assets/js/common.js"></script>
-  <script src="assets/js/skr.js"></script>
+  <script src="assets/js/skr.js?v=20260614-skr-drag2"></script>
 </body>
 </html>
