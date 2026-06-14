@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>СКР | Россия 2050</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=20260614-skr-drag2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260614-skr-drag3" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <link rel="shortcut icon" href="favicon.ico" />
 </head>
@@ -116,14 +116,14 @@
       <div class="card-title-row">
         <div>
           <h2>СКР и требуемая траектория</h2>
-          <div class="text-note">Факт и инерционный прогноз не меняются. Золотая линия на графике задаёт дату запуска мер; бирюзовая линия показывает начало эффекта через 9 месяцев.</div>
+          <div class="text-note">Факт и инерционный прогноз не меняются. Перемещайте лаг-зону между пунктирными границами: левая граница — ввод мер, правая — начало эффекта через 9 месяцев.</div>
         </div>
         <span class="pill" id="activeTerritoryPill">Россия</span>
       </div>
       <div class="chart-policy-control" aria-label="Даты запуска мер и начала эффекта">
         <div>
-          <strong>Запуск мер</strong>
-          <span>золотая линия задаёт дату; начало эффекта рассчитывается через 9 месяцев</span>
+          <strong>Старт и лаг эффекта</strong>
+          <span>двигайте лаг-зону на графике; начало эффекта рассчитывается через 9 месяцев</span>
         </div>
         <div class="chart-policy-values">
           <span>ввод мер: <b id="chartPolicyMonthLabel">—</b></span>
@@ -132,9 +132,7 @@
       </div>
       <div class="tfr-chart-wrap">
         <div id="tfrChart" class="chart tall"></div>
-        <button id="policyStartDragHandle" class="policy-start-handle" type="button" tabindex="0" aria-label="Линия запуска мер">
-          <span class="policy-start-handle-label">запуск мер</span>
-        </button>
+        <button id="policyLagDragBand" class="policy-lag-band" type="button" tabindex="0" aria-label="Лаг-зона между вводом мер и началом эффекта"></button>
       </div>
     </section>
 
@@ -272,6 +270,6 @@
 
   <script src="assets/vendor/plotly/plotly.min.js"></script>
   <script src="assets/js/common.js"></script>
-  <script src="assets/js/skr.js?v=20260614-skr-drag2"></script>
+  <script src="assets/js/skr.js?v=20260614-skr-drag3"></script>
 </body>
 </html>

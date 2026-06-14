@@ -53,6 +53,34 @@
 }
 ```
 
+## `docs/data/skr_monthly_forecast_2050.json`
+
+```json
+{
+  "metadata": {
+    "runtime_external_fetch": false,
+    "horizon_month": "2050-12",
+    "first_forecast_month": "2026-06",
+    "source_files": [
+      "data/tfr_data.json",
+      "data/author_tfr_forecast_2050.json"
+    ]
+  },
+  "series": {
+    "terr_rf_bez_novyh_subektov": [
+      {
+        "date": "2026-06-01",
+        "month": "2026-06",
+        "mean": 1.36,
+        "lo": 1.34,
+        "hi": 1.37,
+        "source": "локальная помесячная интерполяция авторского прогноза"
+      }
+    ]
+  }
+}
+```
+
 ## `docs/data/territory_levels.json`
 
 ```json

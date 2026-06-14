@@ -10,11 +10,12 @@
 - `author_forecast_source/POP_wide_male_withMIG.xlsx` — локальная копия исходного файла численности, мужчины, с миграцией.
 - `author_forecast_source/POP_wide_female_withMIG.xlsx` — локальная копия исходного файла численности, женщины, с миграцией.
 - `author_tfr_forecast_2050.json` — runtime-ряд СКР по территориям, `runtime_external_fetch:false`.
+- `skr_monthly_forecast_2050.json` — помесячный runtime-прогноз СКР до `2050-12`, построенный из локального авторского годового прогноза и последнего фактического месяца, `runtime_external_fetch:false`.
 - `author_population_forecast_2050.json` — runtime-ряд численности по сценариям `noMIG` и `withMIG`, `runtime_external_fetch:false`.
 - `forecast_join_audit.json` и `forecast_join_audit.csv` — аудит сопоставления названий территорий.
 - `territory_levels.json` — классификация территорий для режимов Россия / федеральный округ / субъект РФ.
 
-ETL: `scripts/build_author_forecasts.py`.
+ETL: `scripts/build_author_forecasts.py`, `scripts/build_skr_monthly_forecast.py`.
 
 ## Прогноз расселения
 
@@ -26,6 +27,7 @@ ETL: `scripts/build_settlement_tfr_forecasts.py`.
 ## Основные runtime-файлы
 
 - `tfr_data.json` — месячные ряды СКР, метаданные целей и справочник территорий.
+- `skr_monthly_forecast_2050.json` — месячный прогноз СКР для основного графика страницы `СКР`; нужен, чтобы прогноз и требуемая траектория шли без годовых разрывов.
 - `subjects.geojson` — локальная геометрия субъектов для SVG-карты СКР.
 - `settlement_data.json` — ряды расселения, городского и сельского СКР.
 - `settlement_tfr_forecast_2050.json` — модельный прогноз городского/сельского СКР и базовой общей траектории для сценария расселения.

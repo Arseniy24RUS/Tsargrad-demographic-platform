@@ -31,22 +31,23 @@ async function guardRuntime(page) {
   return { external, consoleErrors };
 }
 
-async function dragPolicyStartToMonth(page, month) {
-  await page.locator('#policyStartDragHandle').waitFor({ state: 'visible' });
+async function dragPolicyLagBandToMonth(page, month) {
+  await page.locator('#policyLagDragBand').waitFor({ state: 'visible' });
   await page.locator('#tfrChart').scrollIntoViewIfNeeded();
   await page.waitForTimeout(100);
   const plotBox = await page.locator('#tfrChart .nsewdrag').boundingBox();
-  const handleBox = await page.locator('#policyStartDragHandle').boundingBox();
+  const bandBox = await page.locator('#policyLagDragBand').boundingBox();
   expect(plotBox, 'область графика СКР').toBeTruthy();
-  expect(handleBox, 'ручка запуска мер').toBeTruthy();
+  expect(bandBox, 'лаг-зона на графике СКР').toBeTruthy();
   const axisStart = Date.UTC(2025, 0, 1);
   const axisEnd = Date.UTC(2050, 11, 1);
   const target = Date.UTC(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1);
   const x = plotBox.x + ((target - axisStart) / (axisEnd - axisStart)) * plotBox.width;
   const y = plotBox.y + plotBox.height * 0.52;
-  await page.mouse.move(handleBox.x + handleBox.width / 2, handleBox.y + handleBox.height * 0.52);
+  const grabOffset = Math.min(6, Math.max(2, bandBox.width / 4));
+  await page.mouse.move(bandBox.x + grabOffset, bandBox.y + bandBox.height * 0.52);
   await page.mouse.down();
-  await page.mouse.move(x, y, { steps: 16 });
+  await page.mouse.move(x + grabOffset, y, { steps: 16 });
   await page.mouse.up();
 }
 
@@ -355,7 +356,7 @@ test.describe('Playwright visual QA', () => {
     }
   }
 
-  test('СКР: картограмма занимает рабочую область, а запуск мер синхронизирован с графиком', async ({ page }) => {
+  test('СКР: картограмма занимает рабочую область, а лаг-зона синхронизирована с графиком', async ({ page }) => {
     await page.goto('/index.html', { waitUntil: 'networkidle' });
     const map = await page.locator('#map svg').evaluate(svg => {
       const boxes = [...svg.querySelectorAll('path')].map(path => path.getBBox());
@@ -371,17 +372,50 @@ test.describe('Playwright visual QA', () => {
 
     await expect(page.locator('#policyMonthRange')).toHaveCount(0);
     await expect(page.locator('#policyMonthChartRange')).toHaveCount(0);
+    await expect(page.locator('#policyStartDragHandle')).toHaveCount(0);
+    await expect(page.locator('#policyLagDragBand')).toBeVisible();
+    await expect(page.locator('#tfrChart')).not.toContainText('запуск мер');
     await page.waitForFunction(() => window.SkrModule?.getState?.().policyStart === '2026-06');
     const initialPolicy = await page.evaluate(() => window.SkrModule.getState());
+    expect(initialPolicy.interactionMode).toBe('lag-band');
     expect(initialPolicy.effectMonth).toBe('2027-03');
-    await dragPolicyStartToMonth(page, '2030-01');
+    expect(initialPolicy.forecastMonthsAreContinuous).toBe(true);
+    expect(initialPolicy.targetTrajectoryStartMonth).toBe('2027-03');
+    await dragPolicyLagBandToMonth(page, '2030-01');
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2030-01');
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2030-10');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().targetTrajectoryStartMonth)).toBe('2030-10');
     await expect(page.locator('#policyMonthLabel')).toContainText('2030-01');
     await expect(page.locator('#chartPolicyMonthLabel')).toContainText('2030-01');
     await expect(page.locator('#effectMonthLabel')).toContainText('2030-10');
     await expect(page.locator('#chartEffectMonthLabel')).toContainText('2030-10');
-    await page.locator('#policyStartDragHandle').focus();
+    const traceCheck = await page.evaluate(() => {
+      const chart = document.getElementById('tfrChart');
+      const required = chart.data.find(trace => trace.name === 'Требуемая траектория России');
+      const forecast = chart.data.find(trace => trace.name === 'СКР прогноз — Россия');
+      const toMonth = value => {
+        const date = new Date(value);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      };
+      const finiteTargetIndex = required.y.findIndex(value => value !== null && value !== undefined && Number.isFinite(value));
+      let maxForecastGap = 0;
+      for (let i = 1; i < forecast.x.length; i++) {
+        const prev = new Date(forecast.x[i - 1]);
+        const next = new Date(forecast.x[i]);
+        maxForecastGap = Math.max(maxForecastGap, (next.getFullYear() - prev.getFullYear()) * 12 + next.getMonth() - prev.getMonth());
+      }
+      return {
+        firstTargetMonth: toMonth(required.x[finiteTargetIndex]),
+        maxForecastGap,
+        firstForecastMonth: toMonth(forecast.x[1]),
+        anchorMonth: toMonth(forecast.x[0])
+      };
+    });
+    expect(traceCheck.anchorMonth).toBe('2026-05');
+    expect(traceCheck.firstForecastMonth).toBe('2026-06');
+    expect(traceCheck.maxForecastGap).toBe(1);
+    expect(traceCheck.firstTargetMonth).toBe('2030-10');
+    await page.locator('#policyLagDragBand').focus();
     await page.keyboard.press('Home');
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
   });

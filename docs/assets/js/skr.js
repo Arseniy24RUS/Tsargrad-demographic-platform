@@ -3,7 +3,7 @@
 const skrState = {
   data:null, geo:null, rpn:null, rpnRegional:null, selected:'terr_rf_bez_novyh_subektov', map:null, layer:null,
   policyMonths:[], policyStart:null, policyIndex:0, highlightedLayer:null, analysisMode:'country',
-  policyPointerId:null
+  policyPointerId:null, monthlyForecast:null
 };
 
 const POLICY_START_MIN = '2026-06';
@@ -56,9 +56,35 @@ async function loadAuthorTfrForecast(){
   const forecast=await loadJSON('data/author_tfr_forecast_2050.json');
   return forecast.series || {};
 }
+async function loadSkrMonthlyForecast(){
+  const forecast=await loadJSON('data/skr_monthly_forecast_2050.json');
+  return {metadata:forecast.metadata || {}, series:forecast.series || {}};
+}
 function externalAnnualRowsFor(tid){
   if(!skrState.authorTfr) return null;
   return skrState.authorTfr[tid] || null;
+}
+function projectedMonthlyRowsFor(tid){
+  const rows=skrState.monthlyForecast?.series?.[tid];
+  if(!Array.isArray(rows) || !rows.length) return null;
+  return rows.map(d=>({
+    date:parseDate(d.date || `${d.month}-01`),
+    month:d.month,
+    mean:+d.mean,
+    lo:d.lo==null?+d.mean:+d.lo,
+    hi:d.hi==null?+d.mean:+d.hi,
+    source:d.source || 'локальный месячный прогноз'
+  })).filter(d=>d.month && Number.isFinite(d.mean));
+}
+function lastObservedTotalRow(tid){
+  return [...getMonthly(tid)].reverse().find(d=>d.tfr_total!==null && d.tfr_total!==undefined) || null;
+}
+function withObservedAnchor(tid, rows){
+  const last=lastObservedTotalRow(tid);
+  if(!last || !rows?.length) return rows || [];
+  if(rows[0].month===last.month) return rows;
+  const value=+last.tfr_total;
+  return [{date:parseDate(last.date), month:last.month, mean:value, lo:value, hi:value, source:'наблюдаемая точка привязки'}, ...rows];
 }
 function annualToMonthlyForecast(rows, monthly, endMonth){
   const lastObservedDate = monthly.length ? parseDate(monthly[monthly.length-1].date) : parseDate('2025-12-01');
@@ -73,9 +99,12 @@ function annualToMonthlyForecast(rows, monthly, endMonth){
 }
 function getTotalForecast(tid){
   const monthly=getMonthly(tid);
+  const projected=projectedMonthlyRowsFor(tid);
+  if(projected?.length) return withObservedAnchor(tid, projected);
   const ext=externalAnnualRowsFor(tid);
   if(ext) return annualToMonthlyForecast(ext, monthly, skrState.data.metadata.forecast_end_month);
-  return [];
+  const fallback=forecastTfr(monthly, 'tfr_total', skrState.data.metadata.forecast_end_month, 4.35);
+  return fallback.filter(d=>!monthly.length || d.date>=parseDate(monthly[monthly.length-1].date));
 }
 function forecastValueAt(forecast, month){
   const direct=forecast.find(x=>x.month===month);
@@ -142,16 +171,16 @@ function updatePolicyStatusLabels(effectMonth=effectMonthForPolicy()){
     if(el) el.textContent=value || '—';
   });
 }
-function updatePolicyHandleA11y(){
-  const handle=document.getElementById('policyStartDragHandle');
-  if(!handle || !skrState.policyMonths.length) return;
+function updatePolicyLagBandA11y(){
+  const band=document.getElementById('policyLagDragBand');
+  if(!band || !skrState.policyMonths.length) return;
   const idx=getPolicyIndex();
   const effectMonth=effectMonthForPolicy();
-  handle.setAttribute('role','slider');
-  handle.setAttribute('aria-valuemin','0');
-  handle.setAttribute('aria-valuemax',String(skrState.policyMonths.length-1));
-  handle.setAttribute('aria-valuenow',String(idx));
-  handle.setAttribute('aria-valuetext',`ввод мер ${skrState.policyStart}, начало эффекта ${effectMonth}`);
+  band.setAttribute('role','slider');
+  band.setAttribute('aria-valuemin','0');
+  band.setAttribute('aria-valuemax',String(skrState.policyMonths.length-1));
+  band.setAttribute('aria-valuenow',String(idx));
+  band.setAttribute('aria-valuetext',`ввод мер ${skrState.policyStart}, начало эффекта ${effectMonth}`);
 }
 function getTfrPlotRect(){
   const chart=document.getElementById('tfrChart');
@@ -168,24 +197,28 @@ function getTfrAxisRangeMs(){
   const end=axisRange?.[1] ? new Date(axisRange[1]).getTime() : parseDate(`${POLICY_AXIS_MAX}-01`).getTime();
   return [start, end];
 }
-function positionPolicyDragHandle(){
-  const handle=document.getElementById('policyStartDragHandle');
+function positionPolicyLagBand(){
+  const band=document.getElementById('policyLagDragBand');
   const wrap=document.querySelector('.tfr-chart-wrap');
   const plot=getTfrPlotRect();
-  if(!handle || !wrap || !plot || !skrState.policyStart){
-    if(handle) handle.hidden=true;
+  if(!band || !wrap || !plot || !skrState.policyStart){
+    if(band) band.hidden=true;
     return;
   }
   const [axisStart, axisEnd]=getTfrAxisRangeMs();
   const wrapRect=wrap.getBoundingClientRect();
   const policyMs=parseDate(`${skrState.policyStart}-01`).getTime();
-  const fraction=Math.max(0, Math.min(1, (policyMs-axisStart)/Math.max(1, axisEnd-axisStart)));
-  const left=plot.rect.left-wrapRect.left+fraction*plot.rect.width;
-  handle.hidden=false;
-  handle.style.left=`${left}px`;
-  handle.style.top=`${plot.rect.top-wrapRect.top}px`;
-  handle.style.height=`${plot.rect.height}px`;
-  updatePolicyHandleA11y();
+  const effectMs=parseDate(`${effectMonthForPolicy()}-01`).getTime();
+  const leftFraction=Math.max(0, Math.min(1, (policyMs-axisStart)/Math.max(1, axisEnd-axisStart)));
+  const rightFraction=Math.max(0, Math.min(1, (effectMs-axisStart)/Math.max(1, axisEnd-axisStart)));
+  const left=plot.rect.left-wrapRect.left+leftFraction*plot.rect.width;
+  const right=plot.rect.left-wrapRect.left+rightFraction*plot.rect.width;
+  band.hidden=false;
+  band.style.left=`${left}px`;
+  band.style.top=`${plot.rect.top-wrapRect.top}px`;
+  band.style.width=`${Math.max(18, right-left)}px`;
+  band.style.height=`${plot.rect.height}px`;
+  updatePolicyLagBandA11y();
 }
 function policyIndexFromClientX(clientX){
   const plot=getTfrPlotRect();
@@ -209,25 +242,48 @@ function setPolicyIndex(idx, options={}){
   skrState.policyIndex=safeIdx;
   skrState.policyStart=nextMonth;
   updatePolicyStatusLabels();
-  updatePolicyHandleA11y();
+  updatePolicyLagBandA11y();
   if(options.render===false){
-    requestAnimationFrame(positionPolicyDragHandle);
+    requestAnimationFrame(positionPolicyLagBand);
     return;
   }
   if(changed && skrState.data) updateSkrChart();
-  else requestAnimationFrame(positionPolicyDragHandle);
+  else requestAnimationFrame(positionPolicyLagBand);
 }
 function setPolicyMonth(month){
   const idx=skrState.policyMonths.indexOf(month);
   if(idx>=0) setPolicyIndex(idx);
 }
+function monthsAreContinuous(rows, expectedStartMonth=null){
+  if(!rows?.length) return false;
+  if(expectedStartMonth && rows[0].month!==expectedStartMonth) return false;
+  for(let i=1;i<rows.length;i++){
+    if(monthsBetween(parseDate(`${rows[i-1].month}-01`), parseDate(`${rows[i].month}-01`))!==1) return false;
+  }
+  return true;
+}
+function firstTargetMonth(target){
+  return target?.rows?.find(d=>d.mid!==null && d.mid!==undefined)?.month || null;
+}
 function getSkrModuleState(){
+  const russiaId=skrState.data?.metadata?.russia_territory_id;
+  const lastObserved=russiaId?lastObservedTotalRow(russiaId):null;
+  const projected=russiaId?projectedMonthlyRowsFor(russiaId):null;
+  const expectedStart=lastObserved?monthId(addMonths(parseDate(`${lastObserved.month}-01`),1)):null;
+  const russiaForecast=russiaId?getTotalForecast(russiaId):[];
+  const russiaTarget=russiaForecast.length && skrState.data ? targetTrajectory(russiaForecast, skrState.policyStart, skrState.data.metadata) : null;
   return {
+    interactionMode:'lag-band',
     policyStart:skrState.policyStart,
     effectMonth:effectMonthForPolicy(),
     policyIndex:getPolicyIndex(),
     policyMonths:[...skrState.policyMonths],
-    lagMonths:getLagMonths()
+    lagMonths:getLagMonths(),
+    lastObservedMonth:lastObserved?.month || null,
+    forecastStartMonth:projected?.[0]?.month || null,
+    forecastEndMonth:projected?.[projected.length-1]?.month || null,
+    forecastMonthsAreContinuous:monthsAreContinuous(projected, expectedStart),
+    targetTrajectoryStartMonth:firstTargetMonth(russiaTarget)
   };
 }
 function setupSkrModule(){
@@ -238,18 +294,22 @@ function setupSkrModule(){
   };
 }
 function setupPolicyPointerControl(){
-  const handle=document.getElementById('policyStartDragHandle');
-  if(!handle) return;
+  const band=document.getElementById('policyLagDragBand');
+  if(!band) return;
   let mouseActive=false;
-  const moveToClientX = ev => setPolicyIndex(policyIndexFromClientX(ev.clientX));
-  handle.addEventListener('pointerdown', ev=>{
+  let dragOffset=0;
+  const setDragOffset = ev => {
+    dragOffset=policyIndexFromClientX(ev.clientX)-getPolicyIndex();
+  };
+  const moveToClientX = ev => setPolicyIndex(policyIndexFromClientX(ev.clientX)-dragOffset);
+  band.addEventListener('pointerdown', ev=>{
     ev.preventDefault();
     skrState.policyPointerId=ev.pointerId;
-    handle.classList.add('is-active');
-    handle.setPointerCapture?.(ev.pointerId);
-    moveToClientX(ev);
+    setDragOffset(ev);
+    band.classList.add('is-active');
+    band.setPointerCapture?.(ev.pointerId);
   });
-  handle.addEventListener('pointermove', ev=>{
+  band.addEventListener('pointermove', ev=>{
     if(skrState.policyPointerId!==ev.pointerId) return;
     ev.preventDefault();
     moveToClientX(ev);
@@ -257,17 +317,17 @@ function setupPolicyPointerControl(){
   const endPointer = ev => {
     if(skrState.policyPointerId!==ev.pointerId) return;
     skrState.policyPointerId=null;
-    handle.classList.remove('is-active');
-    handle.releasePointerCapture?.(ev.pointerId);
+    band.classList.remove('is-active');
+    band.releasePointerCapture?.(ev.pointerId);
   };
-  handle.addEventListener('pointerup', endPointer);
-  handle.addEventListener('pointercancel', endPointer);
-  handle.addEventListener('mousedown', ev=>{
+  band.addEventListener('pointerup', endPointer);
+  band.addEventListener('pointercancel', endPointer);
+  band.addEventListener('mousedown', ev=>{
     if(skrState.policyPointerId!==null) return;
     ev.preventDefault();
     mouseActive=true;
-    handle.classList.add('is-active');
-    moveToClientX(ev);
+    setDragOffset(ev);
+    band.classList.add('is-active');
   });
   document.addEventListener('mousemove', ev=>{
     if(!mouseActive || skrState.policyPointerId!==null) return;
@@ -277,9 +337,9 @@ function setupPolicyPointerControl(){
   document.addEventListener('mouseup', ()=>{
     if(!mouseActive) return;
     mouseActive=false;
-    handle.classList.remove('is-active');
+    band.classList.remove('is-active');
   });
-  handle.addEventListener('keydown', ev=>{
+  band.addEventListener('keydown', ev=>{
     const idx=getPolicyIndex();
     if(ev.key==='ArrowLeft' || ev.key==='ArrowDown'){
       ev.preventDefault();
@@ -295,7 +355,7 @@ function setupPolicyPointerControl(){
       setPolicyIndex(skrState.policyMonths.length-1);
     }
   });
-  window.addEventListener('resize',()=>requestAnimationFrame(positionPolicyDragHandle));
+  window.addEventListener('resize',()=>requestAnimationFrame(positionPolicyLagBand));
 }
 function makeSkrTraces(activeTid){
   const meta=skrState.data.metadata;
@@ -321,8 +381,10 @@ function makeSkrTraces(activeTid){
     const t3Color=isRussia?TG.colors.gold:(isActive?TG.colors.orange:TG.colors.muted);
     const width=isRussia?3.4:3.0; const opacity=isRussia?1:.86;
     const obsX=monthly.map(d=>parseDate(d.date));
+    const lastObservedDate=parseDate(monthly[monthly.length-1].date);
+    const forecastTrace=fTotal.filter(d=>d.date>=lastObservedDate);
     traces.push({x:obsX,y:monthly.map(d=>d.tfr_total),name:`СКР факт — ${label}`,mode:'lines+markers',line:{color:totalColor,width},marker:{size:isActive?6:4},opacity});
-    traces.push({x:fTotal.filter(d=>d.date>parseDate(monthly[monthly.length-1].date)).map(d=>d.date),y:fTotal.filter(d=>d.date>parseDate(monthly[monthly.length-1].date)).map(d=>d.mean),name:`СКР прогноз — ${label}`,mode:'lines',line:{color:totalColor,width:width-0.4,dash:'dash'},opacity});
+    traces.push({x:forecastTrace.map(d=>d.date),y:forecastTrace.map(d=>d.mean),name:`СКР прогноз — ${label}`,mode:'lines',line:{color:totalColor,width:width-0.4,dash:'dash'},opacity});
     traces.push({x:obsX,y:monthly.map(d=>d.tfr_third_plus),name:`СКР 3+ факт — ${label}`,mode:'lines+markers',visible:'legendonly',line:{color:t3Color,width:Math.max(2,width-0.8)},marker:{size:isActive?5:3},opacity});
   });
   return {traces, activeTarget:federalTarget, activeForecast:russiaForecast};
@@ -341,7 +403,6 @@ function updateSkrChart(){
     ann.push({x:effectDate,y:meta.target_2036_mid,xref:'x',yref:'y',text:'Для 2036 нужен скачок',showarrow:true,arrowhead:2,ax:80,ay:-40,bgcolor:'rgba(255,255,255,.92)',bordercolor:'#e0cfad',font:{size:14,color:'#111514'}});
   }
   if(!narrow) ann.push({x:target2050,y:meta.target_2050_mid,xref:'x',yref:'y',text:`Отставание от цели 2050: ${fmtTfr(activeTarget.gapForecast2050,2)}<br>требуемый прирост: ${fmtTfr(activeTarget.lift2050,2)}`,showarrow:true,arrowhead:2,ax:-125,ay:40,bgcolor:'rgba(255,255,255,.92)',bordercolor:'#e0cfad',font:{size:14,color:'#111514'}});
-  ann.push({x:policyDate,y:.90,xref:'x',yref:'paper',text:'запуск мер',showarrow:false,xshift:narrow?-5:-12,bgcolor:'rgba(255,253,248,.88)',bordercolor:'#eadbbf',font:{size:narrow?10:12,color:'#8a641a'}});
   ann.push({x:effectDate,y:.98,xref:'x',yref:'paper',text:'эффект +9 мес.',showarrow:false,xshift:narrow?8:16,bgcolor:'rgba(255,253,248,.88)',bordercolor:'#eadbbf',font:{size:narrow?10:12,color:'#145b61'}});
   const layout=TG.plotLayout({
     height:610,
@@ -351,8 +412,8 @@ function updateSkrChart(){
     yaxis:{gridcolor:'#efe5d4', range:[0,3.35], title:'детей на 1 женщину', tickformat:',.1f'},
     legend:narrow?{orientation:'h',x:0,y:-0.26,xanchor:'left',yanchor:'top',bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:10}}:{orientation:'h',x:0,y:1.10,bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:12}},
     shapes:[
-      {type:'rect',xref:'x',yref:'paper',x0:policyDate,x1:effectDate,y0:0,y1:1,fillcolor:'rgba(111,119,117,.12)',line:{width:0},layer:'below'},
-      {type:'line',xref:'x',yref:'paper',x0:policyDate,x1:policyDate,y0:0,y1:1,line:{color:TG.colors.gold,width:2,dash:'dot'}},
+      {type:'rect',xref:'x',yref:'paper',x0:policyDate,x1:effectDate,y0:0,y1:1,fillcolor:'rgba(20,91,97,.09)',line:{width:0},layer:'below'},
+      {type:'line',xref:'x',yref:'paper',x0:policyDate,x1:policyDate,y0:0,y1:1,line:{color:'rgba(82,96,94,.78)',width:2,dash:'dot'}},
       {type:'line',xref:'x',yref:'paper',x0:effectDate,x1:effectDate,y0:0,y1:1,line:{color:TG.colors.teal,width:2,dash:'dot'}},
       {type:'line',xref:'x',yref:'paper',x0:target2036,x1:target2036,y0:0,y1:1,line:{color:'rgba(60,122,71,.55)',width:2,dash:'dot'}},
       {type:'line',xref:'x',yref:'paper',x0:target2050,x1:target2050,y0:0,y1:1,line:{color:'rgba(60,122,71,.55)',width:2,dash:'dot'}}
@@ -361,8 +422,8 @@ function updateSkrChart(){
   });
   const rendered=Plotly.react('tfrChart', traces, layout, TG.plotConfig);
   updateSkrKpis(activeTid);
-  if(rendered && typeof rendered.then === 'function') rendered.then(()=>positionPolicyDragHandle());
-  else requestAnimationFrame(positionPolicyDragHandle);
+  if(rendered && typeof rendered.then === 'function') rendered.then(()=>positionPolicyLagBand());
+  else requestAnimationFrame(positionPolicyLagBand);
 }
 function updateSkrKpis(activeTid){
   const meta=skrState.data.metadata;
@@ -380,7 +441,7 @@ function updateSkrKpis(activeTid){
   document.getElementById('kpiDelta2036').textContent=gap2036==null?'—':`${gap2036>=0?'+':''}${fmtTfr(gap2036,2)}`;
   document.getElementById('kpiMonthlyLift').textContent=lift2036==null?'—':`${lift2036>=0?'+':''}${fmtTfr(lift2036,2)}`;
   updatePolicyStatusLabels(territoryTarget.effectDate?monthId(territoryTarget.effectDate):effectMonthForPolicy());
-  updatePolicyHandleA11y();
+  updatePolicyLagBandA11y();
   const russiaForecast=getTotalForecast(meta.russia_territory_id);
   const russiaLatest=skrState.data.latest[meta.russia_territory_id] || {};
   const russia2036=forecastValueAt(russiaForecast,'2036-12');
@@ -826,6 +887,7 @@ async function initSkr(){
   try{
     const [data, geo, rpn, rpnRegional] = await Promise.all([loadJSON('data/tfr_data.json'), loadJSON('data/subjects.geojson'), loadJSON('data/rpn2022_fertility_housing_dashboard.json'), loadJSON('data/rpn_regional_intentions_2012_2017.json')]);
     skrState.data=data; skrState.geo=geo; skrState.rpn=rpn; skrState.rpnRegional=rpnRegional;
+    try{ skrState.monthlyForecast = await loadSkrMonthlyForecast(); }catch(_){ skrState.monthlyForecast = {metadata:{}, series:{}}; }
     try{ skrState.authorTfr = await loadAuthorTfrForecast(); }catch(_){ skrState.authorTfr = null; }
     setupTerritorySelector(); setupTerritorySelectorEvents(); setupModeControls(); setupPolicyControl(); setupMap(); updateSkrChart(); setupRpnControls(); setupRpnRegionalControls(); updateRpnModule(); updateRpnRegionalModule();
   }catch(err){

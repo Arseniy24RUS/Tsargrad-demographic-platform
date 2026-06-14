@@ -26,6 +26,7 @@ python -m http.server 8000 --directory docs
 Авторские файлы из GitHub-репозитория прогноза загружены в `docs/data/author_forecast_source/` и преобразованы в локальные runtime-слои:
 
 - `docs/data/author_tfr_forecast_2050.json`
+- `docs/data/skr_monthly_forecast_2050.json`
 - `docs/data/author_population_forecast_2050.json`
 - `docs/data/settlement_tfr_forecast_2050.json`
 - `docs/data/forecast_join_audit.json`
