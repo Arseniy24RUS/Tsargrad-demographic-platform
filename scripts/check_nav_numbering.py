@@ -21,14 +21,14 @@ PAGES = [
     "abortions.html",
 ]
 EXPECTED_LINKS = {
-    "СКР": "skr.html",
+    "Рождаемость": "skr.html",
     "Расселение": "settlement.html",
     "Инфраструктура": "infrastructure.html",
-    "Усадьба": "estate.html",
+    "Свой дом": "estate.html",
     "Маткапитал": "capital.html",
     "Ипотека": "mortgage.html",
     "Выплаты": "payments.html",
-    "Семья": "family.html",
+    "Браки": "family.html",
     "Аборты": "abortions.html",
 }
 FORBIDDEN_NAV_LABELS = ["Главная"]

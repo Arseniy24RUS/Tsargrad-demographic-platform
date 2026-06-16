@@ -10,6 +10,28 @@
   const INDICATOR_LABELS = {s:'индекс готовности',e:'инженерная готовность',so:'социальная доступность',dm:'демографическая значимость',q:'достоверность данных'};
   const CLASS_LABELS = {A:'готово к семейному расселению',B:'быстрая достройка',C:'инженерный дефицит',D:'низкая готовность'};
   const CHART_COLORS = {teal:'#0f4f55', teal2:'#145b61', green:'#2f7d5c', gold:'#d8a238', amber:'#d98f45', red:'#b94b4b', cream:'#fffaf0', grid:'rgba(216,162,56,.22)'};
+  const MAP_NO_DATA_COLOR = '#bfc2bd';
+  const NO_DATA_TERRITORIES = new Set([
+    'terr_donetskaya_narodnaya_respublika',
+    'terr_luganskaya_narodnaya_respublika',
+    'terr_zaporozhskaya_oblast',
+    'terr_hersonskaya_oblast'
+  ]);
+  const REGION_SLUG_ALIASES = {
+    terr_moskva:'moskva',
+    terr_sankt_peterburg:'sankt_peterburg',
+    terr_sevastopol:'sevastopol',
+    terr_kabardino_balkarskaya_respublika:'kabardino_balkarskaya_respublika',
+    terr_karachaevo_cherkesskaya_respublika:'karachaevo_cherkesskaya_respublika',
+    terr_kemerovskaya_oblast_kuzbass:'kemerovskaya_oblast',
+    terr_respublika_adygeya_adygeya:'respublika_adygeya',
+    terr_respublika_severnaya_osetiya_alaniya:'respublika_severnaya_osetiya_alaniya',
+    terr_respublika_tatarstan_tatarstan:'respublika_tatarstan',
+    terr_udmurtskaya_respublika:'udmurtskaya_respublika',
+    terr_hanty_mansiyskiy_avtonomnyy_okrug_yugra_tyumenskaya_oblast:'hanty_mansiyskiy_avtonomnyy_okrug_yugra',
+    terr_chechenskaya_respublika:'chechenskaya_respublika',
+    terr_chuvashskaya_respublika_chuvashiya:'chuvashskaya_respublika'
+  };
   const state = {
     summary:void 0,
     geo:void 0,
@@ -18,6 +40,7 @@
     filtered:[],
     selectedSettlement:void 0,
     rendered:[],
+    renderedRegions:[],
     lastTransform:void 0,
     renderedCharts:[],
     loaded:false,
@@ -61,6 +84,54 @@
     return (color === CHART_COLORS.gold || color === CHART_COLORS.amber) ? '#111820' : CHART_COLORS.cream;
   }
   function classBadge(code){ return `<span class="class-badge class-${code}">${code} · ${CLASS_LABELS[code] || ''}</span>`; }
+  function mixColor(a, b, t){
+    return a.map((v, i)=>Math.round(v + (b[i]-v)*t));
+  }
+  function rgbText(rgb){ return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`; }
+  function scoreDomain(){
+    const values=(state.summary?.regions || []).map(r=>Number(r.avg_score)).filter(Number.isFinite).sort((a,b)=>a-b);
+    if(!values.length) return {min:0,max:100};
+    const q = p => values[Math.min(values.length-1, Math.max(0, Math.round((values.length-1)*p)))];
+    const min=q(.04), max=q(.96);
+    return max > min ? {min,max} : {min:min-1,max:max+1};
+  }
+  function colorForRegionScore(score){
+    if(!Number.isFinite(Number(score))) return MAP_NO_DATA_COLOR;
+    const domain=scoreDomain();
+    const t=Math.max(0, Math.min(1, (Number(score)-domain.min)/(domain.max-domain.min || 1)));
+    const stops=[
+      {t:0, rgb:[177,75,75]},
+      {t:.32, rgb:[219,142,64]},
+      {t:.62, rgb:[216,162,56]},
+      {t:.82, rgb:[20,91,97]},
+      {t:1, rgb:[47,125,92]}
+    ];
+    let left=stops[0], right=stops[stops.length-1];
+    for(let i=1;i<stops.length;i+=1){
+      if(t <= stops[i].t){ left=stops[i-1]; right=stops[i]; break; }
+    }
+    return rgbText(mixColor(left.rgb, right.rgb, (t-left.t)/(right.t-left.t || 1)));
+  }
+  function featureRegionSlug(props){
+    if(!props || NO_DATA_TERRITORIES.has(props.territory_id)) return null;
+    const direct=props.region_slug || REGION_SLUG_ALIASES[props.territory_id];
+    if(direct && regionBySlug(direct)) return direct;
+    const raw=String(props.territory_id || '').replace(/^terr_/, '');
+    if(raw && regionBySlug(raw)) return raw;
+    return null;
+  }
+  function regionForFeature(props){
+    const slug=featureRegionSlug(props);
+    return slug ? regionBySlug(slug) : null;
+  }
+  function topDeficit(region){
+    return Object.entries(region?.top_deficits || {}).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'нет данных';
+  }
+  function readyShare(region){
+    const pop=Number(region?.population || 0);
+    const ready=Number(region?.class_population?.A || 0) + Number(region?.class_population?.B || 0);
+    return pop ? ready/pop*100 : null;
+  }
 
   function normalizedLon(lon){
     lon = Number(lon);
@@ -79,7 +150,7 @@
     if(!geo) return pts;
     for(const f of geo.features || []){
       const p=f.properties || {};
-      if(regionSlug && p.region_slug !== regionSlug) continue;
+      if(regionSlug && featureRegionSlug(p) !== regionSlug) continue;
       walkCoords(f.geometry && f.geometry.coordinates, pair=>{
         if(Array.isArray(pair) && typeof pair[0] === 'number' && typeof pair[1] === 'number') pts.push([normalizedLon(pair[0]), mercY(pair[1])]);
       });
@@ -117,28 +188,45 @@
 
   function drawGeo(ctx, transform, activeSlug){
     if(!state.geo) return;
+    state.renderedRegions=[];
     for(const f of state.geo.features || []){
-      const props=f.properties || {}; const slug=props.region_slug;
-      let score=props.infrastructure_score;
-      const region = state.summary?.regions?.find(r=>r.region_slug===slug);
-      if(region) score = region.avg_score;
-      ctx.fillStyle = activeSlug ? (slug===activeSlug ? 'rgba(216,162,56,.34)' : 'rgba(15,79,85,.08)') : hexToRgba(colorFor(score), .55);
-      ctx.strokeStyle = activeSlug && slug===activeSlug ? '#0f4f55' : 'rgba(255,255,255,.9)';
-      ctx.lineWidth = activeSlug && slug===activeSlug ? 2.0 : 0.7;
+      const props=f.properties || {};
+      const slug=featureRegionSlug(props);
+      const region=regionForFeature(props);
+      const score=Number(region?.avg_score);
+      const hasData=region && Number.isFinite(score);
+      const isActive=activeSlug && slug===activeSlug;
+      const fill=hasData ? colorForRegionScore(score) : MAP_NO_DATA_COLOR;
+      ctx.fillStyle = activeSlug
+        ? (isActive ? 'rgba(216,162,56,.38)' : (hasData ? 'rgba(15,79,85,.08)' : 'rgba(191,194,189,.42)'))
+        : (hasData ? colorToRgba(fill, .68) : colorToRgba(fill, .78));
+      ctx.strokeStyle = isActive ? '#0f4f55' : 'rgba(255,255,255,.9)';
+      ctx.lineWidth = isActive ? 2.0 : 0.7;
       const geom=f.geometry; if(!geom) continue;
       const polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
+      const path = new Path2D();
       for(const poly of polys || []){
-        ctx.beginPath();
         for(const ring of poly){
-          ring.forEach((pt,i)=>{ const [x,y]=projectPoint(pt[0],pt[1],transform); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
-          ctx.closePath();
+          ring.forEach((pt,i)=>{ const [x,y]=projectPoint(pt[0],pt[1],transform); if(i===0) path.moveTo(x,y); else path.lineTo(x,y); });
+          path.closePath();
         }
-        ctx.fill(); ctx.stroke();
       }
+      ctx.fill(path); ctx.stroke(path);
+      let labelX=null, labelY=null;
+      if(Number.isFinite(Number(props.label_lon)) && Number.isFinite(Number(props.label_lat))){
+        [labelX,labelY]=projectPoint(props.label_lon, props.label_lat, transform);
+      }
+      state.renderedRegions.push({path, props, slug, region, score, hasData, x:labelX, y:labelY});
     }
   }
   function hexToRgba(hex, a){
     const n=parseInt(hex.replace('#',''),16); const r=(n>>16)&255, g=(n>>8)&255, b=n&255; return `rgba(${r},${g},${b},${a})`;
+  }
+  function colorToRgba(color, a){
+    if(String(color).startsWith('#')) return hexToRgba(color, a);
+    const m=String(color).match(/\d+/g);
+    if(!m || m.length < 3) return color;
+    return `rgba(${m[0]},${m[1]},${m[2]},${a})`;
   }
 
   function drawMap(){
@@ -179,16 +267,52 @@
     for(const it of state.rendered){ const d=Math.hypot(it.x-x,it.y-y); if(d<it.rad && d<bestD){ best=it; bestD=d; } }
     return best;
   }
+  function canvasPoint(evt){
+    const canvas=$('infraMapCanvas'); const rect=canvas.getBoundingClientRect(); const ratio=canvas.width/rect.width;
+    return {canvas, x:(evt.clientX-rect.left)*ratio, y:(evt.clientY-rect.top)*ratio, ratio};
+  }
+  function regionAt(evt){
+    const {canvas, x, y}=canvasPoint(evt);
+    const ctx=canvas.getContext('2d');
+    for(let i=state.renderedRegions.length-1;i>=0;i-=1){
+      const hit=state.renderedRegions[i];
+      if(ctx.isPointInPath(hit.path, x, y)) return hit;
+    }
+    return null;
+  }
+  function regionTooltip(hit){
+    const name=hit.region?.subject || hit.props?.territory_name || hit.props?.Name_full || 'Субъект РФ';
+    if(!hit.region){
+      return `<b>${esc(name)}</b><br>Инфраструктурные данные не загружены`;
+    }
+    return `<b>${esc(name)}</b><br>Индекс: <b>${fmt(hit.region.avg_score,1)}</b><br>Поселений: ${fmt(hit.region.settlements)}<br>Население: ${fmt(hit.region.population)}<br>Класс A+B: ${pct(readyShare(hit.region),1)}<br>Главный дефицит: ${esc(topDeficit(hit.region))}`;
+  }
   function setupMapEvents(){
     const canvas=$('infraMapCanvas'), tip=$('infraTooltip');
     canvas.addEventListener('mousemove', evt=>{
       const hit=nearestRendered(evt);
-      if(!hit){ tip.style.display='none'; return; }
+      if(hit){
+        canvas.style.cursor='pointer';
+        tip.style.display='block'; tip.style.left=`${evt.offsetX+18}px`; tip.style.top=`${evt.offsetY+18}px`;
+        tip.innerHTML=`<b>${esc(hit.r.n)}</b><br>${esc(hit.r.m)}<br>Индекс: <b>${fmt(hit.r.s,1)}</b> · ${esc(hit.r.cl)}<br>Население: ${fmt(hit.r.p)}`;
+        return;
+      }
+      const regionHit=regionAt(evt);
+      if(!regionHit){ canvas.style.cursor='crosshair'; tip.style.display='none'; return; }
+      canvas.style.cursor=regionHit.region ? 'pointer' : 'not-allowed';
       tip.style.display='block'; tip.style.left=`${evt.offsetX+18}px`; tip.style.top=`${evt.offsetY+18}px`;
-      tip.innerHTML=`<b>${esc(hit.r.n)}</b><br>${esc(hit.r.m)}<br>Индекс: <b>${fmt(hit.r.s,1)}</b> · ${esc(hit.r.cl)}<br>Население: ${fmt(hit.r.p)}`;
+      tip.innerHTML=regionTooltip(regionHit);
     });
-    canvas.addEventListener('mouseleave',()=>{tip.style.display='none';});
-    canvas.addEventListener('click', evt=>{ const hit=nearestRendered(evt); if(hit){ state.selectedSettlement=hit.r; renderPassport(); drawMap(); } });
+    canvas.addEventListener('mouseleave',()=>{tip.style.display='none'; canvas.style.cursor='crosshair';});
+    canvas.addEventListener('click', evt=>{
+      const hit=nearestRendered(evt);
+      if(hit){ state.selectedSettlement=hit.r; renderPassport(); drawMap(); return; }
+      const regionHit=regionAt(evt);
+      if(regionHit?.region){
+        $('infraSubject').value=regionHit.slug;
+        onSubjectChange();
+      }
+    });
   }
 
   function fillSelectors(){
@@ -203,7 +327,7 @@
     const sel=$('infraMunicipal');
     sel.innerHTML='<option value="all">Все муниципальные образования</option>'+list.map(m=>`<option value="${esc(m.n)}">${esc(m.n)} · ${fmt(m.st)} н.п.</option>`).join('');
   }
-  function regionBySlug(slug){ return (state.summary.regions||[]).find(r=>r.region_slug===slug); }
+  function regionBySlug(slug){ return (state.summary?.regions || []).find(r=>r.region_slug===slug); }
 
   async function onSubjectChange(){
     const slug=$('infraSubject').value;
@@ -212,7 +336,12 @@
     if(slug==='all'){
       state.regionData=void 0; state.filtered=[]; fillMunicipalSelector([]);
     } else {
-      state.regionData=await loadJson(`${ROOT}/by_region/${slug}.json`);
+      state.regionData=void 0;
+      state.filtered=[];
+      fillMunicipalSelector([]);
+      const nextRegionData=await loadJson(`${ROOT}/by_region/${slug}.json`);
+      if(state.selectedRegion!==slug || $('infraSubject').value!==slug) return;
+      state.regionData=nextRegionData;
       fillMunicipalSelector(state.regionData.municipalities || []);
     }
     $('infraSearch').value=''; $('infraMunicipal').value='all';
@@ -273,9 +402,16 @@
       plot_bgcolor:'rgba(255,250,240,.72)',
       margin:{l:44,r:18,t:24,b:48},
       font:{family:'system-ui, sans-serif', color:'#172427'},
-      xaxis:{gridcolor:CHART_COLORS.grid, zerolinecolor:'rgba(15,79,85,.30)', linecolor:'rgba(15,79,85,.34)', tickfont:{color:'#334845'}, titlefont:{color:'#0f4f55'}},
-      yaxis:{gridcolor:CHART_COLORS.grid, zerolinecolor:'rgba(15,79,85,.30)', linecolor:'rgba(15,79,85,.34)', tickfont:{color:'#334845'}, titlefont:{color:'#0f4f55'}},
-      displayModeBar:false
+      dragmode:false,
+      xaxis:{gridcolor:CHART_COLORS.grid, zerolinecolor:'rgba(15,79,85,.30)', linecolor:'rgba(15,79,85,.34)', tickfont:{color:'#334845'}, titlefont:{color:'#0f4f55'}, fixedrange:true},
+      yaxis:{gridcolor:CHART_COLORS.grid, zerolinecolor:'rgba(15,79,85,.30)', linecolor:'rgba(15,79,85,.34)', tickfont:{color:'#334845'}, titlefont:{color:'#0f4f55'}, fixedrange:true}
+    };
+    const plotConfig={
+      displayModeBar:false,
+      displaylogo:false,
+      responsive:true,
+      scrollZoom:false,
+      modeBarButtonsToRemove:['zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d','autoScale2d','resetScale2d']
     };
     const classOrder=['A','B','C','D'];
     const classPop=state.regionData
@@ -292,7 +428,7 @@
       textposition:'auto',
       textfont:{color:classColors.map(textColorForFill)},
       hovertemplate:'Класс %{x}: %{customdata}<br>%{text} чел.<extra></extra>'
-    }],{...layoutBase,yaxis:{...layoutBase.yaxis,title:'население'},xaxis:{...layoutBase.xaxis,title:'класс готовности'}}, {displayModeBar:false,responsive:true});
+    }],{...layoutBase,yaxis:{...layoutBase.yaxis,title:'население'},xaxis:{...layoutBase.xaxis,title:'класс готовности'}}, plotConfig);
     state.renderedCharts.push('infraClassChart');
     const munis = state.regionData ? (state.regionData.municipalities||[]).slice() : (state.summary?.regions||[]).map(r=>({n:r.subject,p:r.population,s:r.avg_score}));
     const top = munis.sort((a,b)=>b.s-a.s).slice(0,10).reverse();
@@ -308,7 +444,7 @@
       insidetextanchor:'end',
       textfont:{color:topColors.map(textColorForFill)},
       hovertemplate:'%{y}<br>Индекс %{text}<extra></extra>'
-    }],{...layoutBase,xaxis:{...layoutBase.xaxis,range:[0,100],title:'баллы'},yaxis:{...layoutBase.yaxis,automargin:true}}, {displayModeBar:false,responsive:true});
+    }],{...layoutBase,xaxis:{...layoutBase.xaxis,range:[0,100],title:'баллы'},yaxis:{...layoutBase.yaxis,automargin:true}}, plotConfig);
     state.renderedCharts.push('infraMunicipalChart');
     const avgComponents=state.regionData
       ? COMPONENTS.map(([k])=>{
@@ -332,7 +468,7 @@
       insidetextanchor:'end',
       textfont:{color:componentColors.map(textColorForFill)},
       hovertemplate:'%{y}<br>%{text} баллов<extra></extra>'
-    }],{...layoutBase,margin:{l:118,r:18,t:24,b:42},xaxis:{...layoutBase.xaxis,range:[0,100],title:'баллы'},yaxis:{...layoutBase.yaxis,automargin:true}}, {displayModeBar:false,responsive:true});
+    }],{...layoutBase,margin:{l:118,r:18,t:24,b:42},xaxis:{...layoutBase.xaxis,range:[0,100],title:'баллы'},yaxis:{...layoutBase.yaxis,automargin:true}}, plotConfig);
     state.renderedCharts.push('infraComponentsChart');
   }
 
@@ -367,6 +503,11 @@
   function getState(){
     const c = state.summary?.country || {};
     const meta = state.summary?.metadata || {};
+    const canvas=$('infraMapCanvas');
+    const rect=canvas?.getBoundingClientRect?.();
+    const ratio=canvas && rect?.width ? canvas.width/rect.width : 1;
+    const ctx=canvas?.getContext?.('2d');
+    const firstHit=state.renderedRegions.find(r=>r.region && Number.isFinite(r.x) && Number.isFinite(r.y) && (!ctx || ctx.isPointInPath(r.path, r.x, r.y)));
     return {
       loaded: state.loaded,
       lastError: state.lastError,
@@ -383,6 +524,15 @@
       classFilter: $('infraClassFilter')?.value || 'all',
       filteredSettlements: state.filtered.length,
       renderedPoints: state.rendered.length,
+      renderedRegions: state.renderedRegions.length,
+      cartogramValueCount: state.renderedRegions.filter(r=>r.region && r.hasData).length,
+      noDataRegionCount: state.renderedRegions.filter(r=>!r.region || !r.hasData).length,
+      firstSelectableRegionHit: firstHit ? {
+        slug: firstHit.slug,
+        subject: firstHit.region.subject,
+        x: firstHit.x/ratio,
+        y: firstHit.y/ratio
+      } : null,
       selectedSettlement: state.selectedSettlement ? {
         id: state.selectedSettlement.i,
         name: state.selectedSettlement.n,

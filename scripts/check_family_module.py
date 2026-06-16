@@ -70,14 +70,14 @@ def main() -> None:
         if int(sqlite_row[0] or 0) != RF_2010_DIVORCES or not approx(sqlite_row[1] or 0, RF_2010_DIVORCE_INDEX):
             fail('family.sqlite содержит неверные федеральные данные о разводах за 2010 год')
     html = (DOCS / 'family.html').read_text(encoding='utf-8')
-    for word in ['Семья', 'браков', 'разводов', 'разводов на 100 браков']:
+    for word in ['Браки', 'браков', 'разводов', 'разводов на 100 браков']:
         if word not in html:
             fail(f'в family.html нет обязательной строки: {word}')
     js = (DOCS / 'assets/js/family.js').read_text(encoding='utf-8')
     for token in ['window.FamilyModule', 'getState', 'runtimeExternalFetch', 'renderedCharts', 'mapEngine', 'mapRenderedPaths', 'mapValueCount', 'mapDomain']:
         if token not in js:
             fail(f'в family.js нет проверочного контракта {token}')
-    print('OK: модуль «Семья» прошёл проверку')
+    print('OK: модуль «Браки» прошёл проверку')
 
 if __name__ == '__main__':
     main()

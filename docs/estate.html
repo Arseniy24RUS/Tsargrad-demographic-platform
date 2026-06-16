@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Усадьба | Россия 2050</title>
+  <title>Свой дом | Россия 2050</title>
   <link rel="stylesheet" href="assets/css/style.css?v=20260614-brandmark1" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <link rel="shortcut icon" href="favicon.ico" />
@@ -18,15 +18,16 @@
           <div class="brand-subtitle">демографическая платформа</div>
         </div>
       </a>
-            <nav class="nav-tabs" aria-label="Разделы платформы">
-        <a href="skr.html">СКР</a>
+            <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" class="nav-tabs" aria-label="Разделы платформы">
+        <a href="skr.html">Рождаемость</a>
         <a href="settlement.html">Расселение</a>
         <a href="infrastructure.html">Инфраструктура</a>
-        <a class="active" href="estate.html">Усадьба</a>
+        <a class="active" href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a href="family.html">Семья</a>
+        <a href="family.html">Браки</a>
         <a href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -35,7 +36,7 @@
   <main class="page-wrap">
     <section class="hero estate-hero">
       <div class="hero-main">
-        <div class="section-number">Многопоколенная усадьба</div>
+        <div class="section-number">Свой дом</div>
         <h1>Растущий дом как демографическая инфраструктура</h1>
         <p class="lead">трёхмерный конструктор показывает, как стартовый дом дополняется детскими и старшими модулями, а экономический блок считает площадь, стоимость, субсидию и выгоду совместного проживания в расчёте на одного человека.</p>
       </div>
@@ -207,11 +208,10 @@
     </section>
   </main>
 
-  <footer class="footer">Расчётная платформа для экспертного обсуждения. Модуль «Усадьба» показывает сценарную оценку стоимости, субсидии и экономии совместного проживания.</footer>
+  <footer class="footer">Расчётная платформа для экспертного обсуждения. Модуль «Свой дом» показывает сценарную оценку стоимости, субсидии и экономии совместного проживания.</footer>
   <script src="assets/vendor/plotly/plotly.min.js"></script>
   <script src="assets/js/common.js"></script>
   <script src="assets/js/estate.js?v=20260614-estate-controls1"></script>
   <script type="module" src="assets/js/estate3d.js?v=20260614-estate-controls1"></script>
 </body>
 </html>
-

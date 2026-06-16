@@ -3,14 +3,14 @@ const { test, expect } = require('@playwright/test');
 
 const pages = [
   { path: '/index.html', title: 'Россия 2050', slug: '00-home' },
-  { path: '/skr.html', title: 'СКР', slug: '01-skr' },
+  { path: '/skr.html', title: 'Рождаемость', slug: '01-skr' },
   { path: '/settlement.html', title: 'Расселение', slug: '02-settlement' },
   { path: '/infrastructure.html', title: 'Инфраструктура', slug: '03-infrastructure' },
-  { path: '/estate.html', title: 'Усадьба', slug: '04-estate' },
+  { path: '/estate.html', title: 'Свой дом', slug: '04-estate' },
   { path: '/capital.html', title: 'Маткапитал', slug: '05-capital' },
   { path: '/mortgage.html', title: 'Ипотека', slug: '06-mortgage' },
   { path: '/payments.html', title: 'Выплаты', slug: '07-payments' },
-  { path: '/family.html', title: 'Семья', slug: '08-family' },
+  { path: '/family.html', title: 'Браки', slug: '08-family' },
   { path: '/abortions.html', title: 'Аборты', slug: '09-abortions' }
 ];
 
@@ -54,6 +54,12 @@ async function setRange(page, selector, value) {
   }, value);
 }
 
+function addMonthsId(month, delta) {
+  const [year, monthIndex] = month.split('-').map(Number);
+  const date = new Date(year, monthIndex - 1 + delta, 1);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+}
+
 test.beforeAll(() => {
   fs.mkdirSync('artifacts/screenshots', { recursive: true });
 });
@@ -86,7 +92,7 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('body')).toContainText('Россия 2050');
     await expect(page.locator('body')).toContainText('Малоэтажная и многодетная Россия');
     await expect(page.locator('nav a', { hasText: 'Главная' })).toHaveCount(0);
-    await expect(page.locator('nav a[href="skr.html"]')).toContainText('СКР');
+    await expect(page.locator('nav a[href="skr.html"]')).toContainText('Рождаемость');
     await expect(page.locator('nav a[href="infrastructure.html"]')).toContainText('Инфраструктура');
     await expect(page.locator('a.brand').first()).toHaveAttribute('href', /index\.html/);
     await page.goto('/index.html', { waitUntil: 'networkidle' });
@@ -94,18 +100,26 @@ test.describe('самодостаточный релиз', () => {
     await expectCleanRuntime(runtime);
   });
 
-  test('СКР: режимы, краткий/подробный вид и выбор территории работают', async ({ page }) => {
+  test('Рождаемость: режимы, краткий/подробный вид и выбор территории работают', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/skr.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#tfrChart .main-svg').first()).toBeVisible();
     await expect(page.locator('#policyMonthRange')).toHaveCount(0);
     await expect(page.locator('#policyMonthChartRange')).toHaveCount(0);
     await expect(page.locator('#policyStartDragHandle')).toHaveCount(0);
+    await expect(page.locator('#policyNowBtn')).toHaveCount(0);
+    await expect(page.locator('#policy2030Btn')).toHaveCount(0);
+    await expect(page.locator('#resetTerritoryBtn')).toHaveCount(0);
     await expect(page.locator('#policyLagDragBand')).toBeVisible();
-    await page.waitForFunction(() => window.SkrModule?.getState?.().policyStart === '2026-06');
+    await expect(page.locator('.map-mode-controls [data-analysis-mode]')).toHaveCount(3);
+    await expect(page.locator('.map-mode-controls [data-view-mode]')).toHaveCount(2);
+    await page.waitForFunction(() => {
+      const state = window.SkrModule?.getState?.();
+      return state?.policyStart && state.policyStart === state.autoPolicyStartMonth;
+    });
     const policyInitial = await page.evaluate(() => window.SkrModule.getState());
     expect(policyInitial.interactionMode).toBe('lag-band');
-    expect(policyInitial.effectMonth).toBe('2027-03');
+    expect(policyInitial.effectMonth).toBe(addMonthsId(policyInitial.policyStart, policyInitial.lagMonths));
     expect(policyInitial.policyIndex).toBe(0);
     expect(policyInitial.lastObservedMonth).toBe('2026-05');
     expect(policyInitial.forecastStartMonth).toBe('2026-06');
@@ -133,12 +147,12 @@ test.describe('самодостаточный релиз', () => {
 
     await page.locator('#policyLagDragBand').focus();
     await page.keyboard.press('ArrowRight');
-    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-07');
-    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2027-04');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe(addMonthsId(policyInitial.policyStart, 1));
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe(addMonthsId(policyInitial.policyStart, policyInitial.lagMonths + 1));
     await page.keyboard.press('Home');
-    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe(policyInitial.autoPolicyStartMonth);
 
-    await page.locator('#policy2030Btn').click();
+    await page.evaluate(() => window.SkrModule.setPolicyMonth('2030-01'));
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2030-01');
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2030-10');
     await expect(page.locator('#policyMonthLabel')).toContainText('2030-01');
@@ -146,8 +160,9 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('#policyLagDragBand')).toHaveAttribute('aria-valuetext', /2030-01/);
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().targetTrajectoryStartMonth)).toBe('2030-10');
 
-    await page.locator('#policyNowBtn').click();
-    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
+    await page.locator('#policyLagDragBand').focus();
+    await page.keyboard.press('Home');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe(policyInitial.autoPolicyStartMonth);
     await expectCleanRuntime(runtime);
   });
 
@@ -155,6 +170,9 @@ test.describe('самодостаточный релиз', () => {
     const runtime = await guardRuntime(page);
     await page.goto('/settlement.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#settlementTfrChart .main-svg').first()).toBeVisible();
+    await expect(page.locator('.range-ruler')).toContainText('−15 п.п.');
+    await expect(page.locator('.range-ruler')).toContainText('0');
+    await expect(page.locator('.range-ruler')).toContainText('+30 п.п.');
     await page.waitForFunction(() => window.SettlementModule?.getState?.().tfrForecastLoaded);
     const initial = await page.evaluate(() => window.SettlementModule.getState());
     expect(initial.forecastMethod).toBe('local_gp_ucm_ensemble');
@@ -209,6 +227,10 @@ test.describe('самодостаточный релиз', () => {
     expect(initial.regionCount).toBe(85);
     expect(initial.countrySettlements).toBe(155741);
     expect(initial.chartCount).toBe(3);
+    expect(initial.renderedRegions).toBeGreaterThanOrEqual(89);
+    expect(initial.cartogramValueCount).toBe(85);
+    expect(initial.noDataRegionCount).toBe(4);
+    expect(initial.firstSelectableRegionHit).toBeTruthy();
     expect(initial.renderedCharts).toEqual(expect.arrayContaining(['infraClassChart', 'infraMunicipalChart', 'infraComponentsChart']));
     expect(initial.featureCounts.roads).toBeGreaterThan(1000000);
     expect(initial.featureCounts.education).toBeGreaterThan(10000);
@@ -248,6 +270,11 @@ test.describe('самодостаточный релиз', () => {
     expect(countryMapCoverage.widthRatio).toBeGreaterThan(0.45);
     expect(countryMapCoverage.heightRatio).toBeGreaterThan(0.32);
 
+    const hit = initial.firstSelectableRegionHit;
+    await page.locator('#infraMapCanvas').click({ position: { x: hit.x, y: hit.y } });
+    await expect.poll(() => page.evaluate(() => window.InfrastructureModule.getState().selectedRegion)).toBe(hit.slug);
+    await expect.poll(() => page.locator('#infraSubject').inputValue()).toBe(hit.slug);
+
     await page.locator('#infraSubject').selectOption('moskovskaya_oblast');
     await page.waitForFunction(() => window.InfrastructureModule.getState().selectedRegion === 'moskovskaya_oblast' && window.InfrastructureModule.getState().filteredSettlements > 0);
     const region = await page.evaluate(() => window.InfrastructureModule.getState());
@@ -271,7 +298,7 @@ test.describe('самодостаточный релиз', () => {
     await expectCleanRuntime(runtime);
   });
 
-  test('Усадьба: настройки, 3D-сцена, размеры и выгрузка работают', async ({ page }) => {
+  test('Свой дом: настройки, 3D-сцена, размеры и выгрузка работают', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/estate.html', { waitUntil: 'networkidle' });
     await expect(page.locator('label[for="estateAdults"]')).toContainText('Родители');
@@ -476,7 +503,7 @@ test.describe('самодостаточный релиз', () => {
     await expectCleanRuntime(runtime);
   });
 
-  test('Семья: данные, графики и сценарий работают локально', async ({ page }) => {
+  test('Браки: данные, графики и сценарий работают локально', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/family.html', { waitUntil: 'networkidle' });
     await page.waitForFunction(() => window.FamilyModule?.getState?.().loaded);
@@ -524,6 +551,11 @@ test.describe('самодостаточный релиз', () => {
     expect(before.mapValueCount).toBeGreaterThanOrEqual(80);
     expect(before.mapDomain.max).toBeGreaterThan(before.mapDomain.min);
     expect(before.renderedCharts).toEqual(expect.arrayContaining(before.chartIds));
+    expect(before.rf2018Abortions).toBe(567183);
+    expect(before.rf2018RateWomen).toBeGreaterThan(0);
+    expect(before.rf2018RateBirths).toBeGreaterThan(0);
+    const savedYears = await page.evaluate(() => document.getElementById('savedBirthsPlot').data[0].x.map(Number));
+    expect(savedYears).toContain(2018);
     expect(before.territoryTableRows).toBeGreaterThan(0);
     await page.locator('#territoryMode').selectOption('subject');
     await page.locator('#subjectSelect').selectOption({ index: 2 });

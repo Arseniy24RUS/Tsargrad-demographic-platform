@@ -206,12 +206,20 @@
       font: { family: 'Arial, sans-serif', color: '#263b3b' },
       hoverlabel: { bgcolor: '#fffdf8', bordercolor: '#d6a332', font: { color: '#102328' } },
       legend: { orientation: 'h', x: 0, y: 1.15, xanchor: 'left', yanchor: 'bottom', font: { size: 12 } },
-      xaxis: { tickfont: { size: 12 }, gridcolor: '#efe2c7', zeroline: false, automargin: true },
-      yaxis: { tickfont: { size: 12 }, gridcolor: '#e8d9b6', zerolinecolor: '#cdbf9d', automargin: true }
+      dragmode: false,
+      xaxis: { tickfont: { size: 12 }, gridcolor: '#efe2c7', zeroline: false, automargin: true, fixedrange: true },
+      yaxis: { tickfont: { size: 12 }, gridcolor: '#e8d9b6', zerolinecolor: '#cdbf9d', automargin: true, fixedrange: true }
     }, extra);
   }
   function графикНастройки(){
-    return { responsive: true, displayModeBar: false, locale: 'ru' };
+    return {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      scrollZoom: false,
+      modeBarButtonsToRemove: ['zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d','autoScale2d','resetScale2d'],
+      locale: 'ru'
+    };
   }
   function подписиРублей(values){
     return values.map(v => рубли(v, 1));
@@ -225,6 +233,10 @@
   function drawPlot(containerId, traces, layout){
     const box = el(containerId);
     if(!box || !window.Plotly) return;
+    Object.keys(layout || {}).forEach((key)=>{
+      if(/^xaxis\d*$/.test(key) || /^yaxis\d*$/.test(key)) layout[key] = Object.assign({ fixedrange: true }, layout[key] || {});
+    });
+    layout.dragmode = false;
     window.Plotly.react(box, traces, layout, графикНастройки());
   }
 

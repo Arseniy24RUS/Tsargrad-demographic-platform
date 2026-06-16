@@ -47,10 +47,10 @@ ETL: `data_pipeline/infrastructure/02_extract_osm_layers.py` извлекает 
 - `matcapital_inputs.json` — сценарные параметры Маткапитала: действующие суммы сертификатов, эквивалент 2007 года в средних зарплатах, подход по стоимости комфортного жилья, охват, использование сертификатов и конверсия в потенциальное рождение. Метаданные: `runtime_external_fetch:false`, горизонт 2050.
 - `mortgage_inputs.json` — параметры ипотеки.
 - `payments_inputs.json` — параметры выплат.
-- `family_dashboard.json` — показатели браков, разводов, коэффициентов на 1000 населения и индекса разводимости для страницы `Семья`, `runtime_external_fetch:false`.
-- `family_subjects.geojson` — локальная геометрия субъектов для SVG-картограммы страницы `Семья`.
+- `family_dashboard.json` — показатели браков, разводов, коэффициентов на 1000 населения и индекса разводимости для страницы `Браки`, `runtime_external_fetch:false`.
+- `family_subjects.geojson` — локальная геометрия субъектов для SVG-картограммы страницы `Браки`.
 - `family.sqlite`, `family_summary.csv`, `family_join_audit.json`, `family_join_audit.csv`, `family_data_manifest.json` — воспроизводимые локальные слои семейного модуля.
-- `abortions_dashboard.json` — показатели прерываний беременности, расчёт на 1000 женщин 15–49 лет и на 100 родов для страницы `Аборты`, `runtime_external_fetch:false`.
+- `abortions_dashboard.json` — показатели прерываний беременности, расчёт на 1000 женщин 15–49 лет и на 100 родов для страницы `Аборты`, `runtime_external_fetch:false`; федеральный 2018 год восстановлен значением `567 183`, региональные строки 2018 года остаются пустыми.
 - `abortions_subjects.geojson` — локальная геометрия субъектов для SVG-картограммы страницы `Аборты`.
 - `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json`, `abortions_join_audit.csv`, `abortions_data_manifest.json` — воспроизводимые локальные слои модуля прерываний беременности.
 - `rpn2022_fertility_housing_dashboard.json` — федеральный слой РПН-2022.

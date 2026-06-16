@@ -14,15 +14,16 @@
         <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
         <div><div class="brand-title">Россия 2050</div><div class="brand-subtitle">расчётная демографическая платформа</div></div>
       </a>
-            <nav class="nav-tabs" aria-label="Разделы платформы">
-        <a href="skr.html">СКР</a>
+            <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" class="nav-tabs" aria-label="Разделы платформы">
+        <a href="skr.html">Рождаемость</a>
         <a href="settlement.html">Расселение</a>
         <a href="infrastructure.html">Инфраструктура</a>
-        <a href="estate.html">Усадьба</a>
+        <a href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a href="family.html">Семья</a>
+        <a href="family.html">Браки</a>
         <a class="active" href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -62,7 +63,7 @@
         <div class="abortion-kpi"><span>На 100 родов</span><b id="kpiRateBirths">—</b><small>последнее доступное значение</small></div>
         <div class="abortion-kpi"><span>Потенциал сценария</span><b id="kpiPotential">—</b><small>при выбранной доле сохранения</small></div>
       </div>
-      <p class="source-note">Для 2024 года показатель на 100 родов не рассчитан, потому что загруженный файл рождений завершается 2023 годом. 2018 год исключён из рядов абсолютного числа прерываний из-за несопоставимого типа значения в исходной выгрузке.</p>
+      <p class="source-note">Для 2024 года показатель на 100 родов не рассчитан, потому что загруженный файл рождений завершается 2023 годом. Федеральное значение 2018 года восстановлено по опубликованному агрегату 567 183; региональный слой 2018 года остаётся ограниченным до появления сопоставимой выгрузки.</p>
       <div class="download-row"><a href="data/abortions_summary.csv" download>Скачать таблицу</a><a href="data/abortions.sqlite" download>Скачать базу данных</a></div>
     </section>
 
@@ -85,7 +86,7 @@
     <section class="card white"><h2>Методика</h2><details class="abortion-method" open><summary>Как рассчитаны показатели</summary><p>Показатели рассчитаны из трёх загруженных статистических файлов: число прерываний беременности, число родившихся живыми и численность женщин по возрастным группам. Для знаменателя 15–49 лет суммированы группы 15–19, 20–24, 25–29, 30–34, 35–39, 40–44 и 45–49 лет. Формулы: число прерываний беременности на 1000 женщин 15–49 лет = число прерываний / численность женщин 15–49 × 1000; число прерываний на 100 родов = число прерываний / число родившихся живыми × 100.</p></details></section>
   </main>
   <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
   <script src="assets/js/abortions.js" defer></script>
 </body>
 </html>
-

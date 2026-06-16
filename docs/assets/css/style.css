@@ -63,6 +63,12 @@ a{color:inherit}
 }
 .nav-tabs a:hover{background:rgba(255,255,255,.12); transform:translateY(-1px)}
 .nav-tabs a.active{background:var(--tg-gold); color:#071b1d; border-color:var(--tg-gold); box-shadow:0 7px 22px rgba(212,165,55,.28)}
+.menu-toggle{display:none;margin-left:auto;border:1px solid rgba(239,211,154,.42);background:rgba(255,255,255,.08);color:var(--tg-cream);box-shadow:none}
+.menu-toggle-icon{width:18px;height:12px;display:inline-block;position:relative;border-top:2px solid currentColor;border-bottom:2px solid currentColor}
+.menu-toggle-icon:before{content:"";position:absolute;left:0;right:0;top:3px;border-top:2px solid currentColor}
+.nav-backdrop{position:fixed;inset:0;z-index:1040;background:rgba(3,20,22,.48);backdrop-filter:blur(2px)}
+.nav-backdrop[hidden]{display:none}
+body.nav-open{overflow:hidden}
 .page-wrap{max-width:1480px; margin:0 auto; padding:34px 28px 70px; position:relative; z-index:1}
 .hero{
   display:grid; grid-template-columns:minmax(0,1.4fr) minmax(340px,.8fr); gap:24px;
@@ -188,12 +194,22 @@ th{background:#f7efdE; color:#1b302e; text-transform:uppercase; letter-spacing:.
   .hero-main{padding:26px 22px}
   .grid.three,.grid.four,.metric-strip,.territory-kpi-split{grid-template-columns:1fr}
   .brand{min-width:0}.brand img{width:58px}.brand-title{font-size:18px}
-  .nav-tabs a{padding:10px 12px; font-size:14px}
+  .topbar-inner{flex-direction:row;align-items:center}
+  .menu-toggle{display:inline-flex}
+  .nav-tabs{
+    position:fixed;top:0;right:0;bottom:0;z-index:1050;width:min(84vw,340px);margin-left:0;padding:84px 18px 22px;
+    display:none;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:10px;overflow:auto;
+    background:linear-gradient(180deg,rgba(11,52,56,.98),rgba(8,38,42,.98));border-left:1px solid rgba(239,211,154,.28);
+    box-shadow:-24px 0 60px rgba(0,0,0,.28);
+  }
+  .nav-tabs.is-open{display:flex}
+  .nav-tabs a{width:100%;padding:13px 14px; font-size:14px;border-radius:14px}
   h1{font-size:38px}.lead{font-size:19px}
   #map{height:430px}.chart{min-height:390px}.chart.tall{min-height:500px}
   .chart-policy-control{grid-template-columns:1fr;gap:9px}
   .chart-policy-values{justify-content:flex-start}
   .policy-lag-band:before{left:-14px;right:-14px}
+  .map-mode-controls{grid-template-columns:1fr}
 }
 
 
@@ -207,11 +223,20 @@ th{background:#f7efdE; color:#1b302e; text-transform:uppercase; letter-spacing:.
 .scenario-chip.active{background:var(--tg-gold);color:#071b1d;border-color:var(--tg-gold)}
 .mode-row .scenario-chip{text-transform:none;letter-spacing:0;font-size:14px}
 .view-brief [data-detail-section]{display:none}
+.map-mode-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 16px}
+.map-mode-controls .control{background:#fffdf8;border:1px solid #eadbbf;border-radius:16px;padding:12px}
 .territory-kpi-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .territory-kpi-split>div{background:rgba(255,253,248,.76);border:1px solid #eadbbf;border-radius:14px;padding:11px 12px;display:grid;gap:5px}
 .territory-kpi-split strong{color:var(--tg-teal);text-transform:uppercase;font-size:12px;letter-spacing:.05em}
 .territory-kpi-split span{font-weight:800;color:#263634;line-height:1.35}
 .range-value{font-weight:900;color:var(--tg-teal);font-size:18px}
+.range-ruler{position:relative;margin:10px 2px 0;padding-top:15px;height:42px;color:#53615e;font-size:12px;font-weight:900}
+.range-ruler:before{content:"";position:absolute;left:0;right:0;top:12px;height:3px;border-radius:999px;background:linear-gradient(90deg,#b98721,#eadbbf 33.333%,#145b61)}
+.range-tick{position:absolute;top:3px;transform:translateX(-50%);display:grid;justify-items:center;gap:8px;white-space:nowrap}
+.range-tick:before{content:"";width:2px;height:15px;background:#145b61;border-radius:999px}
+.range-tick.zero{left:33.333%}
+.range-tick.min{left:0;transform:none;justify-items:start}
+.range-tick.max{right:0;left:auto;transform:none;justify-items:end}
 .module-note{border-left:5px solid var(--tg-gold);padding:12px 16px;background:rgba(244,239,228,.78);border-radius:0 12px 12px 0;color:#3a4543;line-height:1.35}
 
 /* РПН-2022: репродуктивные установки и жилищный резерв */

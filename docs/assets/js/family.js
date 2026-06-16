@@ -54,7 +54,17 @@
     return v == null || Number.isNaN(Number(v)) ? null : Number(v);
   }
 
-  function plotConfig() { return { responsive: true, displayModeBar: false, locale: 'ru', topojsonURL: 'assets/vendor/plotly/' }; }
+  function plotConfig() {
+    return {
+      responsive: true,
+      displayModeBar: false,
+      displaylogo: false,
+      scrollZoom: false,
+      modeBarButtonsToRemove: ['zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d','autoScale2d','resetScale2d'],
+      locale: 'ru',
+      topojsonURL: 'assets/vendor/plotly/'
+    };
+  }
   function plotLayout(title = '') {
     return {
       title: title ? { text: title, font: { family: 'Arial', size: 16, color: '#162a30' } } : undefined,
@@ -62,8 +72,9 @@
       plot_bgcolor: 'rgba(0,0,0,0)',
       font: { family: 'Arial', color: '#182d33' },
       margin: { l: 58, r: 24, t: title ? 48 : 22, b: 54 },
-      xaxis: { gridcolor: 'rgba(20,40,45,.10)', zeroline: false },
-      yaxis: { gridcolor: 'rgba(20,40,45,.10)', zeroline: false },
+      dragmode: false,
+      xaxis: { gridcolor: 'rgba(20,40,45,.10)', zeroline: false, fixedrange: true },
+      yaxis: { gridcolor: 'rgba(20,40,45,.10)', zeroline: false, fixedrange: true },
       legend: { orientation: 'h', x: 0, y: -0.22 },
       hoverlabel: { bgcolor: '#fff', bordercolor: '#d6a436', font: { color: '#111' } },
     };
@@ -415,6 +426,6 @@
 
   loadData().catch((err) => {
     console.error(err);
-    document.body.insertAdjacentHTML('afterbegin', `<div style="background:#fff;color:#111;padding:16px;font-weight:700">Данные страницы «Семья» временно недоступны: ${String(err.message || err)}</div>`);
+    document.body.insertAdjacentHTML('afterbegin', `<div style="background:#fff;color:#111;padding:16px;font-weight:700">Данные страницы «Браки» временно недоступны: ${String(err.message || err)}</div>`);
   });
 })();

@@ -11,6 +11,14 @@ function mergePlotObject(base, extra){
   });
   return out;
 }
+function lockPlotAxes(layout){
+  Object.keys(layout || {}).forEach((key)=>{
+    if(/^xaxis\d*$/.test(key) || /^yaxis\d*$/.test(key)){
+      layout[key] = mergePlotObject({ fixedrange: true }, layout[key] || {});
+    }
+  });
+  return layout;
+}
 const TG = {
   colors: {
     teal: '#145b61', deep: '#0b3438', blue: '#173f78', gold: '#d4a537',
@@ -60,10 +68,45 @@ const TG = {
       merged.margin = mergePlotObject(merged.margin || {}, { b: Math.max(merged.margin?.b || 0, 104) });
       merged.height = Math.max(merged.height || 0, 500);
     }
-    return merged;
+    merged.dragmode = false;
+    return lockPlotAxes(merged);
   },
-  plotConfig: { responsive: true, displaylogo: false, displayModeBar: false }
+  plotConfig: {
+    responsive: true,
+    displaylogo: false,
+    displayModeBar: false,
+    scrollZoom: false,
+    modeBarButtonsToRemove: ['zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d','autoScale2d','resetScale2d']
+  }
 };
+
+function setupMobileNav(){
+  const toggle = document.querySelector('.menu-toggle');
+  const nav = document.getElementById(toggle?.getAttribute('aria-controls') || 'siteNav');
+  if(!toggle || !nav) return;
+  let backdrop = document.querySelector('.nav-backdrop');
+  if(!backdrop){
+    backdrop = document.createElement('div');
+    backdrop.className = 'nav-backdrop';
+    backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+  }
+  const setOpen = open => {
+    toggle.setAttribute('aria-expanded', String(open));
+    nav.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-open', open);
+    backdrop.hidden = !open;
+  };
+  toggle.addEventListener('click', ()=>setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  backdrop.addEventListener('click', ()=>setOpen(false));
+  nav.querySelectorAll('a').forEach(link=>link.addEventListener('click', ()=>setOpen(false)));
+  document.addEventListener('keydown', ev=>{
+    if(ev.key === 'Escape') setOpen(false);
+  });
+}
+
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupMobileNav);
+else setupMobileNav();
 
 async function loadJSON(path){
   const r = await fetch(path);

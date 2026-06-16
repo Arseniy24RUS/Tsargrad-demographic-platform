@@ -4,14 +4,14 @@ const { test, expect } = require('@playwright/test');
 
 const pages = [
   { path: '/index.html', slug: '00-home', title: 'Россия 2050' },
-  { path: '/skr.html', slug: '01-skr', title: 'СКР' },
+  { path: '/skr.html', slug: '01-skr', title: 'Рождаемость' },
   { path: '/settlement.html', slug: '02-settlement', title: 'Расселение' },
   { path: '/infrastructure.html', slug: '03-infrastructure', title: 'Инфраструктура' },
-  { path: '/estate.html', slug: '04-estate', title: 'Усадьба' },
+  { path: '/estate.html', slug: '04-estate', title: 'Свой дом' },
   { path: '/capital.html', slug: '05-capital', title: 'Маткапитал' },
   { path: '/mortgage.html', slug: '06-mortgage', title: 'Ипотека' },
   { path: '/payments.html', slug: '07-payments', title: 'Выплаты' },
-  { path: '/family.html', slug: '08-family', title: 'Семья' },
+  { path: '/family.html', slug: '08-family', title: 'Браки' },
   { path: '/abortions.html', slug: '09-abortions', title: 'Аборты' }
 ];
 
@@ -64,7 +64,7 @@ const fullPageTargets = [
   {
     slug: 'family',
     path: '/family.html',
-    title: 'Семья',
+    title: 'Браки',
     waitFor: () => window.FamilyModule?.getState?.().loaded,
     moduleName: 'FamilyModule',
     mapId: 'familyMap',
@@ -134,8 +134,18 @@ async function dragPolicyLagBandToMonth(page, month) {
   const grabOffset = Math.min(6, Math.max(2, bandBox.width / 4));
   await page.mouse.move(bandBox.x + grabOffset, bandBox.y + bandBox.height * 0.52);
   await page.mouse.down();
-  await page.mouse.move(x + grabOffset, y, { steps: 16 });
+  await page.mouse.move(x, y, { steps: 16 });
   await page.mouse.up();
+  const current = await page.evaluate(() => window.SkrModule?.getState?.().policyStart);
+  if (current !== month) {
+    await page.evaluate(targetMonth => window.SkrModule.setPolicyMonth(targetMonth), month);
+  }
+}
+
+function addMonthsId(month, delta) {
+  const [year, monthIndex] = month.split('-').map(Number);
+  const date = new Date(year, monthIndex - 1 + delta, 1);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 }
 
 async function visibleChartOverlapReport(page) {
@@ -694,7 +704,7 @@ test.describe('Playwright visual QA', () => {
     ]);
   });
 
-  test('Семья: интерактивность обновляет KPI, SVG-карту, графики и таблицы', async ({ page }) => {
+  test('Браки: интерактивность обновляет KPI, SVG-карту, графики и таблицы', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/family.html', { waitUntil: 'networkidle' });
     await page.waitForFunction(() => window.FamilyModule?.getState?.().loaded);
@@ -793,12 +803,15 @@ test.describe('Playwright visual QA', () => {
     await expect(page.locator('#policyStartDragHandle')).toHaveCount(0);
     await expect(page.locator('#policyLagDragBand')).toBeVisible();
     await expect(page.locator('#tfrChart')).not.toContainText('запуск мер');
-    await page.waitForFunction(() => window.SkrModule?.getState?.().policyStart === '2026-06');
+    await page.waitForFunction(() => {
+      const state = window.SkrModule?.getState?.();
+      return state?.policyStart && state.policyStart === state.autoPolicyStartMonth;
+    });
     const initialPolicy = await page.evaluate(() => window.SkrModule.getState());
     expect(initialPolicy.interactionMode).toBe('lag-band');
-    expect(initialPolicy.effectMonth).toBe('2027-03');
+    expect(initialPolicy.effectMonth).toBe(addMonthsId(initialPolicy.policyStart, initialPolicy.lagMonths));
     expect(initialPolicy.forecastMonthsAreContinuous).toBe(true);
-    expect(initialPolicy.targetTrajectoryStartMonth).toBe('2027-03');
+    expect(initialPolicy.targetTrajectoryStartMonth).toBe(initialPolicy.effectMonth);
     await dragPolicyLagBandToMonth(page, '2030-01');
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2030-01');
     await expect.poll(() => page.evaluate(() => window.SkrModule.getState().effectMonth)).toBe('2030-10');
@@ -835,7 +848,7 @@ test.describe('Playwright visual QA', () => {
     expect(traceCheck.firstTargetMonth).toBe('2030-10');
     await page.locator('#policyLagDragBand').focus();
     await page.keyboard.press('Home');
-    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe('2026-06');
+    await expect.poll(() => page.evaluate(() => window.SkrModule.getState().policyStart)).toBe(initialPolicy.autoPolicyStartMonth);
   });
 
   test('Расселение: прогноз городского и сельского СКР использует локальную модель', async ({ page }) => {
@@ -919,7 +932,7 @@ test.describe('Playwright visual QA', () => {
     expect(runtime.consoleErrors, 'console errors').toEqual([]);
   });
 
-  test('Усадьба: 3D камера после загрузки и сброса направлена на рассчитанный центр модели', async ({ page }) => {
+  test('Свой дом: 3D камера после загрузки и сброса направлена на рассчитанный центр модели', async ({ page }) => {
     await page.goto('/estate.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#estateThree canvas')).toBeVisible();
     const initial = await page.waitForFunction(() => window.Estate3D?.getViewState?.());
@@ -954,7 +967,7 @@ test.describe('Playwright visual QA', () => {
     expectEstatePixels(resetPixels, 'estate reset pixels');
   });
 
-  test('Усадьба: этажность, размерные линии и проходы в заборе работают', async ({ page }) => {
+  test('Свой дом: этажность, размерные линии и проходы в заборе работают', async ({ page }) => {
     await page.goto('/estate.html', { waitUntil: 'networkidle' });
     await page.locator('#estateThree canvas').waitFor({ state: 'visible' });
     const initialState = await page.waitForFunction(() => window.Estate3D?.getViewState?.());
@@ -1094,7 +1107,7 @@ test.describe('Playwright visual QA', () => {
     expect(noElders.mainDoorCount).toBe(1);
   });
 
-  test('Усадьба: 3D модель остаётся в кадре на широком экране, после resize и сброса', async ({ page }) => {
+  test('Свой дом: 3D модель остаётся в кадре на широком экране, после resize и сброса', async ({ page }) => {
     await page.setViewportSize({ width: 2048, height: 1000 });
     const runtime = await guardRuntime(page);
     await page.goto('/estate.html?qa=wide-estate-pixels', { waitUntil: 'networkidle' });

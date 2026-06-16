@@ -2,14 +2,27 @@
 
 const skrState = {
   data:null, geo:null, rpn:null, rpnRegional:null, selected:'terr_rf_bez_novyh_subektov', map:null, layer:null,
-  policyMonths:[], policyStart:null, policyIndex:0, highlightedLayer:null, analysisMode:'country',
+  policyMonths:[], policyStart:null, autoPolicyStartMonth:null, policyIndex:0, highlightedLayer:null, analysisMode:'country',
   policyPointerId:null, monthlyForecast:null
 };
 
-const POLICY_START_MIN = '2026-06';
-const POLICY_START_MAX = '2035-12';
 const POLICY_AXIS_MIN = '2025-01';
 const POLICY_AXIS_MAX = '2050-12';
+
+function monthTime(month){
+  return parseDate(`${month}-01`).getTime();
+}
+function nextCalendarMonthId(date=new Date()){
+  return monthId(new Date(date.getFullYear(), date.getMonth()+1, 1));
+}
+function clampMonthId(month, minMonth, maxMonth){
+  if(monthTime(month) < monthTime(minMonth)) return minMonth;
+  if(monthTime(month) > monthTime(maxMonth)) return maxMonth;
+  return month;
+}
+function latestPolicyStartMonth(){
+  return monthId(addMonths(parseDate(`${POLICY_AXIS_MAX}-01`), -getLagMonths()));
+}
 
 function forecastTfr(monthly, key, endMonth, upperBound){
   const observed = monthly.filter(d => d[key] !== null && d[key] !== undefined).map((d,i)=>({i, date:parseDate(d.date), value:+d[key]}));
@@ -275,6 +288,7 @@ function getSkrModuleState(){
   return {
     interactionMode:'lag-band',
     policyStart:skrState.policyStart,
+    autoPolicyStartMonth:skrState.autoPolicyStartMonth,
     effectMonth:effectMonthForPolicy(),
     policyIndex:getPolicyIndex(),
     policyMonths:[...skrState.policyMonths],
@@ -488,13 +502,16 @@ function setupModeControls(){
   setViewMode('brief');
 }
 function setupPolicyControl(){
-  skrState.policyMonths = monthRange(POLICY_START_MIN, POLICY_START_MAX).map(monthId);
+  const autoStart=nextCalendarMonthId();
+  const minStart=POLICY_AXIS_MIN;
+  const maxStart=latestPolicyStartMonth();
+  const initialStart=clampMonthId(autoStart, minStart, maxStart);
+  skrState.autoPolicyStartMonth=autoStart;
+  skrState.policyMonths = monthRange(initialStart, maxStart).map(monthId);
+  if(!skrState.policyMonths.length) skrState.policyMonths = [initialStart];
   setupSkrModule();
   setupPolicyPointerControl();
   setPolicyIndex(0,{render:false});
-  document.getElementById('policyNowBtn').addEventListener('click',()=>setPolicyIndex(0));
-  document.getElementById('policy2030Btn').addEventListener('click',()=>setPolicyMonth('2030-01'));
-  document.getElementById('resetTerritoryBtn').addEventListener('click',()=>selectTerritory(skrState.data.metadata.russia_territory_id, true));
 }
 function colorForTfr(v){
   if(v===null || v===undefined || isNaN(v)) return '#d9d2c3';

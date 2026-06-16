@@ -18,15 +18,16 @@
           <div class="brand-subtitle">демографическая платформа</div>
         </div>
       </a>
-            <nav class="nav-tabs" aria-label="Разделы платформы">
-        <a href="skr.html">СКР</a>
+            <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" class="nav-tabs" aria-label="Разделы платформы">
+        <a href="skr.html">Рождаемость</a>
         <a class="active" href="settlement.html">Расселение</a>
         <a href="infrastructure.html">Инфраструктура</a>
-        <a href="estate.html">Усадьба</a>
+        <a href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a href="family.html">Семья</a>
+        <a href="family.html">Браки</a>
         <a href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -64,6 +65,11 @@
           <div class="control">
             <label for="delta2050" id="delta2050Title">Изменение доли сельской и пригородной среды к 2050 году</label>
             <input id="delta2050" type="range" min="-15" max="30" value="5" step="0.5" />
+            <div class="range-ruler" aria-hidden="true">
+              <span class="range-tick min">−15 п.п.</span>
+              <span class="range-tick zero">0</span>
+              <span class="range-tick max">+30 п.п.</span>
+            </div>
             <div class="text-note">Поверх базовой траектории: <span class="range-value" id="delta2050Label">+5,0 п.п.</span></div>
           </div>
           <div class="scenario-chip-row">
@@ -124,4 +130,3 @@
   <script src="assets/js/settlement.js?v=20260614-settlement-forecast1"></script>
 </body>
 </html>
-

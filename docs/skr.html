@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>СКР | Россия 2050</title>
+  <title>Рождаемость | Россия 2050</title>
   <link rel="stylesheet" href="assets/css/style.css?v=20260614-brandmark1" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
   <link rel="shortcut icon" href="favicon.ico" />
@@ -18,15 +18,16 @@
           <div class="brand-subtitle">демографическая платформа</div>
         </div>
       </a>
-            <nav class="nav-tabs" aria-label="Разделы платформы">
-        <a class="active" href="skr.html">СКР</a>
+            <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" class="nav-tabs" aria-label="Разделы платформы">
+        <a class="active" href="skr.html">Рождаемость</a>
         <a href="settlement.html">Расселение</a>
         <a href="infrastructure.html">Инфраструктура</a>
-        <a href="estate.html">Усадьба</a>
+        <a href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a href="family.html">Семья</a>
+        <a href="family.html">Браки</a>
         <a href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -62,12 +63,7 @@
           </div>
           <span class="pill" id="mapMetricPill">2026-05</span>
         </div>
-        <div id="map"></div>
-        <div class="map-legend" id="mapLegend"></div>
-      </div>
-      <div class="card">
-        <h2>Параметры сравнения</h2>
-        <div class="controls">
+        <div class="map-mode-controls">
           <div class="control">
             <label>Режим анализа</label>
             <div class="scenario-chip-row mode-row" aria-label="Режим анализа">
@@ -83,6 +79,13 @@
               <button class="scenario-chip" data-view-mode="detail" type="button">Подробный вид</button>
             </div>
           </div>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend" id="mapLegend"></div>
+      </div>
+      <div class="card">
+        <h2>Параметры сравнения</h2>
+        <div class="controls">
           <div class="control">
             <label for="territorySelect">Территория</label>
             <select id="territorySelect"></select>
@@ -93,12 +96,7 @@
               <span>ввод мер: <b id="policyMonthLabel">—</b></span>
               <span>начало эффекта: <b id="effectMonthLabel">—</b></span>
             </div>
-            <div class="text-note">Дата меняется золотой линией на графике или быстрыми кнопками ниже.</div>
-          </div>
-          <div class="btn-row">
-            <button class="gold" id="policyNowBtn" type="button">с июня 2026</button>
-            <button class="ghost" id="policy2030Btn" type="button">с января 2030</button>
-            <button class="ghost" id="resetTerritoryBtn" type="button">только Россия</button>
+            <div class="text-note">По умолчанию выбран следующий календарный месяц; лаг-зону можно сдвинуть золотой линией на графике.</div>
           </div>
         </div>
         <div class="metric-strip">
@@ -279,4 +277,3 @@
   <script src="assets/js/vciom_fertility_block.js?v=20260614-home-family-abortions1" defer></script>
 </body>
 </html>
-

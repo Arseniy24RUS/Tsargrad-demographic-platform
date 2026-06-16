@@ -76,7 +76,7 @@
     "note": "Локальный социологический слой для страницы «СКР»; не формальный СКР."
   },
   "family_module": {
-    "title": "Браки и разводы: локальный модуль «Семья»",
+    "title": "Браки и разводы: локальный модуль «Браки»",
     "files": [
       "data/family_dashboard.json",
       "data/family_subjects.geojson",
@@ -102,10 +102,25 @@
     "sources": [
       "Минздрав России: число прерываний беременности",
       "Росстат: число родившихся живыми",
-      "Росстат: численность женщин 15–49 лет"
+      "Росстат: численность женщин 15–49 лет",
+      {
+        "id": "federal_abortions_2018_demoscope",
+        "title": "Demoscope Weekly: федеральное число прерываний беременности за 2018 год",
+        "url": "https://www.demoscope.ru/weekly/2019/0823/biblio05.php"
+      },
+      {
+        "id": "federal_abortions_2018_medvestnik",
+        "title": "Медвестник: таблица динамики числа абортов, 2018 — 567 183",
+        "url": "https://medvestnik.ru/content/news/Za-14-let-obshee-chislo-abortov-v-Rossii-snizilos-na-30.html"
+      },
+      {
+        "id": "federal_abortions_2018_pravmir",
+        "title": "Правмир: сообщение Минздрава о числе абортов за 2018 год",
+        "url": "https://www.pravmir.ru/v-minzdrave-nazvali-regiony-lidery-po-chislu-abortov/"
+      }
     ],
     "runtime_external_fetch": false,
-    "note": "Исходные выгрузки преобразованы в локальные runtime-слои; страница не запрашивает сеть."
+    "note": "Исходные выгрузки преобразованы в локальные runtime-слои; страница не запрашивает сеть. Федеральный 2018 год восстановлен значением 567 183, региональные строки 2018 года не заполняются."
   },
   "infrastructure_module": {
     "title": "?????????????? ?????????: ????????? ??????-??????",

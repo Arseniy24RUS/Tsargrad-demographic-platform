@@ -37,6 +37,9 @@
     .brand-mark{width:52px;height:52px;border:2px solid var(--gold);border-radius:14px;display:grid;place-items:center;color:var(--gold);font-size:28px;line-height:1;box-shadow:inset 0 0 0 7px rgba(216,162,56,.08)}.brand img{height:58px;width:auto;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,.18))}
     .brand-title{font-size:20px;text-transform:uppercase}.brand-sub{font-size:12px;color:rgba(243,234,214,.72);font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
     nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px}nav a{color:rgba(255,255,255,.84);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:10px 12px}nav a:hover{background:var(--gold);color:#15110a;border-color:var(--gold)}
+    .menu-toggle{display:none;margin-left:auto;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:var(--cream);border-radius:999px;padding:10px 13px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;align-items:center;gap:8px}
+    .menu-toggle-icon{width:18px;height:12px;display:inline-block;position:relative;border-top:2px solid currentColor;border-bottom:2px solid currentColor}.menu-toggle-icon:before{content:"";position:absolute;left:0;right:0;top:3px;border-top:2px solid currentColor}
+    .nav-backdrop{position:fixed;inset:0;z-index:24;background:rgba(3,20,22,.48);backdrop-filter:blur(2px)}.nav-backdrop[hidden]{display:none}body.nav-open{overflow:hidden}
     .hero{padding:70px 0 42px;color:var(--cream);display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center}
     .eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);font-size:13px}.eyebrow:before{content:"";width:36px;height:3px;background:var(--gold);display:block}
     h1{font-size:clamp(44px,6vw,92px);line-height:.96;margin:20px 0 24px;letter-spacing:0;color:#fff;text-transform:uppercase;overflow-wrap:anywhere}
@@ -49,8 +52,8 @@
     .structure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.module{position:relative;background:#fff;border:1px solid rgba(216,162,56,.35);border-radius:22px;padding:22px;min-height:190px;transition:.16s transform,.16s box-shadow}.module:hover{transform:translateY(-3px);box-shadow:0 18px 32px rgba(13,63,70,.18)}.module .num{font-size:13px;color:#0f4f55;font-weight:950}.module h3{font-size:24px;margin:8px 0;color:#111}.module p{margin:0 0 18px;color:#5e5a51}.module .go{position:absolute;right:18px;bottom:16px;color:var(--gold);font-weight:950}
     .evidence{display:grid;grid-template-columns:1fr 1fr;gap:22px}.quote{background:#0f4f55;color:var(--cream);border-radius:24px;padding:26px;position:relative;overflow:hidden}.quote:after{content:"";position:absolute;right:18px;bottom:-30px;width:150px;height:150px;background:rgba(216,162,56,.12);-webkit-mask:url("assets/img/favicon.png") center/contain no-repeat;mask:url("assets/img/favicon.png") center/contain no-repeat;pointer-events:none}.quote h3{font-size:28px;line-height:1.08;margin:0 0 14px;color:#fff}.quote p{margin:0;color:rgba(243,234,214,.86);font-size:17px}.fact-table{background:#fff;border-radius:24px;overflow:hidden;border:1px solid rgba(216,162,56,.35)}.fact-row{display:grid;grid-template-columns:1.2fr .8fr .8fr;border-bottom:1px solid #eee}.fact-row:last-child{border-bottom:0}.fact-row div{padding:15px 17px;font-weight:800}.fact-row.head div{background:#f7edd8;color:#0f4f55;text-transform:uppercase;font-size:12px;letter-spacing:.08em}.fact-row div:nth-child(n+2){text-align:right}.fact-row .big{font-size:24px;color:#0f4f55}
     .footer{padding:34px 0 60px;color:rgba(243,234,214,.72);font-weight:700}.footer a{color:var(--gold)}
-    @media (max-width:1050px){.hero,.evidence{grid-template-columns:1fr}.theses,.structure{grid-template-columns:1fr 1fr}nav{display:none}}
-    @media (max-width:680px){.wrap{width:min(100% - 26px,1320px)}.hero{padding-top:42px}.metric-grid,.theses,.structure{grid-template-columns:1fr}.section-card{padding:20px}.fact-row{grid-template-columns:1fr}.fact-row div:nth-child(n+2){text-align:left}.topbar{align-items:flex-start}.brand-title{font-size:16px}}
+    @media (max-width:1050px){.hero,.evidence{grid-template-columns:1fr}.theses,.structure{grid-template-columns:1fr 1fr}}
+    @media (max-width:680px){.wrap{width:min(100% - 26px,1320px)}.hero{padding-top:42px}.metric-grid,.theses,.structure{grid-template-columns:1fr}.section-card{padding:20px}.fact-row{grid-template-columns:1fr}.fact-row div:nth-child(n+2){text-align:left}.topbar{align-items:center}.brand-title{font-size:16px}.menu-toggle{display:inline-flex}nav{position:fixed;top:0;right:0;bottom:0;z-index:25;width:min(84vw,340px);padding:84px 18px 22px;display:none;flex-direction:column;align-items:stretch;justify-content:flex-start;flex-wrap:nowrap;overflow:auto;background:linear-gradient(180deg,rgba(9,44,50,.98),rgba(7,34,39,.98));border-left:1px solid rgba(255,255,255,.14);box-shadow:-24px 0 60px rgba(0,0,0,.28)}nav.is-open{display:flex}nav a{width:100%;border-radius:14px;padding:13px 14px}}
   </style>
 </head>
 <body>
@@ -61,15 +64,16 @@
         <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
         <div><div class="brand-title">Россия 2050</div><div class="brand-sub">расчётная демографическая платформа</div></div>
       </a>
-            <nav aria-label="Разделы платформы">
-        <a href="skr.html">СКР</a>
+      <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" aria-label="Разделы платформы">
+        <a href="skr.html">Рождаемость</a>
         <a href="settlement.html">Расселение</a>
         <a href="infrastructure.html">Инфраструктура</a>
-        <a href="estate.html">Усадьба</a>
+        <a href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a href="family.html">Семья</a>
+        <a href="family.html">Браки</a>
         <a href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -81,7 +85,7 @@
         <div class="eyebrow">Россия 2050</div>
         <h1>Малоэтажная и многодетная Россия</h1>
         <p class="lead">Платформа переводит рамку демографического прорыва в вычислимую систему: <strong>рождаемость, желаемые дети, жильё, расселение, семейное пространство и бюджетные меры</strong> соединены в единую модель для экспертного обсуждения.</p>
-        <div class="hero-actions"><a class="btn primary" href="skr.html">Перейти к СКР</a><a class="btn secondary" href="#structure">Структура платформы</a></div>
+        <div class="hero-actions"><a class="btn primary" href="skr.html">Перейти к рождаемости</a><a class="btn secondary" href="#structure">Структура платформы</a></div>
       </div>
       <div class="hero-card" aria-label="Главные ориентиры платформы">
         <h2>Главная управленческая развилка</h2>
@@ -121,14 +125,14 @@
       <div class="wrap section-card">
         <div class="section-title"><h2>Структура</h2><p>Восемь рабочих модулей образуют единую систему расчётов: от мониторинга СКР до оценки стоимости мер поддержки семьи и профилактики прерываний беременности.</p></div>
         <div class="structure">
-          <a class="module" href="skr.html"><div class="num">01</div><h3>СКР</h3><p>Факт, прогноз, целевая траектория, лаг запуска мер и блок ВЦИОМ/РПН о желаемом и ожидаемом числе детей.</p><span class="go">открыть →</span></a>
+          <a class="module" href="skr.html"><div class="num">01</div><h3>Рождаемость</h3><p>Факт, прогноз, целевая траектория, лаг запуска мер и блок ВЦИОМ/РПН о желаемом и ожидаемом числе детей.</p><span class="go">открыть →</span></a>
           <a class="module" href="settlement.html"><div class="num">02</div><h3>Расселение</h3><p>Сценарии перехода к малоэтажной, пригородной и сельской среде и их эффект на рождаемость.</p><span class="go">открыть →</span></a>
           <a class="module" href="infrastructure.html"><div class="num">03</div><h3>Инфраструктура</h3><p>Готовность поселений к семейному расселению: дороги, сети, связь, образование, медицина и сервисы.</p><span class="go">открыть →</span></a>
-          <a class="module" href="estate.html"><div class="num">04</div><h3>Усадьба</h3><p>Трёхмерная модель растущего дома, стоимость на человека, модули детей и старшего поколения.</p><span class="go">открыть →</span></a>
+          <a class="module" href="estate.html"><div class="num">04</div><h3>Свой дом</h3><p>Трёхмерная модель растущего дома, стоимость на человека, модули детей и старшего поколения.</p><span class="go">открыть →</span></a>
           <a class="module" href="capital.html"><div class="num">05</div><h3>Маткапитал</h3><p>Сравнение действующей модели с восстановлением стимула 2007 года и подходом по стоимости комфортного жилья.</p><span class="go">открыть →</span></a>
           <a class="module" href="mortgage.html"><div class="num">06</div><h3>Ипотека</h3><p>Платёж семьи, бюджетная субсидия, льготная и рыночная части кредита, цена потенциального рождения.</p><span class="go">открыть →</span></a>
           <a class="module" href="payments.html"><div class="num">07</div><h3>Выплаты</h3><p>Прямые ежемесячные выплаты, охват меры, потенциальные рождения и бюджет до 2050 года.</p><span class="go">открыть →</span></a>
-          <a class="module" href="family.html"><div class="num">08</div><h3>Семья</h3><p>Браки, разводы, коэффициенты на 1000 населения и индекс разводимости по регионам России.</p><span class="go">открыть →</span></a>
+          <a class="module" href="family.html"><div class="num">08</div><h3>Браки</h3><p>Браки, разводы, коэффициенты на 1000 населения и индекс разводимости по регионам России.</p><span class="go">открыть →</span></a>
           <a class="module" href="abortions.html"><div class="num">09</div><h3>Аборты</h3><p>Мониторинг прерываний беременности, показатели на 1000 женщин 15–49 лет и на 100 родов, региональная картограмма.</p><span class="go">открыть →</span></a>
         </div>
       </div>
@@ -137,6 +141,6 @@
 
   <footer class="wrap footer">Расчётная платформа для экспертного обсуждения. Источники и методика раскрыты внутри разделов и в документации проекта.</footer>
 </div>
+<script src="assets/js/common.js"></script>
 </body>
 </html>
-

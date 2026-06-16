@@ -61,13 +61,21 @@ if int(rf2024[0].get('abortions') or 0) != 338367:
     fail('ожидалось 338367 прерываний беременности по РФ за 2024 год')
 if rf2024[0].get('rate_women') is None:
     fail('для РФ 2024 должен быть рассчитан показатель на 1000 женщин')
-if any(r.get('year') == 2018 and r.get('abortions') is not None for r in rows):
-    fail('2018 год должен быть пропущен для числа прерываний беременности')
+rf2018 = [r for r in rows if r.get('territory_id') in ('terr_rf_bez_novyh_subektov', 'terr_rossiyskaya_federatsiya') and r.get('year') == 2018]
+if not rf2018:
+    fail('нет федеральной строки за 2018 год')
+if int(rf2018[0].get('abortions') or 0) != 567183:
+    fail('федеральный 2018 год должен быть восстановлен значением 567183')
+if rf2018[0].get('rate_women') is None:
+    fail('для РФ 2018 должен быть рассчитан показатель на 1000 женщин')
+regional2018 = [r for r in rows if r.get('year') == 2018 and r.get('territory_id') not in ('terr_rf_bez_novyh_subektov', 'terr_rossiyskaya_federatsiya')]
+if any(r.get('abortions') is not None for r in regional2018):
+    fail('региональные значения 2018 года должны оставаться пустыми')
 geo = json.loads((ROOT/'docs'/'data'/'abortions_subjects.geojson').read_text(encoding='utf-8'))
 if len(geo.get('features') or []) < 80:
     fail('geojson содержит слишком мало субъектов')
 js = (ROOT/'docs'/'assets'/'js'/'abortions.js').read_text(encoding='utf-8')
-for token in ['window.AbortionsModule', 'getState', 'runtimeExternalFetch', 'renderedCharts', 'mapEngine', 'mapRenderedPaths', 'mapValueCount', 'mapDomain']:
+for token in ['window.AbortionsModule', 'getState', 'runtimeExternalFetch', 'renderedCharts', 'mapEngine', 'mapRenderedPaths', 'mapValueCount', 'mapDomain', 'rf2018Abortions']:
     if token not in js:
         fail(f'в abortions.js нет проверочного контракта {token}')
 conn = sqlite3.connect(ROOT/'docs'/'data'/'abortions.sqlite')
@@ -79,6 +87,11 @@ try:
         n = conn.execute('select count(*) from annual_metrics').fetchone()[0]
     elif 'observations' in tables:
         n = conn.execute('select count(*) from observations').fetchone()[0]
+        rf2018_sql = conn.execute(
+            "select value from observations where indicator_id='abortions_count' and territory_id='terr_rf_bez_novyh_subektov' and year=2018"
+        ).fetchone()
+        if not rf2018_sql or int(rf2018_sql[0] or 0) != 567183:
+            fail('SQLite не содержит восстановленное федеральное значение 2018 года')
     else:
         fail('SQLite не содержит таблицу показателей')
     if n < 1000:

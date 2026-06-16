@@ -19,15 +19,16 @@
           <div class="brand-subtitle">расчётная демографическая платформа</div>
         </div>
       </a>
-            <nav class="nav-tabs" aria-label="Разделы платформы">
-        <a href="skr.html">СКР</a>
+            <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" class="nav-tabs" aria-label="Разделы платформы">
+        <a href="skr.html">Рождаемость</a>
         <a href="settlement.html">Расселение</a>
         <a class="active" href="infrastructure.html">Инфраструктура</a>
-        <a href="estate.html">Усадьба</a>
+        <a href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a href="family.html">Семья</a>
+        <a href="family.html">Браки</a>
         <a href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -91,7 +92,7 @@
           <canvas id="infraMapCanvas" class="infra-map-canvas" width="1000" height="620" aria-label="Карта инфраструктурной готовности поселений"></canvas>
           <div id="infraTooltip" class="infra-tooltip"></div>
         </div>
-        <div class="infra-map-legend"><span>низкая</span><span class="legend-gradient"></span><span>высокая</span><span class="legend-size">размер точки = численность</span></div>
+        <div class="infra-map-legend"><span>низкая</span><span class="legend-gradient"></span><span>высокая</span><span class="legend-no-data"><i></i>нет данных</span><span class="legend-size">размер точки = численность</span></div>
       </div>
       <aside class="card white infra-passport-card">
         <h2>Паспорт поселения</h2>
@@ -114,7 +115,7 @@
   <footer class="footer">Расчётная платформа для экспертного обсуждения. Инфраструктурный модуль предназначен для выбора территорий, где проект малоэтажного семейного расселения может быть запущен первым.</footer>
 
   <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
   <script src="assets/js/infrastructure.js?v=20260614-infra-palette1"></script>
 </body>
 </html>
-

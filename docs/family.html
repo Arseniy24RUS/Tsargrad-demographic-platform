@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Семья | Россия 2050</title>
+  <title>Браки | Россия 2050</title>
   <link rel="stylesheet" href="assets/css/style.css?v=20260614-brandmark1" />
   <link rel="stylesheet" href="assets/css/family.css" />
 </head>
@@ -14,15 +14,16 @@
         <img src="assets/img/tsargrad_logo.png" alt="Институт Царьград" />
         <div><div class="brand-title">Россия 2050</div><div class="brand-subtitle">расчётная демографическая платформа</div></div>
       </a>
-            <nav class="nav-tabs" aria-label="Разделы платформы">
-        <a href="skr.html">СКР</a>
+            <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false"><span class="menu-toggle-icon" aria-hidden="true"></span><span>Меню</span></button>
+      <nav id="siteNav" class="nav-tabs" aria-label="Разделы платформы">
+        <a href="skr.html">Рождаемость</a>
         <a href="settlement.html">Расселение</a>
         <a href="infrastructure.html">Инфраструктура</a>
-        <a href="estate.html">Усадьба</a>
+        <a href="estate.html">Свой дом</a>
         <a href="capital.html">Маткапитал</a>
         <a href="mortgage.html">Ипотека</a>
         <a href="payments.html">Выплаты</a>
-        <a class="active" href="family.html">Семья</a>
+        <a class="active" href="family.html">Браки</a>
         <a href="abortions.html">Аборты</a>
       </nav>
     </div>
@@ -30,8 +31,8 @@
   <main class="page-wrap">
     <section class="hero family-hero">
       <div class="hero-main">
-        <div class="section-number">07 · Брак, разводы и семейная устойчивость</div>
-        <h1>Семья: браки, разводы и устойчивость семейной среды</h1>
+        <div class="section-number">08 · Браки, разводы и семейная устойчивость</div>
+        <h1>Браки, разводы и устойчивость семейной среды</h1>
         <p class="lead">Страница показывает число браков и разводов, коэффициенты на 1000 населения и индекс разводимости: сколько разводов приходится на 100 заключённых браков.</p>
       </div>
       <div class="hero-kpis family-hero-kpis">
@@ -86,7 +87,7 @@
     <section class="card white"><h2>Методика</h2><details class="family-method" open><summary>Как рассчитаны показатели</summary><p>В основу положены четыре загруженные статистические выгрузки: число браков, число разводов, число браков на 1000 населения и число разводов на 1000 населения. Индекс разводимости рассчитывается как число разводов, делённое на число браков, умноженное на 100. Баланс брачности — разность коэффициентов брачности и разводимости на 1000 населения. Для федеральных округов с изменением границ ряды соединены по соответствующим историческим периодам.</p></details></section>
   </main>
   <script src="assets/vendor/plotly/plotly.min.js"></script>
+  <script src="assets/js/common.js"></script>
   <script src="assets/js/family.js" defer></script>
 </body>
 </html>
-
