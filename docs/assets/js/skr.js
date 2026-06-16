@@ -495,6 +495,12 @@ function setAnalysisMode(mode){
 function setViewMode(mode){
   document.body.classList.toggle('view-brief', mode==='brief');
   document.querySelectorAll('[data-view-mode]').forEach(b=>b.classList.toggle('active',b.dataset.viewMode===mode));
+  requestAnimationFrame(()=>{
+    if(!window.Plotly?.Plots?.resize) return;
+    document.querySelectorAll('.js-plotly-plot').forEach(chart=>{
+      if(chart.offsetParent) window.Plotly.Plots.resize(chart);
+    });
+  });
 }
 function setupModeControls(){
   document.querySelectorAll('[data-analysis-mode]').forEach(b=>b.addEventListener('click',()=>setAnalysisMode(b.dataset.analysisMode)));
@@ -667,12 +673,28 @@ function updateRpnModule(){
   drawRpnOrderPotentialChart();
   drawRpnScenarioTable();
 }
+function rpnLegend(){
+  const narrow=TG.isNarrow();
+  const compact=rpnCompactAxis();
+  return {
+    orientation:'h',x:0,y:-0.30,xanchor:'left',yanchor:'top',
+    bgcolor:'rgba(255,255,255,.92)',bordercolor:'#eadbbf',borderwidth:1,
+    font:{size:narrow?10:(compact?11:12)},entrywidth:narrow?118:(compact?150:170),entrywidthmode:'pixels'
+  };
+}
 function rpnChartLayout(extra={}){
-  return TG.plotLayout(Object.assign({
-    height:500,
-    margin:{l:64,r:42,t:42,b:86},
-    legend:{orientation:'h',x:0,y:1.16,bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:12}}
+  const narrow=TG.isNarrow();
+  const layout=TG.plotLayout(Object.assign({
+    height:narrow?560:530,
+    margin:narrow?{l:52,r:48,t:24,b:154}:{l:72,r:60,t:28,b:126},
+    title:{text:''},
+    legend:rpnLegend()
   }, extra));
+  layout.title = Object.assign({}, layout.title || {}, {text:''});
+  return layout;
+}
+function rpnCompactAxis(){
+  return window.matchMedia('(max-width: 1500px)').matches;
 }
 function drawRpnIntentChart(){
   const d=skrState.rpn;
@@ -695,7 +717,18 @@ function drawRpnIntentChart(){
 function drawRpnHousingGapChart(){
   const sex=document.getElementById('rpnSexSelect')?.value || 'Все';
   const rows=skrState.rpn.by_housing_condition.filter(d=>d.sex===sex);
-  const x=rows.map(d=>d.housing_condition.replace(' — ','<br>'));
+  const compact=rpnCompactAxis();
+  const shortHousing={
+    'очень хорошие':'оч. хорошие',
+    'хорошие':'хорошие',
+    'средние':'средние',
+    'плохие':'плохие',
+    'очень плохие':'оч. плохие'
+  };
+  const x=rows.map(d=>{
+    const [range,label]=d.housing_condition.split(' — ');
+    return compact ? `${range}<br>${shortHousing[label] || label}` : d.housing_condition.replace(' — ','<br>');
+  });
   const traces=[
     {type:'bar', name:'ожидаемое', x, y:rows.map(d=>d.expected_children_mean), marker:{color:TG.colors.teal}},
     {type:'bar', name:'желаемое', x, y:rows.map(d=>d.desired_children_mean), marker:{color:TG.colors.gold}},
@@ -703,15 +736,22 @@ function drawRpnHousingGapChart(){
   ];
   Plotly.react('rpnHousingGapChart', traces, rpnChartLayout({
     barmode:'group',
-    yaxis:{title:'детей', range:[1.45,2.22], gridcolor:'#efe5d4'},
-    yaxis2:{title:'разрыв', overlaying:'y', side:'right', range:[0,0.34], gridcolor:'rgba(0,0,0,0)'},
-    xaxis:{tickangle:-10, gridcolor:'#efe5d4'},
+    yaxis:{title:'детей', range:[1.45,2.22], gridcolor:'#efe5d4',automargin:true},
+    yaxis2:{title:'разрыв', overlaying:'y', side:'right', range:[0,0.34], gridcolor:'rgba(0,0,0,0)',automargin:true},
+    xaxis:TG.categoryAxis({tickangle:compact?0:-12,tickfont:{size:compact?10:13}}),
     title:{text:`Жилищные условия и планы: ${sex.toLowerCase()}`,x:0,xanchor:'left',font:{size:20}}
   }), TG.plotConfig);
 }
 function drawRpnBarrierChart(){
   const rows=skrState.rpn.barrier_distribution.filter(d=>d.sex!=='Все');
-  const x=rows.map(d=>`${d.barrier==='housing_difficulties'?'Жилищные трудности':'Ипотечный кредит'}<br>${d.sex}`);
+  const narrow=rpnCompactAxis();
+  const x=rows.map(d=>{
+    const barrier=d.barrier==='housing_difficulties'
+      ? (narrow?'Жильё':'Жилищные трудности')
+      : (narrow?'Ипотека':'Ипотечный кредит');
+    const sex=narrow ? (d.sex==='Женщины'?'жен.':'муж.') : d.sex;
+    return `${barrier}<br>${sex}`;
+  });
   const traces=[
     {type:'bar', name:'очень мешает', x, y:rows.map(d=>d['очень мешает_pct']), marker:{color:TG.colors.red}},
     {type:'bar', name:'мешает', x, y:rows.map(d=>d['мешает_pct']), marker:{color:TG.colors.gold}},
@@ -721,7 +761,7 @@ function drawRpnBarrierChart(){
   Plotly.react('rpnBarrierChart', traces, rpnChartLayout({
     barmode:'stack',
     yaxis:{title:'% ответов', range:[0,100], gridcolor:'#efe5d4'},
-    xaxis:{tickangle:-13, gridcolor:'#efe5d4'},
+    xaxis:TG.categoryAxis({tickangle:narrow?0:-13}),
     title:{text:'Что мешает иметь желаемое число детей',x:0,xanchor:'left',font:{size:20}}
   }), TG.plotConfig);
 }
@@ -731,8 +771,9 @@ function drawRpnMeasuresChart(){
     .filter(d=>d.sex===sex && d.born_children_group==='все')
     .sort((a,b)=>a.share_score_4_5_pct-b.share_score_4_5_pct);
   const traces=[{type:'bar', orientation:'h', name:'оценка 4–5', y:rows.map(d=>RPN_MEASURE_LABELS[d.measure]||d.measure), x:rows.map(d=>d.share_score_4_5_pct), marker:{color:TG.colors.gold}, text:rows.map(d=>fmtPct(d.share_score_4_5_pct,1)), textposition:'outside', cliponaxis:false}];
+  const narrow=TG.isNarrow();
   Plotly.react('rpnMeasuresChart', traces, rpnChartLayout({
-    margin:{l:190,r:40,t:42,b:54},
+    margin:narrow?{l:168,r:34,t:24,b:126}:{l:210,r:48,t:28,b:100},
     xaxis:{title:'% оценивших меру на 4–5', range:[0,Math.max(70, Math.max(...rows.map(d=>d.share_score_4_5_pct))+10)], gridcolor:'#efe5d4'},
     yaxis:{gridcolor:'#efe5d4'},
     title:{text:`Значимость мер: ${sex.toLowerCase()}`,x:0,xanchor:'left',font:{size:20}}
@@ -758,12 +799,15 @@ function drawRpnPotentialChart(){
   document.getElementById('rpnKpiProbBirths').textContent=fmtPeopleShort(probAdd,2);
   document.getElementById('rpnKpiLatentBirths').textContent=fmtPeopleShort(latent,2);
   document.getElementById('rpnKpiMeanGap').textContent=fmtNum(s.mean_positive_gap,2);
-  const labels=['Базовые рождения<br>за 3 года','При поддержке<br>за 3 года','Прирост по вероятности<br>за 3 года','Реализованный<br>латентный разрыв'];
+  const compact=rpnCompactAxis();
+  const labels=compact
+    ? ['База<br>3 года','Поддержка<br>3 года','Прирост<br>вероятности','Латентный<br>разрыв']
+    : ['Базовые рождения<br>за 3 года','При поддержке<br>за 3 года','Прирост по вероятности<br>за 3 года','Реализованный<br>латентный разрыв'];
   const vals=[baselineBirths,support,probAdd,latent].map(v=>v/1e6);
   const traces=[{type:'bar', x:labels, y:vals, marker:{color:[TG.colors.teal,TG.colors.green,TG.colors.gold,TG.colors.red]}, text:vals.map(v=>fmtNum(v,2)+' млн'), textposition:'outside', cliponaxis:false}];
   Plotly.react('rpnPotentialChart', traces, rpnChartLayout({
     yaxis:{title:'млн рождений / детей', rangemode:'tozero', gridcolor:'#efe5d4'},
-    xaxis:{tickangle:0, gridcolor:'#efe5d4'},
+    xaxis:TG.categoryAxis({tickangle:0,tickfont:{size:compact?10:13}}),
     title:{text:RPN_SCENARIO_LABELS[s.scenario_id] || s.scenario_id,x:0,xanchor:'left',font:{size:19}}
   }), TG.plotConfig);
 }
@@ -777,11 +821,11 @@ function drawRpnOrderPotentialChart(){
   ];
   Plotly.react('rpnOrderPotentialChart', traces, rpnChartLayout({
     barmode:'group',
-    margin:narrow?{l:50,r:22,t:24,b:112}:{l:64,r:42,t:24,b:112},
+    margin:narrow?{l:52,r:28,t:24,b:146}:{l:72,r:46,t:24,b:122},
     yaxis:{title:'тыс. потенциальных рождений', rangemode:'tozero', gridcolor:'#efe5d4'},
     xaxis:TG.categoryAxis({title:'текущее число детей',tickangle:0}),
     title:{text:''},
-    legend:{orientation:'h',x:0,y:-0.26,xanchor:'left',yanchor:'top',bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:narrow?10:12}}
+    legend:rpnLegend()
   }), TG.plotConfig);
 }
 function drawRpnScenarioTable(){
@@ -856,9 +900,10 @@ function drawRpnRegionalScatter(){
   }
   Plotly.react('rpnRegionalScatter', traces, rpnChartLayout({
     title:{text:`РПН-${year}: факт СКР и репродуктивные установки (${sex.toLowerCase()})`,x:0,xanchor:'left',font:{size:20}},
-    xaxis:{title:'фактический СКР за год',gridcolor:'#efe5d4',zeroline:false},
-    yaxis:{title:'среднее число детей',gridcolor:'#efe5d4',zeroline:false,range:[0.8,3.4]},
-    legend:{orientation:'h',x:0,y:1.18,bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:12}}
+    margin:TG.isNarrow()?{l:52,r:54,t:24,b:154}:{l:72,r:74,t:28,b:126},
+    xaxis:{title:'фактический СКР за год',gridcolor:'#efe5d4',zeroline:false,automargin:true},
+    yaxis:{title:'среднее число детей',gridcolor:'#efe5d4',zeroline:false,range:[0.8,3.4],automargin:true},
+    legend:rpnLegend()
   }), TG.plotConfig);
 }
 function drawRpnRegionalTrend(){
@@ -879,7 +924,7 @@ function drawRpnRegionalTrend(){
     title:{text:`${getTerritoryLabel(skrState.selected)}: установки и факт`,x:0,xanchor:'left',font:{size:20}},
     yaxis:{title:'детей / СКР',gridcolor:'#efe5d4',range:[0.8,3.5]},
     xaxis:{type:'category',gridcolor:'#efe5d4'},
-    legend:{orientation:'h',x:0,y:1.16,bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:12}}
+    legend:rpnLegend()
   }), TG.plotConfig);
 }
 function drawRpnRegionalTable(){

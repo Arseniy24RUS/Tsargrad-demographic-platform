@@ -1,42 +1,45 @@
 # Final Self Review
 
-Финальное состояние текущего пакета: выполнены переименования пользовательских разделов, мобильная навигация переведена в боковое меню, страница `Рождаемость` получила новый порядок управляющих блоков и автостарт мер, обновлены шкала `Расселения`, картограмма `Инфраструктуры` и федеральный ряд `Аборты` за 2018 год.
+Дата: 2026-06-16.
+
+## Итог
+
+Responsive-полировка завершена для всех 10 runtime-страниц. Сайт проверен на телефонах, планшетах, laptop и desktop через Playwright matrix и contact sheets. Известные дефекты из пользовательских скриншотов и внешнего QA закрыты.
 
 ## Подтверждения
 
-- Видимые названия разделов обновлены: `Рождаемость`, `Свой дом`, `Браки`; URL и runtime-модули сохранены для обратной совместимости.
-- Верхняя навигация на мобильных viewport открывается как боковое меню с `aria-expanded`, backdrop, закрытием по Escape, клику вне меню и клику по ссылке.
-- На странице `Рождаемость` блоки `Режим анализа` и `Состав страницы` перенесены над картой; быстрые кнопки `с июня 2026`, `с января 2030`, `только Россия` удалены.
-- Старт мер определяется как следующий календарный месяц от даты браузера; при 16.06.2026 это `2026-07`, эффект при лаге 9 месяцев — `2027-04`. Ручной сдвиг лаг-зоны сохранён.
-- В блоке `Желаемое — ожидаемое — фактическое` пунктирная линия показывает уровень простого воспроизводства `2,15`.
-- Plotly-графики на всех вкладках получили заблокированный drag zoom/select, fixed-range оси, отключённый scroll zoom и скрытую modebar.
-- В `Расселении` добавлена линейка для `Изменение доли: сельская и пригородная среда, к 2050 году` с отметками `-15`, `0`, `+30 п.п.`.
-- В `Инфраструктуре` новые территории без локальных инфраструктурных данных обозначаются серым; Крым и Севастополь сопоставляются с локальной сводкой при наличии данных.
-- Картограмма `Инфраструктуры` переведена на распределённую шкалу по `avg_score`; canvas поддерживает tooltip по субъекту и click-to-select в `Параметры карты`.
-- В `Абортах` федеральный 2018 год восстановлен значением `567 183`; производные показатели пересчитаны по локальным знаменателям, региональные строки 2018 года оставлены `null`.
-- Runtime остаётся самодостаточным: внешних CDN, GitHub Raw, API, удалённых шрифтов и изображений не найдено.
-- Авторские прогнозы остаются локальными в `docs/data/*_forecast_2050.json` и ограничены горизонтом 2050 года.
+- Публичные URL и runtime-модули сохранены: `skr.html`, `estate.html`, `family.html`, `SkrModule`, `FamilyModule`, `AbortionsModule`, `InfrastructureModule`.
+- Runtime остаётся самодостаточным: внешние CDN/API/GitHub Raw/шрифты/изображения не используются.
+- Авторские прогнозы и dashboard-данные лежат локально в `docs/data/` и ограничены 2050 годом.
+- Header унифицирован на всех страницах: видимый подзаголовок бренда — `демографическая платформа`.
+- Главная страница участвует в том же mobile drawer contract, что остальные страницы.
+- Все Plotly-графики остаются без drag zoom/select и со скрытой modebar.
+- Подробный режим `Рождаемости` покрыт responsive-gate: RPN-графики раскрываются, оси и легенды проверяются на перекрытия.
 
 ## Проверки
 
-- `python scripts/check_json.py` — пройдено.
-- `python scripts/check_no_external_runtime.py` — пройдено.
-- `python scripts/check_russian_ui.py` — пройдено.
-- `python scripts/check_data_locality.py` — пройдено.
-- `python scripts/check_nav_numbering.py` — пройдено.
-- `python scripts/check_settlement_forecast.py` — пройдено.
-- `python scripts/check_infrastructure_module.py` — пройдено.
-- `python scripts/check_family_module.py` — пройдено.
-- `python scripts/check_abortions_module.py` — пройдено.
-- `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh` — пройдено; прямой `bash` в этой Windows-среде недоступен из-за отсутствия WSL `/bin/bash`.
-- `npx playwright test tests/smoke.spec.js -g "Инфраструктура: карта"` — пройдено.
-- `npx playwright test tests/visual-qa.spec.js -g "картограмма занимает"` — пройдено.
-- `npm run test:smoke` — 62 теста пройдены.
-- Browser sanity desktop: `index.html`, `skr.html`, `settlement.html`, `infrastructure.html`, `estate.html`, `family.html`, `abortions.html` — пройдено, переполнения и console errors не найдены.
-- Browser sanity mobile: те же 7 страниц — пройдено, боковое меню открывается и закрывается на каждой странице.
-- `python scripts/make_release_zip.py` — пройдено, архив проверен через `zipfile.testzip()`.
+- `python scripts/check_json.py`
+- `python scripts/check_no_external_runtime.py`
+- `python scripts/check_russian_ui.py`
+- `python scripts/check_data_locality.py`
+- `python scripts/check_nav_numbering.py`
+- `python scripts/check_settlement_forecast.py`
+- `python scripts/check_infrastructure_module.py`
+- `python scripts/check_family_module.py`
+- `python scripts/check_abortions_module.py`
+- `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh`
+- `npm run test:responsive` — 20/20 passed.
+- `npx playwright test tests/responsive.spec.js -g "Рождаемость"` — 2/2 passed.
+- `npm run test:smoke` — 63/63 passed.
 
-## Ограничения
+## QA-артефакты
 
-- Федеральный показатель абортов за 2018 год восстановлен по открытым федеральным публикациям; сопоставимого регионального слоя за этот год в локальных данных нет, поэтому он намеренно не заполнен.
-- Посторонние локальные изменения в `.gitignore` и `data_pipeline/infrastructure/` не входят в текущий пакет и не должны попадать в stage.
+- Responsive screenshots: `artifacts/responsive/screenshots/`.
+- Contact sheets: `artifacts/responsive/contact-sheets/00-home.png` … `09-abortions.png`.
+- Подробный отчёт: `.codex/reviews/responsive_qa_review.md`.
+
+## Архив
+
+- Release zip собран: `C:\Codex projects\tsargrad_demographic_platform_selfcontained_release_github_pages.zip`.
+- Stage делать только по релизным файлам этой задачи.
+- Не включать посторонние локальные изменения `.gitignore`, `data_pipeline/infrastructure/*`, `.codex/config.toml`.

@@ -216,7 +216,8 @@ function updateEstateKpis(m,p){
 function updateEstateCharts(m,p){
   const colors = TG.colors;
   const narrow=TG.isNarrow();
-  const areaX=narrow?['ядро','детские','прародители','общие']:['Ядро дома','Детские зоны','Прародители рядом','Общие пространства'];
+  const compact=window.matchMedia('(max-width: 1260px)').matches;
+  const areaX=compact?['ядро','детские','старшие','общие']:['Ядро дома','Детские зоны','Прародители рядом','Общие пространства'];
   const areaY=[p.coreAreaM2, m.childAreaM2, m.elderAreaM2, m.extraAreaModule];
   Plotly.react('estateAreaChart',[{
     type:'bar',
@@ -227,8 +228,8 @@ function updateEstateCharts(m,p){
     textposition:'outside',
     hovertemplate:'%{x}: %{y:.0f} м²<extra></extra>'
   }], TG.plotLayout({
-    margin:narrow?{l:48,r:18,t:20,b:96}:{l:56,r:20,t:20,b:80},
-    xaxis:TG.categoryAxis({tickangle:narrow?0:-20}),
+    margin:compact?{l:48,r:18,t:20,b:92}:{l:56,r:20,t:20,b:80},
+    xaxis:TG.categoryAxis({tickangle:compact?0:-20}),
     yaxis:{title:'м²',gridcolor:'#efe5d4'}
   }), TG.plotConfig);
 

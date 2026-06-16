@@ -6,12 +6,12 @@
 .infrastructure-page .infrastructure-hero-kpis .kpi-card{min-width:0}
 .infrastructure-page .infrastructure-hero-kpis .kpi-value,
 .infrastructure-page .infra-kpi b,
-.infrastructure-page .passport-metric b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.infrastructure-page .passport-metric b{font-variant-numeric:tabular-nums;white-space:normal;overflow-wrap:normal;word-break:normal}
 .infrastructure-page .table-scroll{width:100%;overflow-x:auto;border-radius:16px}
 .infrastructure-page .table-scroll .data-table{min-width:620px}
 .infrastructure-page .map-card,.infrastructure-page .infra-passport-card{min-width:0}
 .infrastructure-page .infra-passport-card{overflow:hidden}
-.infrastructure-page .passport-title{overflow-wrap:anywhere}
+.infrastructure-page .passport-title{overflow-wrap:normal;word-break:normal;hyphens:manual}
 .infrastructure-page .plot-box .svg-container{max-width:100%}
 .infrastructure-page .source-note{max-width:100%}
 .infrastructure-page .download-row a{min-height:42px}
@@ -22,7 +22,8 @@
   .infrastructure-page .infrastructure-hero-kpis .kpi-card{min-height:0}
 }
 @media(max-width:640px){
-  .infrastructure-page .infrastructure-hero h1{font-size:32px;line-height:1.06;letter-spacing:0}
+  .infrastructure-page .infrastructure-hero h1{font-size:clamp(24px,7.2vw,30px);line-height:1.08;letter-spacing:0}
+  .infrastructure-page .infra-kpi{min-height:0;overflow:visible}
   .infrastructure-page .map-card{padding:16px}
   .infrastructure-page .infra-map-wrap{border-radius:18px}
   .infrastructure-page .infra-map-canvas{height:390px}
@@ -34,5 +35,5 @@
   .infrastructure-page .data-table td{padding:9px 10px}
 }
 @media(max-width:380px){
-  .infrastructure-page .infrastructure-hero h1{font-size:30px}
+  .infrastructure-page .infrastructure-hero h1{font-size:24px}
 }

@@ -179,7 +179,7 @@
     <section class="grid two">
       <div class="card">
         <h2>Настройки субсидии и пилота</h2>
-        <div class="grid two" style="grid-template-columns:1fr 1fr;gap:14px;margin:0">
+        <div class="form-grid">
           <div class="control"><label for="estateAreaNorm">Норма площади, м²/чел.</label><input id="estateAreaNorm" type="number" min="18" max="50" step="1"></div>
           <div class="control"><label for="estatePriceM2">Стоимость строительства 1 м², ₽</label><input id="estatePriceM2" type="number" min="30000" step="500"></div>
           <div class="control"><label for="estateChildSubsidy">Субсидия детских модулей, %</label><input id="estateChildSubsidy" type="number" min="0" max="100" step="5"></div>
@@ -188,11 +188,11 @@
           <div class="control"><label for="estateLandPrice">Цена сотки земли, ₽</label><input id="estateLandPrice" type="number" min="0" step="50000"></div>
           <div class="control"><label for="estatePilotFamilies">Пилот, семей</label><input id="estatePilotFamilies" type="number" min="1" step="100"></div>
         </div>
-        <div class="btn-row" style="margin-top:18px"><button id="estateReset" class="gold" type="button">сброс</button><button id="estateDownloadCsv" class="ghost" type="button">Скачать таблицу</button></div>
+        <div class="btn-row spaced"><button id="estateReset" class="gold" type="button">сброс</button><button id="estateDownloadCsv" class="ghost" type="button">Скачать таблицу</button></div>
       </div>
       <div class="card teal">
         <h2>Масштабирование пилота</h2>
-        <div class="metric-strip" style="grid-template-columns:1fr 1fr">
+        <div class="metric-strip two-columns">
           <div class="metric"><span>субсидия / семья</span><b id="estatePilotSubsidyPerFamily">—</b></div>
           <div class="metric"><span>бюджет пилота</span><b id="estatePilotBudget">—</b></div>
           <div class="metric"><span>модулей роста</span><b id="estatePilotModules">—</b></div>

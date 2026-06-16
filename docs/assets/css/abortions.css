@@ -12,7 +12,9 @@
 .abortions-page h2,
 .abortions-page h3,
 .abortions-page .abortion-kpi b {
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
 }
 
 .abortions-page .abortions-hero {
@@ -337,13 +339,27 @@
   }
 
   .abortions-page .abortions-hero-kpis .kpi-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "label"
+      "value"
+      "note";
+    align-items: start;
+    flex: 0 1 auto;
     min-height: 112px;
     padding: 18px 20px;
     column-gap: 14px;
+    overflow: visible;
   }
 
   .abortions-page .abortions-hero-kpis .kpi-value {
     font-size: clamp(35px, 11vw, 48px);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .abortions-page .abortions-hero-kpis .kpi-note {
+    max-width: none;
   }
 
   .abortions-page .map-plot,

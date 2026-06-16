@@ -18,7 +18,7 @@
 
 ## Node / Playwright
 
-`@playwright/test` используется только для разработки и QA. В runtime платформы Node и Playwright не загружаются.
+`@playwright/test` используется только для разработки и QA. Команды `npm run test:smoke` и `npm run test:responsive` открывают локальный сервер, проверяют визуальные состояния, интерактивность, responsive-матрицу и contact sheets. В runtime платформы Node и Playwright не загружаются.
 
 ## OpenStreetMap
 

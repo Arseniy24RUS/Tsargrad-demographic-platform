@@ -59,7 +59,10 @@ python scripts/check_family_module.py
 python scripts/check_abortions_module.py
 "C:\Program Files\Git\bin\bash.exe" scripts/check_js_syntax.sh
 npm run test:smoke
+npm run test:responsive
 ```
+
+Перед загрузкой на GitHub обновления проходят реальный PlaywrightQA: `npm run test:smoke` и `npm run test:responsive`. Responsive-gate снимает first/full/section screenshots и mobile drawer state для всех 10 страниц, проверяет breakpoint sweep, отсутствие горизонтального overflow, клиппинга, одиночных русских обломков в заголовках, прозрачного sticky header и проблем с нижней безопасной зоной.
 
 Playwright открывает главную и все девять разделов, блокирует внешние запросы, делает desktop/mobile-скриншоты, проходит ключевые интеракции и full-page visual QA для `index.html`, `infrastructure.html`, `family.html`, `abortions.html` и ВЦИОМ-блока на `skr.html`. СКР проверяется на `skr.html` с drag-лаг-зоной, а не как старая страница на `index.html`.
 

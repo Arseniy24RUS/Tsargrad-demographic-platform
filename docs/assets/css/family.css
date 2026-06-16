@@ -2,7 +2,9 @@
 .family-page h2,
 .family-page h3,
 .family-page .family-kpi b {
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
 }
 
 .family-page .family-hero {
@@ -337,13 +339,27 @@
   }
 
   .family-page .family-hero-kpis .kpi-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "label"
+      "value"
+      "note";
+    align-items: start;
+    flex: 0 1 auto;
     min-height: 112px;
     padding: 18px 20px;
     column-gap: 14px;
+    overflow: visible;
   }
 
   .family-page .family-hero-kpis .kpi-value {
     font-size: clamp(35px, 11vw, 48px);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .family-page .family-hero-kpis .kpi-note {
+    max-width: none;
   }
 
   .family-page .map-plot,

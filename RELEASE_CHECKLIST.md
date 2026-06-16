@@ -18,6 +18,7 @@
 - [x] Ручной сдвиг лаг-зоны на графике сохранён.
 - [x] `SkrModule.getState()` отдаёт автостарт и текущее положение лаг-зоны.
 - [x] В блоке `Желаемое — ожидаемое — фактическое` пунктир показывает уровень простого воспроизводства `2,15`.
+- [x] Подробный режим дополнительно проверен PlaywrightQA: RPN-графики, оси и легенды не перекрываются на mobile/tablet/desktop.
 
 ## Графики и расселение
 
@@ -71,11 +72,11 @@
 - [x] `python scripts/check_family_module.py`
 - [x] `python scripts/check_abortions_module.py`
 - [x] `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh`
-- [x] `npx playwright test tests/smoke.spec.js -g "Инфраструктура: карта"`
-- [x] `npx playwright test tests/visual-qa.spec.js -g "картограмма занимает"`
-- [x] `npm run test:smoke` — 62 теста.
-- [x] Browser sanity desktop/mobile для `index.html`, `skr.html`, `settlement.html`, `infrastructure.html`, `estate.html`, `family.html`, `abortions.html`.
-- [x] `python scripts/make_release_zip.py`
+- [x] `npx playwright test tests/responsive.spec.js -g "Рождаемость"` — 2 теста, включая подробный режим.
+- [x] `npm run test:responsive` — 20 тестов, contact sheets пересобраны.
+- [x] `npm run test:smoke` — 63 теста.
+- [x] Реальный PlaywrightQA desktop/mobile/tablet для `index.html`, `skr.html`, `settlement.html`, `infrastructure.html`, `estate.html`, `capital.html`, `mortgage.html`, `payments.html`, `family.html`, `abortions.html`.
+- [x] `python scripts/make_release_zip.py` — `C:\Codex projects\tsargrad_demographic_platform_selfcontained_release_github_pages.zip`
 
 ## Публикация
 

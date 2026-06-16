@@ -12,7 +12,8 @@
     "check:data": "python scripts/check_data_locality.py",
     "check:nav": "python scripts/check_nav_numbering.py",
     "check:js": "bash scripts/check_js_syntax.sh",
-    "test:smoke": "playwright test",
+    "test:smoke": "playwright test tests/smoke.spec.js tests/visual-qa.spec.js",
+    "test:responsive": "playwright test tests/responsive.spec.js && python scripts/make_responsive_contact_sheets.py",
     "serve": "python -m http.server 8000 --directory docs"
   },
   "devDependencies": {
