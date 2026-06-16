@@ -63,7 +63,7 @@ a{color:inherit}
 }
 .nav-tabs a:hover{background:rgba(255,255,255,.12); transform:translateY(-1px)}
 .nav-tabs a.active{background:var(--tg-gold); color:#071b1d; border-color:var(--tg-gold); box-shadow:0 7px 22px rgba(212,165,55,.28)}
-.menu-toggle{display:none;margin-left:auto;border:1px solid rgba(239,211,154,.42);background:rgba(255,255,255,.08);color:var(--tg-cream);box-shadow:none}
+.menu-toggle{display:none;margin-left:auto;width:46px;height:46px;padding:0;border:1px solid rgba(239,211,154,.42);border-radius:999px;background:rgba(255,255,255,.08);color:var(--tg-cream);box-shadow:none;align-items:center;justify-content:center;flex:0 0 auto}
 .menu-toggle-icon{width:18px;height:12px;display:inline-block;position:relative;border-top:2px solid currentColor;border-bottom:2px solid currentColor}
 .menu-toggle-icon:before{content:"";position:absolute;left:0;right:0;top:3px;border-top:2px solid currentColor}
 .nav-backdrop{position:fixed;inset:0;z-index:1040;background:rgba(3,20,22,.48);backdrop-filter:blur(2px)}
@@ -194,6 +194,7 @@ th{background:#f7efdE; color:#1b302e; text-transform:uppercase; letter-spacing:.
   .hero-main{padding:26px 22px}
   .grid.three,.grid.four,.metric-strip,.territory-kpi-split{grid-template-columns:1fr}
   .brand{min-width:0}.brand img{width:58px}.brand-title{font-size:18px}
+  .topbar{-webkit-backdrop-filter:none;backdrop-filter:none}
   .topbar-inner{flex-direction:row;align-items:center}
   .menu-toggle{display:inline-flex}
   .nav-tabs{

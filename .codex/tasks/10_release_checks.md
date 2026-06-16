@@ -17,6 +17,8 @@ bash scripts/check_js_syntax.sh
 npm run test:smoke
 ```
 
+Перед загрузкой на GitHub отдельно подтвердить реальный Playwright QA на локальном сервере: desktop и mobile viewport, видимая отрисовка страниц, отсутствие console errors и целевые интеракции. Нельзя заменять этот шаг только статическими проверками.
+
 ## Документы
 
 Обновить:
@@ -32,4 +34,3 @@ npm run test:smoke
 ```bash
 python scripts/make_release_zip.py
 ```
-

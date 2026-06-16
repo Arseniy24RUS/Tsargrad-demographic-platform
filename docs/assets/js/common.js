@@ -84,12 +84,14 @@ function setupMobileNav(){
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.getElementById(toggle?.getAttribute('aria-controls') || 'siteNav');
   if(!toggle || !nav) return;
-  let backdrop = document.querySelector('.nav-backdrop');
+  const navHost = nav.parentElement || document.body;
+  let backdrop = navHost.querySelector('.nav-backdrop');
   if(!backdrop){
     backdrop = document.createElement('div');
     backdrop.className = 'nav-backdrop';
     backdrop.hidden = true;
-    document.body.appendChild(backdrop);
+    backdrop.setAttribute('aria-hidden', 'true');
+    navHost.insertBefore(backdrop, nav);
   }
   const setOpen = open => {
     toggle.setAttribute('aria-expanded', String(open));

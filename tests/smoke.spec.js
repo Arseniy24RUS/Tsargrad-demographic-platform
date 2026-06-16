@@ -47,6 +47,41 @@ async function expectNoForbiddenUi(page) {
   }
 }
 
+async function expectMobileNavDrawer(page, path) {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(path, { waitUntil: 'networkidle' });
+  await expect(page.locator('.menu-toggle')).toHaveCount(1);
+  await expect(page.locator('.menu-toggle')).not.toContainText('Меню');
+  await expect(page.locator('.menu-toggle')).toHaveAttribute('aria-label', 'Открыть меню');
+  await page.locator('.menu-toggle').click();
+  await expect(page.locator('.menu-toggle')).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#siteNav')).toHaveClass(/is-open/);
+  await expect(page.locator('#siteNav a')).toHaveCount(9);
+  const drawerState = await page.evaluate(() => {
+    const nav = document.querySelector('#siteNav');
+    const firstLink = nav?.querySelector('a');
+    const backdrop = nav?.parentElement?.querySelector('.nav-backdrop');
+    if (!nav || !firstLink || !backdrop) return null;
+    const rect = firstLink.getBoundingClientRect();
+    const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    return {
+      backdropVisible: !backdrop.hidden,
+      navVisible: getComputedStyle(nav).display !== 'none',
+      hitIsNavLink: Boolean(hit?.closest('#siteNav')),
+      firstLinkText: firstLink.textContent.trim()
+    };
+  });
+  expect(drawerState).toMatchObject({
+    backdropVisible: true,
+    navVisible: true,
+    hitIsNavLink: true,
+    firstLinkText: 'Рождаемость'
+  });
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.menu-toggle')).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#siteNav')).not.toHaveClass(/is-open/);
+}
+
 async function setRange(page, selector, value) {
   await page.locator(selector).evaluate((el, nextValue) => {
     el.value = String(nextValue);
@@ -85,6 +120,11 @@ test.describe('самодостаточный релиз', () => {
     });
   }
 
+  test('Мобильная навигация: иконка открывает видимый drawer поверх затемнения', async ({ page }) => {
+    for (const p of pages) {
+      await expectMobileNavDrawer(page, p.path);
+    }
+  });
 
   test('Главная: открывается как первый экран и ведёт в разделы без пункта Главная', async ({ page }) => {
     const runtime = await guardRuntime(page);
