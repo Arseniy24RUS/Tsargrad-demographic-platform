@@ -42,7 +42,8 @@ function scenarioShare(year, baselineShare, delta2050){
 }
 function authorPopulationFor(tid, year){
   if(!settlementState.authorPopulationLoaded || !settlementState.authorPopulation) return null;
-  const scenario=settlementState.authorPopulation[settlementState.populationScenario] || {};
+  settlementState.populationScenario = 'noMIG';
+  const scenario=settlementState.authorPopulation.noMIG || {};
   return scenario[tid]?.get(year) || null;
 }
 function settlementTfrForecastFor(tid){
@@ -182,12 +183,15 @@ function setPreset(name){
   if(name==='deurban') document.getElementById('delta2050').value=5;
   updateSliderLabels(); updateSettlementCharts();
 }
-function updateSliderLabels(){ document.getElementById('delta2050Label').textContent=ppLabel(+document.getElementById('delta2050').value); }
+function updateSliderLabels(){
+  const label=document.getElementById('delta2050Label');
+  if(label) label.textContent=ppLabel(+document.getElementById('delta2050').value);
+}
 function setupSettlementControls(){
   document.getElementById('delta2050').addEventListener('input',()=>{settlementState.preset='custom'; document.querySelectorAll('.scenario-chip').forEach(b=>b.classList.remove('active')); updateSliderLabels(); updateSettlementCharts();});
   document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.preset)));
   const dl=document.getElementById('downloadSettlementCsv'); if(dl) dl.addEventListener('click',()=>downloadCsv('расселение_ижс_сценарий.csv', settlementState.rows));
-  const btn=document.getElementById('populationScenarioBtn'); if(btn) btn.addEventListener('click',()=>{ settlementState.populationScenario = settlementState.populationScenario==='noMIG'?'withMIG':'noMIG'; btn.textContent = settlementState.populationScenario==='noMIG'?'прогноз без миграции':'прогноз с миграцией'; updateSettlementCharts(); });
+  settlementState.populationScenario = 'noMIG';
   updateSliderLabels();
 }
 async function hydrateAuthorPopulation(){

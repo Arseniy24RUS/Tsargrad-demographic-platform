@@ -40,3 +40,42 @@
 
 - Playwright contact sheets хранятся как QA artifact в `artifacts/responsive/`, но не входят в runtime.
 - В рабочем дереве есть посторонние локальные изменения `.gitignore`, `data_pipeline/infrastructure/*`, `.codex/config.toml`; они не должны попадать в stage/commit этой задачи.
+
+---
+
+Дата: 2026-06-17.
+
+## Объём изменений
+
+- Применён патч `tsargrad_settlement_article_scenarios_patch.zip` для страницы `Расселение` в режиме совместимости с платформой.
+- Новый активный слой `settlement_article_scenarios.js/css` подключён вместо старого `settlement_population_fix`; старый слой не публикуется как runtime-исправление.
+- Данные `settlement_article_scenarios_russia.json/csv` адаптированы до горизонта 2050 включительно; `2100` не попадает в runtime/UI.
+- Для России график численности показывает три сценария статьи: урбанизационный сценарий, фиксация и ИЖС-сценарий. Все три линии снижаются к 2050, а ИЖС-сценарий показывает уменьшение масштаба депопуляции относительно урбанизационного сценария.
+- Переключатель миграционного сценария отсутствует; `window.SettlementModule.getState().populationScenario` сохранён со значением `noMIG`.
+- Для ФО и субъектов сохранено поведение базового модуля `Расселение`.
+- Чужие изменения в `.gitignore`, `data_pipeline/infrastructure/*`, `payments*`, `skr.html` и `.codex/config.toml` не должны попадать в stage/commit этой задачи.
+
+## QA
+
+- `scripts/check_settlement_article_scenarios.py` проверяет подключение assets, отсутствие `2100`, снижение всех трёх сценариев к 2050 и преимущество ИЖС-сценария над урбанизационным сценарием к 2050.
+- Playwright smoke проверяет отсутствие `populationScenarioBtn`, публичный контракт `populationScenario === "noMIG"`, три сценарные линии в `populationTraceChart`, снижение всех трёх линий и работу выбора `фиксация`/`ИЖС-сценарий`.
+- Rendered QA desktop/mobile в in-app Browser: новых console error/warn нет, `populationScenarioBtn` отсутствует, график численности показывает три сценария и таблицу до 2050, `фиксация` и `ИЖС-сценарий` меняют активный KPI, выбор Сибирского ФО не ломает базовые графики.
+
+## Результаты проверок
+
+- `python scripts/check_settlement_article_scenarios.py` — OK.
+- `python scripts/check_json.py` — OK.
+- `python scripts/check_no_external_runtime.py` — OK.
+- `python scripts/check_russian_ui.py` — OK.
+- `python scripts/check_data_locality.py` — OK.
+- `python scripts/check_nav_numbering.py` — OK.
+- `python scripts/check_settlement_forecast.py` — OK.
+- `C:\Program Files\Git\bin\bash.exe scripts/check_js_syntax.sh` — OK.
+- `python scripts/audit_all.py` — OK.
+- `npx playwright test tests/smoke.spec.js tests/visual-qa.spec.js -g "Расселение"` — 3/3 passed.
+- `npm run test:smoke` — 64/64 passed.
+
+## Остаточный риск
+
+- GitHub Pages может отдать старый кэш сразу после `git push origin main`; опубликованную страницу нужно проверить с cache-busting query после пуша.
+- Release zip, README, DATA_MANIFEST, THIRD_PARTY_NOTICES и RELEASE_CHECKLIST не обновлялись по согласованному точечному объёму патча.

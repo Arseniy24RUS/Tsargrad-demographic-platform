@@ -1,0 +1,88 @@
+
+.settlement-article-scenario-card,
+.settlement-article-method-notice{
+  border:1px solid rgba(212,165,55,.42);
+  border-radius:18px;
+  padding:16px 18px;
+  background:linear-gradient(135deg, rgba(255,255,255,.96), rgba(247,238,216,.88));
+  box-shadow:0 14px 34px rgba(20,91,97,.10);
+  margin:0 0 16px 0;
+}
+.settlement-article-scenario-card .scenario-source-status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#145B61;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.settlement-article-scenario-card .scenario-source-title{
+  margin-top:12px;
+  font-size:21px;
+  line-height:1.15;
+  font-weight:900;
+  color:#145B61;
+}
+.settlement-article-scenario-card .scenario-source-text{
+  margin-top:8px;
+  color:#2b2b2b;
+  line-height:1.48;
+  font-size:14px;
+}
+.settlement-article-scenario-card .scenario-source-note{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid rgba(212,165,55,.30);
+  color:#145B61;
+  font-weight:750;
+  font-size:14px;
+}
+.settlement-article-method-notice{
+  background:rgba(20,91,97,.08);
+  color:#145B61;
+  font-size:14px;
+  line-height:1.45;
+  margin-bottom:10px;
+}
+.settlement-disabled-slider input[type="range"],
+.settlement-disabled-slider .range-ruler{
+  opacity:.35;
+  pointer-events:none;
+}
+.settlement-disabled-slider .text-note{
+  color:#145B61;
+  font-weight:700;
+}
+.settlement-article-error{
+  padding:12px 14px;
+  border-radius:14px;
+  background:#fff0f0;
+  border:1px solid rgba(169,75,72,.35);
+  color:#A94B48;
+  font-weight:800;
+}
+.settlement-article-table th,
+.settlement-article-table td{
+  white-space:nowrap;
+}
+.settlement-article-table tfoot td{
+  white-space:normal;
+  color:#6b6257;
+  font-size:12px;
+  background:rgba(247,238,216,.65);
+}
+button:disabled,
+button[disabled]{
+  opacity:.72;
+  cursor:not-allowed;
+}
+@media (max-width: 760px){
+  .settlement-article-scenario-card,
+  .settlement-article-method-notice{padding:14px; border-radius:14px;}
+  .settlement-article-scenario-card .scenario-source-title{font-size:18px;}
+}

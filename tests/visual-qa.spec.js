@@ -886,6 +886,10 @@ test.describe('Playwright visual QA', () => {
     expect(Math.max(...initial.rows.flatMap(r => [r.baselineTfr, r.urbanTfr, r.ruralTfr, r.scenarioTfr]))).toBeLessThan(4.8);
 
     await page.locator('[data-preset="fix"]').click();
+    await expect.poll(() => page.evaluate(() => {
+      const rows = window.SettlementModule.getState().rows;
+      return Math.max(...rows.map(r => Math.abs(r.scenarioTfr - r.baselineTfr)));
+    })).toBeLessThan(0.001);
     const fixed = await page.evaluate(() => window.SettlementModule.getState());
     const maxFixedDelta = Math.max(...fixed.rows.map(r => Math.abs(r.scenarioTfr - r.baselineTfr)));
     expect(maxFixedDelta).toBeLessThan(0.001);

@@ -240,21 +240,63 @@ test.describe('самодостаточный релиз', () => {
     const runtime = await guardRuntime(page);
     await page.goto('/settlement.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#settlementTfrChart .main-svg').first()).toBeVisible();
+    await expect(page.locator('#settlementArticleScenarioCard')).toBeVisible();
+    await expect(page.locator('#settlementArticleMethodNotice')).toBeVisible();
+    await expect(page.locator('#populationScenarioBtn')).toHaveCount(0);
+    await page.waitForFunction(() => {
+      const chart = document.getElementById('populationTraceChart');
+      const names = (chart?.data || []).map(trace => trace.name);
+      return names.includes('Урбанизационный сценарий')
+        && names.includes('Фиксация')
+        && names.includes('ИЖС-сценарий');
+    });
+    const articlePopulation = await page.evaluate(() => {
+      const chart = document.getElementById('populationTraceChart');
+      const scenarioNames = ['Урбанизационный сценарий', 'Фиксация', 'ИЖС-сценарий'];
+      const result = {};
+      for (const name of scenarioNames) {
+        const trace = chart.data.find(item => item.name === name);
+        const lastIndex = trace.x.findIndex(year => Number(year) === 2050);
+        result[name] = {
+          first: Number(trace.y[0]),
+          last: Number(trace.y[lastIndex])
+        };
+      }
+      return result;
+    });
+    for (const values of Object.values(articlePopulation)) {
+      expect(values.last).toBeLessThan(values.first);
+    }
+    expect(articlePopulation['ИЖС-сценарий'].last).toBeGreaterThan(articlePopulation['Урбанизационный сценарий'].last);
+    await expect(page.locator('#settlementTable')).toContainText('2050');
+    await expect(page.locator('#settlementTable')).not.toContainText('2100');
     await expect(page.locator('.range-ruler')).toContainText('−15 п.п.');
     await expect(page.locator('.range-ruler')).toContainText('0');
     await expect(page.locator('.range-ruler')).toContainText('+30 п.п.');
     await page.waitForFunction(() => window.SettlementModule?.getState?.().tfrForecastLoaded);
     const initial = await page.evaluate(() => window.SettlementModule.getState());
     expect(initial.forecastMethod).toBe('local_gp_ucm_ensemble');
+    expect(initial.populationScenario).toBe('noMIG');
     expect(initial.negativeForecastGapCount).toBe(0);
     expect(initial.minForecastGap).toBeGreaterThan(0);
     expect(initial.positiveShareShiftNonNegative).toBe(true);
     expect(initial.chartTraceCount).toBeGreaterThanOrEqual(7);
     expect(initial.rows).toHaveLength(25);
+    expect(initial.rows.at(-1).baselinePopulation - initial.rows[0].baselinePopulation).toBeLessThan(0);
     await page.locator('[data-preset="fix"]').click();
+    await expect(page.locator('[data-preset="fix"]')).toHaveClass(/active/);
+    await expect.poll(() => page.evaluate(() => {
+      const rows = window.SettlementModule.getState().rows;
+      return Math.max(...rows.map(r => Math.abs((r.scenarioTfr ?? 0) - (r.baselineTfr ?? 0))));
+    })).toBeLessThan(0.001);
     const fixed = await page.evaluate(() => window.SettlementModule.getState());
     const maxFixedDelta = Math.max(...fixed.rows.map(r => Math.abs((r.scenarioTfr ?? 0) - (r.baselineTfr ?? 0))));
     expect(maxFixedDelta).toBeLessThan(0.001);
+    const fixedPopulation2050 = await page.locator('#settlementKpiPop2050').innerText();
+    await page.locator('[data-preset="deurban"]').click();
+    await expect(page.locator('[data-preset="deurban"]')).toHaveClass(/active/);
+    const izhPopulation2050 = await page.locator('#settlementKpiPop2050').innerText();
+    expect(izhPopulation2050).not.toBe(fixedPopulation2050);
     await setRange(page, '#delta2050', 12);
     const shifted = await page.evaluate(() => window.SettlementModule.getState());
     expect(shifted.forecastMethod).toBe('local_gp_ucm_ensemble');
@@ -276,8 +318,7 @@ test.describe('самодостаточный релиз', () => {
     }
     await page.locator('#settlementTerritorySelect').selectOption({ index: 1 });
     await expect(page.locator('#settlementKpiBirths')).not.toHaveText('—');
-    await page.locator('#populationScenarioBtn').click();
-    await expect(page.locator('#populationScenarioBtn')).toContainText('с миграцией');
+    await expect(page.locator('#populationScenarioBtn')).toHaveCount(0);
     const downloadPromise = page.waitForEvent('download');
     await page.locator('#downloadSettlementCsv').click();
     await downloadPromise;
