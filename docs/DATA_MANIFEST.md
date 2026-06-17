@@ -54,6 +54,7 @@ ETL: `data_pipeline/infrastructure/02_extract_osm_layers.py` извлекает 
 - `abortions_subjects.geojson` — локальная геометрия субъектов для SVG-картограммы страницы `Аборты`.
 - `abortions.sqlite`, `abortions_summary.csv`, `abortions_join_audit.json`, `abortions_join_audit.csv`, `abortions_data_manifest.json` — воспроизводимые локальные слои модуля прерываний беременности.
 - `rpn2022_fertility_housing_dashboard.json` — федеральный слой РПН-2022.
+- `rpn_housing_effect_model.json` — локальный агрегированный слой конструктора жилищного резерва рождаемости: женщины 18–44 лет, целевые группы, резерв желаемое−ожидаемое, охват, конверсия и контрольная 3-летняя оценка, `runtime_external_fetch:false`.
 - `rpn_regional_intentions_2012_2017.json` — региональный слой РПН-2012/2017.
 - `sources.json` — описание источников для документации; не используется как runtime-зависимость от сети.
 

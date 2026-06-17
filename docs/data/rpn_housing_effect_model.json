@@ -1,0 +1,251 @@
+{
+  "metadata": {
+    "title": "Конструктор жилищного резерва рождаемости",
+    "version": "2026-06-17-redesign",
+    "runtime_external_fetch": false,
+    "source_microdata": "РПН-2022, микроданные Росстата; обработка и агрегирование для платформы",
+    "source_note": "Это не официальный прогноз рождений, а сценарная оценка по агрегированным микроданным РПН-2022.",
+    "survey_frame": "женщины 18–44 лет, мужчины 18–60 лет",
+    "primary_counting_population": "женщины 18–44 лет",
+    "why_women_only": "Для оценки потенциальных рождений используется женская выборка, чтобы не удваивать один и тот же семейный репродуктивный результат ответами мужчин и женщин.",
+    "why_not_15_49": "СКР в демографии рассчитывается на возрастах 15–49, но РПН-2022 опрашивал женщин 18–44 лет; поэтому на этой странице используется именно рамка РПН.",
+    "default_model": "потенциал = латентный разрыв × охват меры × поведенческая конверсия; среднегодовой эффект = потенциал / выбранный срок реализации.",
+    "near_term_model": "Контрольная 3-летняя оценка использует вопрос РПН о вероятности рождения в ближайшие 3 года без новых мер и при дополнительных мерах."
+  },
+  "defaults": {
+    "housing_barrier": true,
+    "housing_need": false,
+    "high_housing_measures": false,
+    "coverage_pct": 60,
+    "conversion_pct": 35,
+    "implementation_years": 6,
+    "show_three_year_check": true
+  },
+  "context": {
+    "women_18_44_weighted": 27211780.16315487,
+    "women_18_44_n_unweighted": 7206,
+    "women_18_44_desired_mean": 2.0271907735905557,
+    "women_18_44_expected_mean": 1.8344235353217004,
+    "women_18_44_gap_mean": 0.19276723826885522,
+    "positive_gap_share_pct": 15.491098387089439,
+    "all_women_latent_positive_gap_births": 5111009.048805779,
+    "all_women_additional_3y_probability_delta": 2556195.705615853,
+    "survey_frame": "женщины 18–44 лет и мужчины 18–60 лет",
+    "fertility_age_note": "СКР обычно строится по возрастам 15–49, но РПН-2022 имеет собственную опросную рамку; поэтому микросценарий нельзя автоматически распространять на женщин 15–17 и 45–49."
+  },
+  "groups": {
+    "gap_only": {
+      "label": "Есть нереализованный репродуктивный разрыв",
+      "plain_label": "Женщины, у которых желаемое число детей больше ожидаемого",
+      "criteria": [
+        "Женщина 18–44 лет по рамке РПН-2022",
+        "желаемое число детей больше ожидаемого"
+      ],
+      "scenario_source_id": "upper_bound_women_with_positive_gap",
+      "n_unweighted": 1093,
+      "target_women_weighted": 4215403.637952808,
+      "latent_gap_births": 5111009.048805778,
+      "baseline_births_next_3y_by_probability": 936744.200796498,
+      "support_births_next_3y_by_probability": 1345334.223256605,
+      "additional_3y_probability_delta": 434697.4880423505,
+      "mean_positive_gap": 1.2124601788520344,
+      "mean_probability_delta_3y": 0.10312120152115715
+    },
+    "gap_housing": {
+      "label": "Разрыв + жилищные трудности мешают",
+      "plain_label": "Женщины с нереализованным разрывом, которым жилищные трудности мешают иметь желаемое число детей",
+      "criteria": [
+        "женщина 18–44",
+        "желаемое > ожидаемое",
+        "жилищные трудности мешают или очень мешают"
+      ],
+      "scenario_source_id": "upper_bound_housing_barrier",
+      "n_unweighted": 513,
+      "target_women_weighted": 1989966.5837828824,
+      "latent_gap_births": 2379537.908329611,
+      "baseline_births_next_3y_by_probability": 467022.14010001934,
+      "support_births_next_3y_by_probability": 712151.5393116645,
+      "additional_3y_probability_delta": 256286.84241077787,
+      "mean_positive_gap": 1.1957677720427657,
+      "mean_probability_delta_3y": 0.12878952063787033
+    },
+    "gap_housing_need": {
+      "label": "Разрыв + жилищные трудности + нужна жилплощадь",
+      "plain_label": "Женщины с разрывом, жилищным барьером и потребностью улучшить жилищные условия",
+      "criteria": [
+        "женщина 18–44",
+        "желаемое > ожидаемое",
+        "жилищные трудности мешают",
+        "нужно улучшить жилищные условия"
+      ],
+      "scenario_source_id": "upper_bound_need_improvement_and_housing_barrier",
+      "n_unweighted": 379,
+      "target_women_weighted": 1457925.6732685943,
+      "latent_gap_births": 1774764.2159948961,
+      "baseline_births_next_3y_by_probability": 332030.3286448701,
+      "support_births_next_3y_by_probability": 536961.384738778,
+      "additional_3y_probability_delta": 212667.08468861796,
+      "mean_positive_gap": 1.2173214646916575,
+      "mean_probability_delta_3y": 0.14586963422616003
+    },
+    "gap_housing_high": {
+      "label": "Разрыв + жилищные трудности + высокая значимость мер",
+      "plain_label": "Женщины с разрывом и жилищным барьером, высоко оценивающие хотя бы одну жилищную меру",
+      "criteria": [
+        "женщина 18–44",
+        "желаемое > ожидаемое",
+        "жилищные трудности мешают",
+        "земельный участок или погашение кредита оценены на 4–5 баллов"
+      ],
+      "scenario_source_id": "near_term_support_housing_barrier_and_housing_measures_high",
+      "n_unweighted": 318,
+      "target_women_weighted": 1243786.1591735785,
+      "latent_gap_births": 1485195.380234947,
+      "baseline_births_next_3y_by_probability": 326696.79100247886,
+      "support_births_next_3y_by_probability": 537247.5484124757,
+      "additional_3y_probability_delta": 215972.52570093604,
+      "mean_positive_gap": 1.1940922233945508,
+      "mean_probability_delta_3y": 0.1736412036008158
+    },
+    "gap_housing_need_high": {
+      "label": "Разрыв + жильё мешает + нужна жилплощадь + меры значимы",
+      "plain_label": "Самая строгая жилищная группа: разрыв, потребность улучшить жильё, жилищный барьер и высокая значимость жилищных мер",
+      "criteria": [
+        "женщина 18–44",
+        "желаемое > ожидаемое",
+        "жилищные трудности мешают",
+        "нужно улучшить жильё",
+        "жилищные меры оценены на 4–5 баллов"
+      ],
+      "scenario_source_id": "near_term_support_need_barrier_and_housing_measures_high",
+      "n_unweighted": 247,
+      "target_women_weighted": 970097.2704181914,
+      "latent_gap_births": 1180804.415514169,
+      "baseline_births_next_3y_by_probability": 258753.88068808144,
+      "support_births_next_3y_by_probability": 442472.828974594,
+      "additional_3y_probability_delta": 188054.32030074007,
+      "mean_positive_gap": 1.2172020801637196,
+      "mean_probability_delta_3y": 0.19385099415821802
+    }
+  },
+  "barrier_summary": [
+    {
+      "barrier": "housing_difficulties",
+      "label": "Жилищные трудности",
+      "very_or_somewhat_hinders_pct": 45.597485898586626,
+      "very_hinders_pct": 20.264864626429162,
+      "somewhat_hinders_pct": 25.332621272157475,
+      "n_unweighted": 1476
+    },
+    {
+      "barrier": "mortgage_credit_payment",
+      "label": "Необходимость выплачивать ипотечный кредит",
+      "very_or_somewhat_hinders_pct": 34.55148624803935,
+      "very_hinders_pct": 16.54119837983618,
+      "somewhat_hinders_pct": 18.010287868203168,
+      "n_unweighted": 1476
+    }
+  ],
+  "housing_measures_summary": [
+    {
+      "measure": "land_plot_for_house_construction",
+      "label": "Земельный участок под ИЖС",
+      "share_score_4_5_pct": 43.423814148696046,
+      "mean_score_1_5": 3.013122770361429,
+      "n_unweighted": 7206
+    }
+  ],
+  "order_potential": [
+    {
+      "born_children": 0,
+      "target_women_weighted": 432901.09175434493,
+      "latent_gap_births": 565258.7246385794,
+      "additional_3y_probability_delta": 52703.45321569852,
+      "n_unweighted": 103
+    },
+    {
+      "born_children": 1,
+      "target_women_weighted": 994333.4739927725,
+      "latent_gap_births": 1183301.7723944066,
+      "additional_3y_probability_delta": 115625.04925971513,
+      "n_unweighted": 257
+    },
+    {
+      "born_children": 2,
+      "target_women_weighted": 511423.809661296,
+      "latent_gap_births": 566763.346612954,
+      "additional_3y_probability_delta": 79457.0521666667,
+      "n_unweighted": 133
+    },
+    {
+      "born_children": 3,
+      "target_women_weighted": 45116.780912622,
+      "latent_gap_births": 58022.63722182399,
+      "additional_3y_probability_delta": 7525.424222523399,
+      "n_unweighted": 18
+    },
+    {
+      "born_children": 4,
+      "target_women_weighted": 6191.427461847,
+      "latent_gap_births": 6191.427461847,
+      "additional_3y_probability_delta": 975.8635461741,
+      "n_unweighted": 2
+    }
+  ],
+  "housing_condition_series": [
+    {
+      "housing_condition": "90–100 — очень хорошие",
+      "weighted_population": 6835084.6513867285,
+      "desired_children_mean": 1.9979068538453038,
+      "expected_children_mean": 1.8221603577982664,
+      "gap_mean": 0.1757464960470374,
+      "prob_birth_delta_3y_mean": 0.07458907935446
+    },
+    {
+      "housing_condition": "70–80 — хорошие",
+      "weighted_population": 11625807.042002538,
+      "desired_children_mean": 2.0205061725828974,
+      "expected_children_mean": 1.82673680560795,
+      "gap_mean": 0.1937693669749474,
+      "prob_birth_delta_3y_mean": 0.09011409931941301
+    },
+    {
+      "housing_condition": "50–60 — средние",
+      "weighted_population": 6292377.890633108,
+      "desired_children_mean": 2.0846575212882543,
+      "expected_children_mean": 1.8807792475405305,
+      "gap_mean": 0.20387827374772383,
+      "prob_birth_delta_3y_mean": 0.11205731793935561
+    },
+    {
+      "housing_condition": "30–40 — плохие",
+      "weighted_population": 1994050.1758084781,
+      "desired_children_mean": 2.034313692068043,
+      "expected_children_mean": 1.8333419193927516,
+      "gap_mean": 0.20097177267529132,
+      "prob_birth_delta_3y_mean": 0.11431688850411699
+    },
+    {
+      "housing_condition": "0–20 — очень плохие",
+      "weighted_population": 464460.4033240161,
+      "desired_children_mean": 1.820692252677046,
+      "expected_children_mean": 1.5925221083995824,
+      "gap_mean": 0.22817014427746352,
+      "prob_birth_delta_3y_mean": 0.14137545791433487
+    }
+  ],
+  "method_cards": [
+    {
+      "title": "Почему женщины 18–44?",
+      "text": "Такова рамка РПН-2022. Это не весь биологический фертильный возраст 15–49, а опрошенная Росстатом группа, на которой реально измерены желаемое и ожидаемое число детей, жилищные барьеры и вероятность рождения."
+    },
+    {
+      "title": "Почему не готовые сценарии?",
+      "text": "Целевая группа собирается прозрачными фильтрами: разрыв планов, жилищный барьер, потребность улучшить жильё и высокая значимость жилищных мер. Пользователь видит, кто попадает в расчёт."
+    },
+    {
+      "title": "Почему не только 3 года?",
+      "text": "Основной расчёт даёт настраиваемый срок реализации. Трёхлетний показатель оставлен только как контрольная оценка, потому что в анкете РПН есть вопрос о вероятности рождения в ближайшие 3 года."
+    }
+  ]
+}

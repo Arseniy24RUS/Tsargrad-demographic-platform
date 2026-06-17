@@ -353,11 +353,12 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
       const rect = el.getBoundingClientRect();
       return rect.width > 1 && rect.height > 1 && style.display !== 'none' && style.visibility !== 'hidden';
     };
-    const sections = [...document.querySelectorAll('[data-detail-section]')];
+    const sections = [...document.querySelectorAll('[data-detail-section]:not(.rpn-old-housing-effect-hidden)')];
     return !document.body.classList.contains('view-brief') &&
+      window.RpnHousingEffectDesigner?.getState?.().loaded &&
       sections.length >= 4 &&
       sections.every(visible) &&
-      document.querySelectorAll('[data-detail-section] .js-plotly-plot .main-svg').length >= 7;
+      document.querySelectorAll('[data-detail-section]:not(.rpn-old-housing-effect-hidden) .js-plotly-plot .main-svg').length >= 6;
   }, null, { timeout: 20_000 });
   await scrollTopNow(page);
   await page.waitForTimeout(350);
@@ -371,7 +372,11 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
       scatterYTitle: scatter?._fullLayout?.yaxis?.title?.text || '',
       colorbarTitle: colorbar,
       trendYears: [...new Set((trend?.data || []).flatMap(trace => trace.x || []))].map(String).sort(),
-      percentRulers: [...document.querySelectorAll('.percent-ruler')].map(el => el.textContent.replace(/\s+/g, ' ').trim()),
+      designerState: window.RpnHousingEffectDesigner?.getState?.(),
+      designerVisible: !!document.querySelector('#rpnHousingEffectDesigner')?.offsetParent,
+      oldScenarioHidden: document.querySelector('#rpnScenarioSelect') ? !document.querySelector('#rpnScenarioSelect').offsetParent : false,
+      newControls: ['#rpnFxCoverage', '#rpnFxConversion', '#rpnFxYears', '#rpnFxHousingBarrier', '#rpnFxHousingNeed', '#rpnFxHighMeasures']
+        .every(selector => !!document.querySelector(selector)),
       hasHousingExplanation: body.includes('самооценка жилищных условий по шкале 0–100'),
       hasReserveExplanation: body.includes('нереализованный разрыв') && body.includes('вероятности рождения в ближайшие 3 года'),
       hasOldLatentReserveText: body.includes('латентный разрыв')
@@ -381,8 +386,14 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
   expect(skrRpnState.scatterYTitle, `${target.slug} ${viewport.name} RPN scatter y title`).toBe('Желаемое число детей, среднее');
   expect(skrRpnState.colorbarTitle, `${target.slug} ${viewport.name} RPN colorbar title`).toContain('желаемое−ожидаемое');
   expect(skrRpnState.trendYears, `${target.slug} ${viewport.name} RPN trend years`).toEqual(expect.arrayContaining(['2022', '2025']));
-  expect(skrRpnState.percentRulers.join(' '), `${target.slug} ${viewport.name} range rulers`).toContain('0% 50% 100%');
-  expect(skrRpnState.percentRulers.join(' '), `${target.slug} ${viewport.name} range rulers 200`).toContain('0% 100% 200%');
+  expect(skrRpnState.designerVisible, `${target.slug} ${viewport.name} housing effect designer`).toBe(true);
+  expect(skrRpnState.oldScenarioHidden, `${target.slug} ${viewport.name} old scenario block hidden`).toBe(true);
+  expect(skrRpnState.newControls, `${target.slug} ${viewport.name} housing effect controls`).toBe(true);
+  expect(skrRpnState.designerState.groupId, `${target.slug} ${viewport.name} default housing group`).toBe('gap_housing');
+  expect(skrRpnState.designerState.state.coveragePct, `${target.slug} ${viewport.name} default coverage`).toBe(60);
+  expect(skrRpnState.designerState.state.conversionPct, `${target.slug} ${viewport.name} default conversion`).toBe(35);
+  expect(skrRpnState.designerState.state.implementationYears, `${target.slug} ${viewport.name} default years`).toBe(6);
+  expect(skrRpnState.designerState.scenarioBirths, `${target.slug} ${viewport.name} scenario births`).toBeGreaterThan(0);
   expect(skrRpnState.hasHousingExplanation, `${target.slug} ${viewport.name} housing explanation`).toBe(true);
   expect(skrRpnState.hasReserveExplanation, `${target.slug} ${viewport.name} reserve explanation`).toBe(true);
   expect(skrRpnState.hasOldLatentReserveText, `${target.slug} ${viewport.name} old latent wording`).toBe(false);

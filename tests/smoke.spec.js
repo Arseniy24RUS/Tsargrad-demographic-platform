@@ -175,6 +175,21 @@ test.describe('самодостаточный релиз', () => {
 
     await page.locator('[data-view-mode="detail"]').click();
     await expect(page.locator('[data-detail-section]').first()).toBeVisible();
+    await page.waitForFunction(() => window.RpnHousingEffectDesigner?.getState?.().loaded);
+    await expect(page.locator('#rpnHousingEffectDesigner')).toBeVisible();
+    await expect(page.locator('#rpnScenarioSelect')).toBeHidden();
+    await expect(page.locator('#rpnFxEligibleWomen')).not.toHaveText('—');
+    await expect(page.locator('#rpnFxScenarioBirths')).not.toHaveText('—');
+    const housingEffectInitial = await page.evaluate(() => window.RpnHousingEffectDesigner.getState());
+    expect(housingEffectInitial.groupId).toBe('gap_housing');
+    expect(housingEffectInitial.state.coveragePct).toBe(60);
+    expect(housingEffectInitial.state.conversionPct).toBe(35);
+    expect(housingEffectInitial.state.implementationYears).toBe(6);
+    await setRange(page, '#rpnFxConversion', 70);
+    const housingEffectChanged = await page.evaluate(() => window.RpnHousingEffectDesigner.getState());
+    expect(housingEffectChanged.scenarioBirths).toBeGreaterThan(housingEffectInitial.scenarioBirths);
+    await page.locator('#rpnFxHousingNeed').check();
+    await expect.poll(() => page.evaluate(() => window.RpnHousingEffectDesigner.getState().groupId)).toBe('gap_housing_need');
 
     await page.locator('[data-analysis-mode="district"]').click();
     await expect(page.locator('#territorySelect')).toBeEnabled();
