@@ -180,6 +180,10 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('#rpnScenarioSelect')).toBeHidden();
     await expect(page.locator('#rpnFxEligibleWomen')).not.toHaveText('—');
     await expect(page.locator('#rpnFxScenarioBirths')).not.toHaveText('—');
+    await expect(page.locator('#rpnFxThreeYearBirths')).not.toHaveText('—');
+    await expect(page.locator('#rpnFxSummaryText')).toContainText('потенциальных рождений');
+    await expect(page.locator('.rpn-effect-summary')).toBeVisible();
+    await expect(page.locator('.rpn-effect-range-ruler')).toHaveCount(3);
     const housingEffectInitial = await page.evaluate(() => window.RpnHousingEffectDesigner.getState());
     expect(housingEffectInitial.groupId).toBe('gap_housing');
     expect(housingEffectInitial.state.coveragePct).toBe(60);

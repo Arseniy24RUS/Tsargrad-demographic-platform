@@ -34,7 +34,7 @@
     }catch(error){
       console.error(error);
       const mount = ensureMount();
-      mount.innerHTML = `<section class="card teal rpn-effect-designer"><h2>Жилищный резерв рождаемости</h2><p>Данные модуля временно недоступны. Проверьте файл ${DATA_URL}.</p></section>`;
+      mount.innerHTML = `<section class="rpn-effect-designer"><div class="rpn-effect-hero"><h2>Жилищный резерв рождаемости</h2><p>Данные модуля временно недоступны. Проверьте файл ${DATA_URL}.</p></div></section>`;
     }
   }
 
@@ -93,76 +93,93 @@
     const cards = (model.method_cards || []).map(card => `
       <div class="explain-card"><h4>${escapeHtml(card.title)}</h4><p>${escapeHtml(card.text)}</p></div>`).join('');
     return `
-      <section class="card teal rpn-effect-designer" id="rpnHousingEffectDesigner">
-        <div class="card-title-row">
+      <section class="rpn-effect-designer" id="rpnHousingEffectDesigner">
+        <div class="rpn-effect-hero">
           <div>
             <div class="section-number">Конструктор жилищного резерва</div>
             <h2>Сценарий влияния жилищных условий на рождаемость</h2>
-            <p class="lead compact">Вместо непрозрачных готовых сценариев здесь задаётся понятная логика: кто входит в расчёт, какая часть семей будет охвачена мерой, какая доля нереализованного разрыва превратится в рождения и за какой срок.</p>
+            <p class="lead compact">Здесь видно, какая группа женщин попадает в расчёт, какой жилищный резерв она содержит и какая часть этого резерва может перейти в рождения при заданном охвате, конверсии и сроке реализации.</p>
           </div>
-          <span class="pill inverted">РПН‑2022 · федеральная оценка</span>
+          <span class="rpn-effect-badge">РПН‑2022 · федеральная оценка</span>
         </div>
         <div class="rpn-effect-status">
           <span class="status-chip"><strong>Расчётная рамка:</strong> женщины 18–44 лет</span>
-          <span class="status-chip"><strong>Не СКР:</strong> это сценарий потенциальных рождений</span>
-          <span class="status-chip"><strong>Главная формула:</strong> резерв × охват × конверсия</span>
+          <span class="status-chip"><strong>Не СКР:</strong> сценарий потенциальных рождений</span>
+          <span class="status-chip"><strong>Формула:</strong> резерв × охват × конверсия</span>
         </div>
-        <div class="rpn-effect-layout">
-          <div class="rpn-effect-panel">
-            <h3>Настройка расчёта</h3>
-            <div class="rpn-effect-controls">
-              <div class="rpn-effect-control">
-                <label>Кого считаем</label>
-                <label class="rpn-effect-check is-locked"><input type="checkbox" checked disabled /><span>Женщины 18–44 лет с разрывом желаемое &gt; ожидаемое<small>Рамка взята из РПН‑2022. Это не весь возраст 15–49, а именно опрошенная группа.</small></span></label>
-              </div>
-              <div class="rpn-effect-control">
-                <label>Жилищные условия целевой группы</label>
-                <div class="rpn-effect-checks">
-                  <label class="rpn-effect-check"><input id="rpnFxHousingBarrier" type="checkbox" /><span>Жилищные трудности мешают иметь желаемое число детей<small>Ответы «мешает» или «очень мешает».</small></span></label>
-                  <label class="rpn-effect-check"><input id="rpnFxHousingNeed" type="checkbox" /><span>Семье нужно улучшить жилищные условия<small>Уточняет группу до тех, кому нужен жилищный переход.</small></span></label>
-                  <label class="rpn-effect-check"><input id="rpnFxHighMeasures" type="checkbox" /><span>Жилищные меры высоко значимы<small>Участок под ИЖС или погашение кредита оценены на 4–5 баллов.</small></span></label>
-                </div>
-              </div>
-              ${rangeControl('rpnFxCoverage','Охват меры внутри выбранной группы','coveragePct',0,100,5,'%')}
-              ${rangeControl('rpnFxConversion','Поведенческая конверсия','conversionPct',0,100,5,'%')}
-              ${rangeControl('rpnFxYears','Срок реализации эффекта','implementationYears',1,10,1,' лет')}
-              <label class="rpn-effect-check"><input id="rpnFxShowThreeYear" type="checkbox" /><span>Показывать контрольную 3-летнюю оценку РПН<small>Отдельная справочная линия: в анкете есть вопрос о вероятности рождения в ближайшие 3 года.</small></span></label>
+        <div class="rpn-effect-body">
+          <section class="rpn-effect-summary" aria-label="Итог текущих настроек">
+            <div class="rpn-effect-summary-copy">
+              <span>При текущих настройках</span>
+              <p id="rpnFxSummaryText">—</p>
             </div>
-            <div class="rpn-effect-source"><strong>Почему так:</strong> ${escapeHtml(m.why_not_15_49 || '')}</div>
-          </div>
-          <div class="rpn-effect-panel white">
-            <h3>Результат выбранных настроек</h3>
-            <div class="text-note" id="rpnFxGroupText">—</div>
             <div class="rpn-effect-mini-kpis">
               <div class="metric"><span>Целевая группа</span><b id="rpnFxEligibleWomen">—</b></div>
-              <div class="metric"><span>Жилищный резерв группы</span><b id="rpnFxLatentBirths">—</b></div>
+              <div class="metric"><span>Жилищный резерв</span><b id="rpnFxLatentBirths">—</b></div>
               <div class="metric gold"><span>Сценарный эффект</span><b id="rpnFxScenarioBirths">—</b></div>
               <div class="metric"><span>В среднем в год</span><b id="rpnFxAnnualBirths">—</b></div>
+              <div class="metric"><span>Контроль 3 года</span><b id="rpnFxThreeYearBirths">—</b></div>
             </div>
-            <div class="rpn-effect-diagram-grid">
-              <div class="rpn-effect-chart-card"><h4>Воронка расчёта</h4><div id="rpnFxFunnelChart"></div><div class="rpn-effect-chart-note">От общей рамки РПН к выбранной целевой группе и сценарию реализации.</div></div>
-              <div class="rpn-effect-chart-card"><h4>Потенциал и эффект</h4><div id="rpnFxPotentialChart"></div><div class="rpn-effect-chart-note" id="rpnFxChartNote">—</div></div>
+          </section>
+          <div class="rpn-effect-main-grid">
+            <div class="rpn-effect-panel rpn-effect-settings">
+              <h3>Настройка расчёта</h3>
+              <div class="rpn-effect-controls">
+                <div class="rpn-effect-control">
+                  <label>Кого считаем</label>
+                  <label class="rpn-effect-check is-locked"><input type="checkbox" checked disabled /><span>Женщины 18–44 лет с разрывом желаемое &gt; ожидаемое<small>Рамка взята из РПН‑2022. Это не весь возраст 15–49, а именно опрошенная группа.</small></span></label>
+                </div>
+                <div class="rpn-effect-control">
+                  <label>Жилищные условия целевой группы</label>
+                  <div class="rpn-effect-checks">
+                    <label class="rpn-effect-check"><input id="rpnFxHousingBarrier" type="checkbox" /><span>Жилищные трудности мешают иметь желаемое число детей<small>Ответы «мешает» или «очень мешает».</small></span></label>
+                    <label class="rpn-effect-check"><input id="rpnFxHousingNeed" type="checkbox" /><span>Семье нужно улучшить жилищные условия<small>Уточняет группу до тех, кому нужен жилищный переход.</small></span></label>
+                    <label class="rpn-effect-check"><input id="rpnFxHighMeasures" type="checkbox" /><span>Жилищные меры высоко значимы<small>Участок под ИЖС или погашение кредита оценены на 4–5 баллов.</small></span></label>
+                  </div>
+                </div>
+                ${rangeControl('rpnFxCoverage','Охват меры внутри выбранной группы','coveragePct',0,100,5,'%')}
+                ${rangeControl('rpnFxConversion','Конверсия резерва в рождения','conversionPct',0,100,5,'%')}
+                ${rangeControl('rpnFxYears','Срок реализации эффекта','implementationYears',1,10,1,' лет')}
+                <label class="rpn-effect-check"><input id="rpnFxShowThreeYear" type="checkbox" /><span>Показывать контрольную 3-летнюю оценку РПН<small>Отдельная справочная линия: в анкете есть вопрос о вероятности рождения в ближайшие 3 года.</small></span></label>
+              </div>
+              <div class="rpn-effect-source"><strong>Почему так:</strong> ${escapeHtml(m.why_not_15_49 || '')}</div>
             </div>
-            <div class="rpn-effect-formula" id="rpnFxFormula">—</div>
+            <div class="rpn-effect-results-stack">
+              <div class="rpn-effect-panel rpn-effect-group-panel">
+                <h3>Выбранная группа</h3>
+                <div class="text-note" id="rpnFxGroupText">—</div>
+                <div class="rpn-effect-formula" id="rpnFxFormula">—</div>
+              </div>
+              <div class="rpn-effect-diagram-grid">
+                <div class="rpn-effect-chart-card"><h4>Воронка расчёта</h4><div id="rpnFxFunnelChart"></div><div class="rpn-effect-chart-note">От общей рамки РПН к выбранной целевой группе и сценарию реализации.</div></div>
+                <div class="rpn-effect-chart-card"><h4>Потенциал и эффект</h4><div id="rpnFxPotentialChart"></div><div class="rpn-effect-chart-note" id="rpnFxChartNote">—</div></div>
+              </div>
+              <div class="rpn-effect-explain rpn-effect-methods">${cards}</div>
+            </div>
           </div>
-        </div>
-        <div class="rpn-effect-explain">${cards}</div>
-        <div class="rpn-effect-layout" style="margin-top:18px">
-          <div class="rpn-effect-panel white">
-            <h3>Резерв по числу уже рождённых детей</h3>
-            <div class="text-note">Показана выбранная жилищная группа: женщины с положительным разрывом и жилищным барьером. Это помогает увидеть, где находится резерв перехода к следующему ребёнку.</div>
-            <div id="rpnFxOrderChart"></div>
-          </div>
-          <div class="rpn-effect-panel white">
-            <h3>Что входит в текущую группу</h3>
-            <div id="rpnFxGroupTable"></div>
+          <div class="rpn-effect-secondary-grid">
+            <div class="rpn-effect-panel">
+              <h3>Резерв по числу уже рождённых детей</h3>
+              <div class="text-note">Показана выбранная жилищная группа: женщины с положительным разрывом и жилищным барьером. Это помогает увидеть, где находится резерв перехода к следующему ребёнку.</div>
+              <div id="rpnFxOrderChart"></div>
+            </div>
+            <div class="rpn-effect-panel">
+              <h3>Что входит в текущую группу</h3>
+              <div id="rpnFxGroupTable"></div>
+            </div>
           </div>
         </div>
       </section>`;
   }
 
   function rangeControl(id, label, key, min, max, step, suffix){
-    return `<div class="rpn-effect-control"><label for="${id}">${label}</label><div class="rpn-effect-range-row"><input id="${id}" type="range" min="${min}" max="${max}" step="${step}" /><output id="${id}Label">—</output></div></div>`;
+    return `<div class="rpn-effect-control"><div class="rpn-effect-range-head"><label for="${id}">${label}</label><output id="${id}Label">—</output></div><input id="${id}" type="range" min="${min}" max="${max}" step="${step}" />${rangeRuler(min, max, suffix)}</div>`;
+  }
+
+  function rangeRuler(min, max, suffix){
+    if(min === 1 && max === 10) return `<div class="rpn-effect-range-ruler" aria-hidden="true"><span>1 год</span><span>5 лет</span><span>10 лет</span></div>`;
+    const end = suffix === '%' ? '100%' : `${max}${suffix || ''}`;
+    return `<div class="rpn-effect-range-ruler" aria-hidden="true"><span>${min}${suffix === '%' ? '%' : ''}</span><span>50%</span><span>${end}</span></div>`;
   }
 
   function bindControls(root){
@@ -198,6 +215,12 @@
     const show = document.getElementById('rpnFxShowThreeYear');
     if(barrier) barrier.checked = !!state.housingBarrier;
     if(show) show.checked = !!state.showThreeYearCheck;
+    [barrier, need, high, show].forEach(input => {
+      const label = input?.closest('.rpn-effect-check');
+      if(!label) return;
+      label.classList.toggle('is-active', !!input.checked);
+      label.classList.toggle('is-disabled', !!input.disabled && !label.classList.contains('is-locked'));
+    });
   }
 
   function selectedGroupId(){
@@ -234,11 +257,14 @@
   }
 
   function renderText(group, rates){
+    const summaryAnnual = compact(rates.annual).replace(/\.$/, '');
     setLabel('rpnFxGroupText', group.plain_label);
     setLabel('rpnFxEligibleWomen', compact(group.target_women_weighted));
     setLabel('rpnFxLatentBirths', compact(group.latent_gap_births));
     setLabel('rpnFxScenarioBirths', compact(rates.scenario));
     setLabel('rpnFxAnnualBirths', compact(rates.annual));
+    setLabel('rpnFxThreeYearBirths', state.showThreeYearCheck ? compact(rates.threeYear) : 'скрыта');
+    setLabel('rpnFxSummaryText', `мера работает с группой ${compact(group.target_women_weighted)} женщин и даёт ${compact(rates.scenario)} потенциальных рождений за ${fmt0.format(state.implementationYears)} ${yearsWord(state.implementationYears)}; среднегодовая оценка — ${summaryAnnual}.`);
     setLabel('rpnFxFormula', `Сценарный эффект = ${compact(group.latent_gap_births)} × ${fmt0.format(state.coveragePct)}% охвата × ${fmt0.format(state.conversionPct)}% конверсии = ${compact(rates.scenario)} потенциальных рождений за ${fmt0.format(state.implementationYears)} ${yearsWord(state.implementationYears)}.`);
     const note = state.showThreeYearCheck ? `Контрольная 3-летняя оценка по самооценке РПН при таком охвате: ${compact(rates.threeYear)} потенциальных рождений.` : 'Контрольная 3-летняя оценка скрыта; основной расчёт использует выбранный срок реализации.';
     setLabel('rpnFxChartNote', note);

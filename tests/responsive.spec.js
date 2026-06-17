@@ -377,6 +377,10 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
       oldScenarioHidden: document.querySelector('#rpnScenarioSelect') ? !document.querySelector('#rpnScenarioSelect').offsetParent : false,
       newControls: ['#rpnFxCoverage', '#rpnFxConversion', '#rpnFxYears', '#rpnFxHousingBarrier', '#rpnFxHousingNeed', '#rpnFxHighMeasures']
         .every(selector => !!document.querySelector(selector)),
+      summaryVisible: !!document.querySelector('.rpn-effect-summary')?.offsetParent,
+      rangeRulers: document.querySelectorAll('.rpn-effect-range-ruler').length,
+      emptyTallPanels: [...document.querySelectorAll('#rpnHousingEffectDesigner .rpn-effect-panel')]
+        .filter(panel => panel.getBoundingClientRect().height > 520 && panel.innerText.trim().length < 120).length,
       hasHousingExplanation: body.includes('самооценка жилищных условий по шкале 0–100'),
       hasReserveExplanation: body.includes('нереализованный разрыв') && body.includes('вероятности рождения в ближайшие 3 года'),
       hasOldLatentReserveText: body.includes('латентный разрыв')
@@ -389,6 +393,9 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
   expect(skrRpnState.designerVisible, `${target.slug} ${viewport.name} housing effect designer`).toBe(true);
   expect(skrRpnState.oldScenarioHidden, `${target.slug} ${viewport.name} old scenario block hidden`).toBe(true);
   expect(skrRpnState.newControls, `${target.slug} ${viewport.name} housing effect controls`).toBe(true);
+  expect(skrRpnState.summaryVisible, `${target.slug} ${viewport.name} housing effect summary`).toBe(true);
+  expect(skrRpnState.rangeRulers, `${target.slug} ${viewport.name} range rulers`).toBeGreaterThanOrEqual(3);
+  expect(skrRpnState.emptyTallPanels, `${target.slug} ${viewport.name} empty tall panels`).toBe(0);
   expect(skrRpnState.designerState.groupId, `${target.slug} ${viewport.name} default housing group`).toBe('gap_housing');
   expect(skrRpnState.designerState.state.coveragePct, `${target.slug} ${viewport.name} default coverage`).toBe(60);
   expect(skrRpnState.designerState.state.conversionPct, `${target.slug} ${viewport.name} default conversion`).toBe(35);
