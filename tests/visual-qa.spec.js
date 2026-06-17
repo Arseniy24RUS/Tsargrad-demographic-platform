@@ -983,6 +983,8 @@ test.describe('Playwright visual QA', () => {
     expect(initial.dimensionWhiteLabelCount).toBe(0);
     expect(initial.dimensionHeightLinePresent).toBe(true);
     expect(initial.dimensionSvgLabelCount).toBe(0);
+    expect(initial.siteDimensions.widthM, 'estate initial lot width').toBeGreaterThan(initial.siteDimensions.depthM);
+    expect(initial.siteDimensions.areaM2, 'estate initial lot area').toBeCloseTo(1200, 1);
     expect(initial.fenceGateCount).toBe(1);
     expect(initial.mainDoorCount).toBe(1);
     expect(initial.separateElderHouse).toBe(false);
@@ -1008,16 +1010,32 @@ test.describe('Playwright visual QA', () => {
     await expect(page.locator('.estate-stepper-grid .estate-stepper-card')).toHaveCount(4);
     await expect(page.locator('.estate-stepper-echo')).toHaveCount(5);
     for (let i = 0; i < 5; i++) await expect(page.locator('.estate-stepper-echo').nth(i)).toBeHidden();
+    const canvasBox = await page.locator('#estateThree canvas').boundingBox();
+    expect(canvasBox, 'estate canvas box').toBeTruthy();
+    await page.mouse.move(canvasBox.x + canvasBox.width * 0.48, canvasBox.y + canvasBox.height * 0.48);
+    await page.mouse.down();
+    await page.mouse.move(canvasBox.x + canvasBox.width * 0.66, canvasBox.y + canvasBox.height * 0.58);
+    await page.mouse.up();
+    await page.waitForTimeout(350);
+    const userCamera = await page.evaluate(() => window.Estate3D.getViewState());
     await page.locator('[data-step-target="estateChildren"][data-step-delta="1"]').click();
     await expect(page.locator('#estateChildren')).toHaveValue('4');
+    await page.waitForTimeout(650);
+    const afterChildren = await page.evaluate(() => window.Estate3D.getViewState());
+    expectCameraUnchanged(userCamera, afterChildren, 'estate children update preserves camera');
     await page.locator('[data-step-target="estateChildren"][data-step-delta="-1"]').click();
     await expect(page.locator('#estateChildren')).toHaveValue('3');
+    await page.waitForTimeout(650);
+    const afterChildrenBack = await page.evaluate(() => window.Estate3D.getViewState());
+    expectCameraUnchanged(userCamera, afterChildrenBack, 'estate children rollback preserves camera');
     const siteBefore = initial.siteDimensions.areaM2;
     await page.locator('[data-step-target="estateSiteArea"][data-step-delta="1"]').click();
     await expect(page.locator('#estateSiteArea')).toHaveValue('13');
     await page.waitForTimeout(650);
     const siteAfter = await page.evaluate(() => window.Estate3D.getViewState());
     expect(siteAfter.siteDimensions.areaM2).toBeGreaterThan(siteBefore);
+    expect(siteAfter.siteDimensions.widthM).toBeGreaterThan(siteAfter.siteDimensions.depthM);
+    expectCameraUnchanged(userCamera, siteAfter, 'estate site update preserves camera');
     for (const sotka of [4, 12, 30]) {
       await page.locator('#estateSiteArea').evaluate((el, value) => {
         el.value = String(value);
@@ -1041,7 +1059,15 @@ test.describe('Playwright visual QA', () => {
     expect(withSeparateElders.elderHousePresent).toBe(true);
     expect(withSeparateElders.fenceGateCount).toBe(2);
     expect(withSeparateElders.treeCollisionCount).toBe(0);
+    expect(withSeparateElders.elderHouseSiteDiagnostics.withinSite).toBe(true);
+    expect(withSeparateElders.elderHouseSiteDiagnostics.minClearanceM).toBeGreaterThan(0.5);
+    expectCameraUnchanged(userCamera, withSeparateElders, 'estate separate elder house preserves camera');
 
+    await page.locator('#estateViewReset').click();
+    await page.waitForTimeout(650);
+    let floorCamera = await page.evaluate(() => window.Estate3D.getViewState());
+    expectEstateFrame(floorCamera, 'estate floors reset start');
+    expectEstateFrontView(floorCamera, 'estate floors reset start');
     const floorStates = [];
     for (const floor of [1, 2, 3]) {
       await page.locator('#estateFloors').evaluate((el, value) => {
@@ -1052,9 +1078,14 @@ test.describe('Playwright visual QA', () => {
       await page.waitForTimeout(450);
       const state = await page.evaluate(() => window.Estate3D.getViewState());
       expect(state.floors).toBe(floor);
-      expectEstateFrame(state, `estate floor ${floor}`);
-      expectEstateFrontView(state, `estate floor ${floor}`);
-      floorStates.push(state);
+      expectCameraUnchanged(floorCamera, state, `estate floor ${floor} preserves camera`);
+      await page.locator('#estateViewReset').click();
+      await page.waitForTimeout(650);
+      const resetFloorState = await page.evaluate(() => window.Estate3D.getViewState());
+      expectEstateFrame(resetFloorState, `estate floor ${floor} reset`);
+      expectEstateFrontView(resetFloorState, `estate floor ${floor} reset`);
+      floorStates.push(resetFloorState);
+      floorCamera = resetFloorState;
     }
     await page.locator('#estateFloors').evaluate(el => {
       el.value = '4';
@@ -1063,6 +1094,7 @@ test.describe('Playwright visual QA', () => {
     await expect(page.locator('#estateFloors')).toHaveValue('3');
     const clampedFloorState = await page.evaluate(() => window.Estate3D.getViewState());
     expect(clampedFloorState.floors).toBe(3);
+    expectCameraUnchanged(floorCamera, clampedFloorState, 'estate clamped floor preserves camera');
     for (let i = 1; i < floorStates.length; i++) {
       expect(floorStates[i].mainHouseBoundsSize.y, `floor ${i+1} height grows`).toBeGreaterThan(floorStates[i-1].mainHouseBoundsSize.y);
       expect(floorStates[i].mainFootprintM2, `floor ${i+1} footprint shrinks`).toBeLessThan(floorStates[i-1].mainFootprintM2);

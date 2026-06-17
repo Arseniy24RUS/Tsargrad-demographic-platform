@@ -67,6 +67,7 @@ function init(){
   controls.minDistance = 6;
   controls.maxDistance = 90;
   controls.maxPolarAngle = Math.PI * 0.48;
+  controls.addEventListener('start', clearScheduledFits);
   applySafeInitialView();
 
   scene.add(new THREE.HemisphereLight(0xfff4dc, 0x617d73, 1.35));
@@ -374,6 +375,8 @@ function clampEstateFloors(value){
 function update(m,p){
   if(!estateGroup) return;
   p = Object.assign({}, p, { floors:clampEstateFloors(p.floors) });
+  const preservedView = defaultView ? currentCameraState() : null;
+  clearScheduledFits();
   currentModel = {m,p};
   clearGroup(estateGroup);
   dimensionLayer = new THREE.Group();
@@ -405,8 +408,13 @@ function update(m,p){
   cameraFitBounds = computeBounds(obj=>obj.userData.fitRole === 'mainHouse' || obj.userData.fitRole === 'elderHouse') || mainHouseBounds;
   fullSceneBounds = computeBounds(obj=>obj.isMesh || obj.isSprite || obj.isLine);
   resize(false, 'update');
-  fitDefaultView('update');
-  scheduleSettleFits('update');
+  if(preservedView){
+    const view = computeDefaultView('update');
+    restoreCameraState(preservedView, view);
+  }else{
+    fitDefaultView('update');
+    scheduleSettleFits('update');
+  }
 }
 function buildEstateScene(root, m, p){
   const siteW = m.siteWidthM;
@@ -886,6 +894,57 @@ function sameCameraState(a,b){
     a.target.distanceTo(b.target) < 0.001 &&
     Math.abs(a.distance - b.distance) < 0.001;
 }
+function applyViewLimits(view, preservedDistance=null){
+  if(!view || !camera || !controls) return;
+  let minDistance = view.minDistance;
+  let maxDistance = view.maxDistance;
+  if(Number.isFinite(preservedDistance) && preservedDistance > 0){
+    minDistance = Math.min(minDistance, preservedDistance * 0.95);
+    maxDistance = Math.max(maxDistance, preservedDistance * 1.05);
+  }
+  controls.minDistance = Math.max(0.1, minDistance);
+  controls.maxDistance = Math.max(controls.minDistance + 1, maxDistance);
+  camera.near = 0.1;
+  camera.far = Math.max(180, view.far, (preservedDistance || 0) * 3);
+  camera.updateProjectionMatrix();
+}
+function restoreCameraState(state, view=null){
+  if(!state || !camera || !controls) return;
+  applyViewLimits(view || defaultView, state.distance);
+  camera.position.copy(state.camera);
+  controls.target.copy(state.target);
+  camera.updateProjectionMatrix();
+  controls.update();
+}
+function elderHouseSiteDiagnostics(){
+  if(!currentElderLayout || !siteDimensions) return null;
+  const halfW = siteDimensions.widthM / 2;
+  const halfD = siteDimensions.depthM / 2;
+  const roofPadX = 0.36;
+  const rearPadZ = 0.36;
+  const frontPadZ = 0.52;
+  const left = currentElderLayout.x - currentElderLayout.w / 2 - roofPadX;
+  const right = currentElderLayout.x + currentElderLayout.w / 2 + roofPadX;
+  const front = currentElderLayout.z - currentElderLayout.d / 2 - frontPadZ;
+  const back = currentElderLayout.z + currentElderLayout.d / 2 + rearPadZ;
+  const siteLeft = -halfW;
+  const siteRight = halfW;
+  const siteFront = -halfD;
+  const siteBack = halfD;
+  const minClearanceM = Math.min(left - siteLeft, siteRight - right, front - siteFront, siteBack - back);
+  return {
+    left,
+    right,
+    front,
+    back,
+    siteLeft,
+    siteRight,
+    siteFront,
+    siteBack,
+    minClearanceM,
+    withinSite:minClearanceM >= -0.001
+  };
+}
 function setDimensionsVisible(visible){
   const before = currentCameraState();
   dimensionsVisible = Boolean(visible);
@@ -950,9 +1009,9 @@ function fitDistanceForBounds(bounds, target, direction, verticalFov, horizontal
   });
   return distance;
 }
-function fitDefaultView(reason='fit'){
+function computeDefaultView(reason='fit'){
   const sourceBounds = cameraFitBounds || mainHouseBounds;
-  if(!camera || !controls || !sourceBounds) return;
+  if(!camera || !controls || !sourceBounds) return null;
   const bounds = sourceBounds.clone();
   bounds.expandByVector(new THREE.Vector3(0.65, 0.45, 0.65));
   const size = new THREE.Vector3();
@@ -969,16 +1028,23 @@ function fitDefaultView(reason='fit'){
   const fitDistance = fitDistanceForBounds(bounds, target, direction, verticalFov, horizontalFov, fill);
   const distance = Math.max(8.5, Math.min(70, fitDistance));
   const position = target.clone().add(direction.multiplyScalar(distance));
-  defaultView = { position, target };
+  defaultView = {
+    position,
+    target,
+    minDistance:Math.max(4.5, distance * 0.32),
+    maxDistance:Math.max(32, distance * 1.9, maxDim * 2.4),
+    far:Math.max(180, distance + maxDim * 5)
+  };
   fitCount += 1;
   lastFitReason = reason;
-  camera.position.copy(position);
-  controls.target.copy(target);
-  controls.minDistance = Math.max(4.5, distance * 0.32);
-  controls.maxDistance = Math.max(32, distance * 1.9, maxDim * 2.4);
-  camera.near = 0.1;
-  camera.far = Math.max(180, distance + maxDim * 5);
-  camera.updateProjectionMatrix();
+  return defaultView;
+}
+function fitDefaultView(reason='fit'){
+  const view = computeDefaultView(reason);
+  if(!view) return;
+  camera.position.copy(view.position);
+  controls.target.copy(view.target);
+  applyViewLimits(view);
   controls.update();
 }
 function projectedBox(bounds){
@@ -1023,6 +1089,7 @@ function getViewState(){
     treeCollisionCount,
     minTreeClearanceM,
     siteDimensions,
+    elderHouseSiteDiagnostics:elderHouseSiteDiagnostics(),
     mainHouseBoundsSize: mainHouseBounds ? mainHouseBounds.getSize(new THREE.Vector3()) : null,
     buildingFootprintM2:model?.buildingFootprintM2 || 0,
     mainFootprintM2:model?.mainFootprintM2 || 0,
