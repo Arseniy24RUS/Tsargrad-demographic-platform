@@ -49,15 +49,6 @@
   line-height:1.45;
   margin-bottom:10px;
 }
-.settlement-disabled-slider input[type="range"],
-.settlement-disabled-slider .range-ruler{
-  opacity:.35;
-  pointer-events:none;
-}
-.settlement-disabled-slider .text-note{
-  color:#145B61;
-  font-weight:700;
-}
 .settlement-article-error{
   padding:12px 14px;
   border-radius:14px;

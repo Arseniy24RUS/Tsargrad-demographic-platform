@@ -236,7 +236,7 @@ test.describe('самодостаточный релиз', () => {
     await expectCleanRuntime(runtime);
   });
 
-  test('Расселение: сценарии, территория и локальный прогноз численности работают', async ({ page }) => {
+  test('Расселение: управляемая модель, территория и локальный прогноз численности работают', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/settlement.html', { waitUntil: 'networkidle' });
     await expect(page.locator('#settlementTfrChart .main-svg').first()).toBeVisible();
@@ -246,34 +246,38 @@ test.describe('самодостаточный релиз', () => {
     await page.waitForFunction(() => {
       const chart = document.getElementById('populationTraceChart');
       const names = (chart?.data || []).map(trace => trace.name);
-      return names.includes('Урбанизационный сценарий')
-        && names.includes('Фиксация')
-        && names.includes('ИЖС-сценарий');
+      return names.includes('Фактическая численность')
+        && names.includes('Урбанизационная траектория')
+        && names.some(name => String(name).includes('Выбранный сценарий') && String(name).includes('ИЖС-сценарий'));
     });
     const articlePopulation = await page.evaluate(() => {
       const chart = document.getElementById('populationTraceChart');
-      const scenarioNames = ['Урбанизационный сценарий', 'Фиксация', 'ИЖС-сценарий'];
-      const result = {};
-      for (const name of scenarioNames) {
-        const trace = chart.data.find(item => item.name === name);
-        const lastIndex = trace.x.findIndex(year => Number(year) === 2050);
-        result[name] = {
-          first: Number(trace.y[0]),
-          last: Number(trace.y[lastIndex])
-        };
-      }
-      return result;
+      const names = (chart?.data || []).map(trace => trace.name);
+      const urban = chart.data.find(item => item.name === 'Урбанизационная траектория');
+      const selected = chart.data.find(item => String(item.name).includes('Выбранный сценарий'));
+      const selectedLastIndex = selected.x.findIndex(year => Number(year) === 2050);
+      const urbanLastIndex = urban.x.findIndex(year => Number(year) === 2050);
+      return {
+        names,
+        selectedFirst: Number(selected.y[0]),
+        selectedLast: Number(selected.y[selectedLastIndex]),
+        urbanLast: Number(urban.y[urbanLastIndex])
+      };
     });
-    for (const values of Object.values(articlePopulation)) {
-      expect(values.last).toBeLessThan(values.first);
-    }
-    expect(articlePopulation['ИЖС-сценарий'].last).toBeGreaterThan(articlePopulation['Урбанизационный сценарий'].last);
+    expect(articlePopulation.names).not.toContain('Фиксация');
+    expect(articlePopulation.names).not.toContain('ИЖС-сценарий');
+    expect(articlePopulation.selectedLast).toBeLessThan(articlePopulation.selectedFirst);
+    expect(articlePopulation.selectedLast).toBeGreaterThan(articlePopulation.urbanLast);
     await expect(page.locator('#settlementTable')).toContainText('2050');
     await expect(page.locator('#settlementTable')).not.toContainText('2100');
-    await expect(page.locator('.range-ruler')).toContainText('−15 п.п.');
     await expect(page.locator('.range-ruler')).toContainText('0');
-    await expect(page.locator('.range-ruler')).toContainText('+30 п.п.');
+    const sliderRange = await page.locator('#delta2050').evaluate(el => ({ min: Number(el.min), max: Number(el.max), value: Number(el.value), disabled: el.disabled }));
+    expect(sliderRange.disabled).toBe(false);
+    expect(sliderRange.min).toBeLessThan(-2);
+    expect(sliderRange.max).toBeGreaterThan(1.7);
+    expect(sliderRange.value).toBeGreaterThan(1.7);
     await page.waitForFunction(() => window.SettlementModule?.getState?.().tfrForecastLoaded);
+    await page.waitForFunction(() => window.SettlementModule?.getState?.().rows?.some(row => row.articleScenarioKey === 'deurbanization'));
     const initial = await page.evaluate(() => window.SettlementModule.getState());
     expect(initial.forecastMethod).toBe('local_gp_ucm_ensemble');
     expect(initial.populationScenario).toBe('noMIG');
@@ -282,22 +286,29 @@ test.describe('самодостаточный релиз', () => {
     expect(initial.positiveShareShiftNonNegative).toBe(true);
     expect(initial.chartTraceCount).toBeGreaterThanOrEqual(7);
     expect(initial.rows).toHaveLength(25);
-    expect(initial.rows.at(-1).baselinePopulation - initial.rows[0].baselinePopulation).toBeLessThan(0);
+    expect(initial.rows.at(-1).articleScenarioKey).toBe('deurbanization');
+    expect(initial.rows.at(-1).scenarioPopulation).toBeGreaterThan(initial.rows.at(-1).baselinePopulation);
+    expect(initial.rows.at(-1).scenarioPopulation - initial.rows[0].scenarioPopulation).toBeLessThan(0);
     await page.locator('[data-preset="fix"]').click();
     await expect(page.locator('[data-preset="fix"]')).toHaveClass(/active/);
     await expect.poll(() => page.evaluate(() => {
       const rows = window.SettlementModule.getState().rows;
       return Math.max(...rows.map(r => Math.abs((r.scenarioTfr ?? 0) - (r.baselineTfr ?? 0))));
     })).toBeLessThan(0.001);
+    await expect.poll(() => page.evaluate(() => window.SettlementModule.getState().rows.at(-1).articleScenarioKey)).toBe('fixation');
     const fixed = await page.evaluate(() => window.SettlementModule.getState());
     const maxFixedDelta = Math.max(...fixed.rows.map(r => Math.abs((r.scenarioTfr ?? 0) - (r.baselineTfr ?? 0))));
     expect(maxFixedDelta).toBeLessThan(0.001);
-    const fixedPopulation2050 = await page.locator('#settlementKpiPop2050').innerText();
+    expect(fixed.rows.at(-1).articleScenarioKey).toBe('fixation');
+    const fixedPopulation2050 = fixed.rows.at(-1).scenarioPopulation;
     await page.locator('[data-preset="deurban"]').click();
     await expect(page.locator('[data-preset="deurban"]')).toHaveClass(/active/);
-    const izhPopulation2050 = await page.locator('#settlementKpiPop2050').innerText();
-    expect(izhPopulation2050).not.toBe(fixedPopulation2050);
-    await setRange(page, '#delta2050', 12);
+    await expect.poll(() => page.evaluate(() => window.SettlementModule.getState().rows.at(-1).articleScenarioKey)).toBe('deurbanization');
+    const izh = await page.evaluate(() => window.SettlementModule.getState());
+    const izhPopulation2050 = izh.rows.at(-1).scenarioPopulation;
+    expect(izhPopulation2050).toBeGreaterThan(fixedPopulation2050);
+    await setRange(page, '#delta2050', 1);
+    await expect.poll(() => page.evaluate(() => window.SettlementModule.getState().rows.at(-1).articleScenarioKey)).toBe('custom');
     const shifted = await page.evaluate(() => window.SettlementModule.getState());
     expect(shifted.forecastMethod).toBe('local_gp_ucm_ensemble');
     expect(shifted.kpis.baselineTfr2050).toBeCloseTo(fixed.kpis.baselineTfr2050, 5);
@@ -305,11 +316,14 @@ test.describe('самодостаточный релиз', () => {
     expect(shifted.minForecastGap).toBeGreaterThan(0);
     expect(shifted.positiveShareShiftNonNegative).toBe(true);
     expect(shifted.kpis.scenarioTfr2050).toBeGreaterThan(shifted.kpis.baselineTfr2050);
+    expect(shifted.rows.at(-1).articleScenarioKey).toBe('custom');
+    expect(shifted.rows.at(-1).scenarioPopulation).toBeGreaterThan(fixedPopulation2050);
+    expect(shifted.rows.at(-1).scenarioPopulation).toBeLessThan(izhPopulation2050);
     expect(Math.min(...shifted.rows.flatMap(r => [r.baselineTfr, r.urbanTfr, r.ruralTfr, r.scenarioTfr]))).toBeGreaterThan(0.3);
     expect(Math.max(...shifted.rows.flatMap(r => [r.baselineTfr, r.urbanTfr, r.ruralTfr, r.scenarioTfr]))).toBeLessThan(4.8);
     for (const territoryId of ['terr_rf_bez_novyh_subektov', 'terr_moskovskaya_oblast', 'terr_sibirskiy_federalnyy_okrug']) {
       await page.locator('#settlementTerritorySelect').selectOption(territoryId);
-      await setRange(page, '#delta2050', 12);
+      await setRange(page, '#delta2050', 1);
       const territoryState = await page.evaluate(() => window.SettlementModule.getState());
       expect(territoryState.negativeForecastGapCount, territoryId).toBe(0);
       expect(territoryState.minForecastGap, territoryId).toBeGreaterThan(0);

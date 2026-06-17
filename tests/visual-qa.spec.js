@@ -950,6 +950,8 @@ test.describe('Playwright visual QA', () => {
     expect(initial.positiveShareShiftNonNegative).toBe(true);
     expect(initial.chartTraceCount).toBeGreaterThanOrEqual(7);
     expect(initial.rows).toHaveLength(25);
+    expect(initial.rows.at(-1).articleScenarioKey).toBe('deurbanization');
+    expect(initial.rows.at(-1).scenarioPopulation).toBeGreaterThan(initial.rows.at(-1).baselinePopulation);
     expect(Math.min(...initial.rows.flatMap(r => [r.baselineTfr, r.urbanTfr, r.ruralTfr, r.scenarioTfr]))).toBeGreaterThan(0.3);
     expect(Math.max(...initial.rows.flatMap(r => [r.baselineTfr, r.urbanTfr, r.ruralTfr, r.scenarioTfr]))).toBeLessThan(4.8);
 
@@ -958,24 +960,29 @@ test.describe('Playwright visual QA', () => {
       const rows = window.SettlementModule.getState().rows;
       return Math.max(...rows.map(r => Math.abs(r.scenarioTfr - r.baselineTfr)));
     })).toBeLessThan(0.001);
+    await expect.poll(() => page.evaluate(() => window.SettlementModule.getState().rows.at(-1).articleScenarioKey)).toBe('fixation');
     const fixed = await page.evaluate(() => window.SettlementModule.getState());
     const maxFixedDelta = Math.max(...fixed.rows.map(r => Math.abs(r.scenarioTfr - r.baselineTfr)));
     expect(maxFixedDelta).toBeLessThan(0.001);
 
     await page.locator('#delta2050').evaluate(el => {
-      el.value = '15';
+      el.value = '1';
       el.dispatchEvent(new Event('input', { bubbles: true }));
     });
+    await expect.poll(() => page.evaluate(() => window.SettlementModule.getState().rows.at(-1).articleScenarioKey)).toBe('custom');
     const shifted = await page.evaluate(() => window.SettlementModule.getState());
     expect(shifted.kpis.baselineTfr2050).toBeCloseTo(fixed.kpis.baselineTfr2050, 5);
     expect(shifted.negativeForecastGapCount).toBe(0);
     expect(shifted.minForecastGap).toBeGreaterThan(0);
     expect(shifted.positiveShareShiftNonNegative).toBe(true);
     expect(shifted.kpis.scenarioTfr2050).toBeGreaterThan(shifted.kpis.baselineTfr2050);
+    expect(shifted.rows.at(-1).articleScenarioKey).toBe('custom');
+    expect(shifted.rows.at(-1).scenarioPopulation).toBeGreaterThan(fixed.rows.at(-1).scenarioPopulation);
+    expect(shifted.rows.at(-1).scenarioPopulation).toBeLessThan(initial.rows.at(-1).scenarioPopulation);
     for (const territoryId of ['terr_rf_bez_novyh_subektov', 'terr_moskovskaya_oblast', 'terr_sibirskiy_federalnyy_okrug']) {
       await page.locator('#settlementTerritorySelect').selectOption(territoryId);
       await page.locator('#delta2050').evaluate(el => {
-        el.value = '15';
+        el.value = '1';
         el.dispatchEvent(new Event('input', { bubbles: true }));
       });
       const territoryState = await page.evaluate(() => window.SettlementModule.getState());
