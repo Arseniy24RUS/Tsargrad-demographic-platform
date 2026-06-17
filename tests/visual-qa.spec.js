@@ -723,6 +723,74 @@ test.describe('Playwright visual QA', () => {
     expect(runtime.consoleErrors, 'console errors').toEqual([]);
   });
 
+  test('Выплаты: подписи графика пула матерей по детности не наслаиваются', async ({ page }) => {
+    const expectedAxisLabels = ['0', '1', '2', '3', '4', '5', '6', '7+'];
+    const expectedFullLabels = ['0 детей', '1 ребёнок', '2 ребёнка', '3 ребёнка', '4 ребёнка', '5 детей', '6 детей', '7 и более'];
+    for (const viewport of [
+      { name: 'desktop', width: 1440, height: 1000 },
+      { name: 'mobile', width: 390, height: 844 }
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      const runtime = await guardRuntime(page);
+      await page.goto(`/payments.html?qa=mothers-axis-${viewport.name}`, { waitUntil: 'networkidle' });
+      await page.waitForFunction(() => window.PaymentsModule?.getState?.().loaded);
+      const state = await page.evaluate(() => window.PaymentsModule.getState());
+      expect(state.mothersAxisLabels, `payments mothers axis labels ${viewport.name}`).toEqual(expectedAxisLabels);
+      expect(state.mothersFullLabels, `payments mothers full labels ${viewport.name}`).toEqual(expectedFullLabels);
+      expect(state.mothersTraceNames, `payments mothers trace names ${viewport.name}`).toEqual(expect.arrayContaining([
+        'Фактическое число матерей',
+        'Штриховка — гипотетический максимум'
+      ]));
+      const axisReport = await page.evaluate(() => {
+        const chart = document.getElementById('paymentsMothersChart');
+        const visible = (el) => {
+          const style = getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          return rect.width > 1 && rect.height > 1 && style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) !== 0;
+        };
+        const ticks = [...chart.querySelectorAll('.xtick text')]
+          .filter(visible)
+          .map((el) => {
+            const rect = el.getBoundingClientRect();
+            return {
+              text: (el.textContent || '').trim(),
+              left: rect.left,
+              right: rect.right,
+              top: rect.top,
+              bottom: rect.bottom
+            };
+          })
+          .filter((item) => item.text);
+        const overlaps = [];
+        for (let i = 0; i < ticks.length; i += 1) {
+          for (let j = i + 1; j < ticks.length; j += 1) {
+            const a = ticks[i];
+            const b = ticks[j];
+            const dx = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+            const dy = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+            if (dx * dy > 1) overlaps.push({ a: a.text, b: b.text, area: Math.round(dx * dy) });
+          }
+        }
+        const legendTexts = [...chart.querySelectorAll('.legendtext')]
+          .filter(visible)
+          .map((el) => (el.textContent || '').trim());
+        const axisTitles = [...chart.querySelectorAll('text')]
+          .map((el) => (el.textContent || '').trim())
+          .filter((text) => text === 'детей у матери');
+        return { ticks: ticks.map((tick) => tick.text), overlaps, legendTexts, axisTitles };
+      });
+      expect(axisReport.ticks, `payments mothers rendered ticks ${viewport.name}`).toEqual(expectedAxisLabels);
+      expect(axisReport.overlaps, `payments mothers tick overlaps ${viewport.name}`).toEqual([]);
+      expect(axisReport.axisTitles, `payments mothers axis title ${viewport.name}`).toContain('детей у матери');
+      expect(axisReport.legendTexts, `payments mothers legend ${viewport.name}`).toEqual(expect.arrayContaining([
+        'Фактическое число матерей',
+        'Штриховка — гипотетический максимум'
+      ]));
+      expect(runtime.external, 'external runtime requests').toEqual([]);
+      expect(runtime.consoleErrors, 'console errors').toEqual([]);
+    }
+  });
+
   test('Браки: интерактивность обновляет KPI, SVG-карту, графики и таблицы', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/family.html', { waitUntil: 'networkidle' });

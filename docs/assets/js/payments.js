@@ -112,15 +112,21 @@ function updateThresholdChart(baseParams){
 }
 function updatePaymentsMothersChart(){
   const mothers=mothersByChildren();
-  const labels=TG.isNarrow()?mothers.map(d=>String(d.children >= 7 ? '7+' : d.children)):mothers.map(d=>d.label);
+  const axisLabels=mothers.map(d=>String(d.children >= 7 ? '7+' : d.children));
+  const axisValues=mothers.map((_,i)=>i);
+  const fullLabels=mothers.map(d=>d.label);
   const counts=mothers.map(d=>d.mothers);
   const potential=counts.map((_,i)=> i===0 ? 0 : counts.slice(0,i).reduce((a,b)=>a+b,0));
   const startOrder=getPaymentsParams().startOrder;
-  const highlight=labels.map((_,i)=> i>=startOrder-1 ? TG.colors.gold : TG.colors.teal);
+  const highlight=axisLabels.map((_,i)=> i>=startOrder-1 ? TG.colors.gold : TG.colors.teal);
+  const traceNames=['Фактическое число матерей','Штриховка — гипотетический максимум'];
   Plotly.react('paymentsMothersChart', [
-    {type:'bar', x:labels, y:counts.map(v=>v/1e6), name:'Фактическое число матерей', marker:{color:highlight}},
-    {type:'bar', x:labels, y:potential.map(v=>v/1e6), name:'Штриховка — гипотетический максимум', marker:{color:'rgba(212,165,55,.35)',line:{color:TG.colors.gold,width:1.2},pattern:{shape:'/',fgcolor:TG.colors.gold,bgcolor:'rgba(212,165,55,.12)',size:8,solidity:.35}}}
-  ], TG.plotLayout({height:490,barmode:'stack',yaxis:{title:'млн женщин',gridcolor:'#efe5d4'},xaxis:TG.categoryAxis({title:TG.isNarrow()?'детей у матери':'',tickangle:0}),margin:TG.isNarrow()?{l:50,r:24,t:28,b:112}:{l:70,r:25,t:40,b:90},legend:TG.isNarrow()?{orientation:'h',x:0,y:-0.28,xanchor:'left',yanchor:'top',bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:10}}:{orientation:'h',x:0,y:1.12,bgcolor:'rgba(255,255,255,.86)',bordercolor:'#eadbbf',borderwidth:1}}), TG.plotConfig);
+    {type:'bar', x:axisValues, y:counts.map(v=>v/1e6), name:traceNames[0], customdata:fullLabels, marker:{color:highlight}, hovertemplate:'%{customdata}<br>фактическое число матерей: %{y:.2f} млн<extra></extra>'},
+    {type:'bar', x:axisValues, y:potential.map(v=>v/1e6), name:traceNames[1], customdata:fullLabels, marker:{color:'rgba(212,165,55,.35)',line:{color:TG.colors.gold,width:1.2},pattern:{shape:'/',fgcolor:TG.colors.gold,bgcolor:'rgba(212,165,55,.12)',size:8,solidity:.35}}, hovertemplate:'%{customdata}<br>гипотетический максимум: %{y:.2f} млн<extra></extra>'}
+  ], TG.plotLayout({height:490,barmode:'stack',yaxis:{title:'млн женщин',gridcolor:'#efe5d4'},xaxis:TG.categoryAxis({title:{text:'детей у матери'},type:'linear',range:[-0.5,axisValues.length-0.5],tickangle:0,tickfont:{size:TG.isNarrow()?11:12},tickmode:'array',tickvals:axisValues,ticktext:axisLabels}),margin:TG.isNarrow()?{l:50,r:24,t:28,b:112}:{l:70,r:25,t:40,b:86},legend:TG.isNarrow()?{orientation:'h',x:0,y:-0.28,xanchor:'left',yanchor:'top',bgcolor:'rgba(255,255,255,.90)',bordercolor:'#eadbbf',borderwidth:1,font:{size:10}}:{orientation:'h',x:0,y:1.12,bgcolor:'rgba(255,255,255,.86)',bordercolor:'#eadbbf',borderwidth:1}}), TG.plotConfig);
+  paymentsState.mothersAxisLabels = axisLabels;
+  paymentsState.mothersFullLabels = fullLabels;
+  paymentsState.mothersTraceNames = traceNames;
 }
 function updatePaymentsTable(rows){
   const tableRows=rows.map(r=>({
@@ -178,7 +184,10 @@ function getPaymentsState(){
     marginalCost:summary?.marginalCost ?? null,
     totalAdditionalBirths:summary?.totalAdditionalBirths ?? null,
     thresholdRows,
-    thresholdTraceNames:paymentsState.thresholdTraceNames || []
+    thresholdTraceNames:paymentsState.thresholdTraceNames || [],
+    mothersAxisLabels:paymentsState.mothersAxisLabels || [],
+    mothersFullLabels:paymentsState.mothersFullLabels || [],
+    mothersTraceNames:paymentsState.mothersTraceNames || []
   };
 }
 async function initPayments(){
