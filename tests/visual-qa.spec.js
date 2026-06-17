@@ -704,6 +704,25 @@ test.describe('Playwright visual QA', () => {
     ]);
   });
 
+  test('Выплаты: сравнение порогов использует полную цену программы', async ({ page }) => {
+    const runtime = await guardRuntime(page);
+    await page.goto('/payments.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.PaymentsModule?.getState?.().loaded);
+    const state = await page.evaluate(() => window.PaymentsModule.getState());
+    expect(state.summaryLine).toContain('Цена одного потенциального рождения');
+    expect(state.kpiCostText).not.toContain('3,97');
+    expect(state.totalCost, 'payments full program cost').toBeGreaterThan(state.marginalCost * 10);
+    expect(state.thresholdTraceNames).toContain('Цена программы на рождение, млн ₽');
+    expect(state.thresholdTraceNames.join(' ')).not.toContain('Маржинальная');
+    const thresholdCosts = state.thresholdRows.map(row => Number((row.totalCost / 1e6).toFixed(2)));
+    const marginalCosts = state.thresholdRows.map(row => Number((row.marginalCost / 1e6).toFixed(2)));
+    expect(new Set(thresholdCosts).size, 'threshold program costs differ').toBeGreaterThan(1);
+    expect(new Set(marginalCosts).size, 'threshold marginal costs remain diagnostic').toBe(1);
+    await expectNoHorizontalOverflow(page, 'payments threshold cost');
+    expect(runtime.external, 'external runtime requests').toEqual([]);
+    expect(runtime.consoleErrors, 'console errors').toEqual([]);
+  });
+
   test('Браки: интерактивность обновляет KPI, SVG-карту, графики и таблицы', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/family.html', { waitUntil: 'networkidle' });

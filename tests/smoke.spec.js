@@ -561,8 +561,17 @@ test.describe('самодостаточный релиз', () => {
   test('Выплаты: итоговая формула, дополнительные настройки и выгрузка работают', async ({ page }) => {
     const runtime = await guardRuntime(page);
     await page.goto('/payments.html', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.PaymentsModule?.getState?.().loaded);
     await expect(page.locator('#paymentsSummaryLine')).toContainText('При текущих настройках мера охватывает');
     await expect(page.locator('#paymentsSummaryLine')).toContainText('Цена одного потенциального рождения');
+    const initial = await page.evaluate(() => window.PaymentsModule.getState());
+    expect(initial.totalCost / 1e6).toBeCloseTo(66.16, 1);
+    expect(initial.marginalCost / 1e6).toBeCloseTo(3.97, 1);
+    expect(initial.kpiCostText).not.toContain('3,97');
+    expect(initial.thresholdTraceNames).toContain('Цена программы на рождение, млн ₽');
+    expect(initial.thresholdTraceNames.join(' ')).not.toContain('Маржинальная');
+    const thresholdCosts = initial.thresholdRows.map(row => Number((row.totalCost / 1e6).toFixed(2)));
+    expect(new Set(thresholdCosts).size).toBeGreaterThan(1);
     await page.locator('summary').click();
     await page.locator('#paymentTakeup').fill('7');
     await page.locator('#paymentTakeup').dispatchEvent('input');

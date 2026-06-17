@@ -66,11 +66,11 @@ function updatePaymentsKpis(s){
   document.getElementById('paymentsKpiPool').textContent=fmtNum(s.pool,0);
   document.getElementById('paymentsKpiParticipants').textContent=fmtNum(s.participants,0);
   document.getElementById('paymentsKpiBirths').textContent=fmtNum(s.totalAdditionalBirths,0);
-  document.getElementById('paymentsKpiCost').textContent=fmtRub(s.marginalCost);
+  document.getElementById('paymentsKpiCost').textContent=fmtRub(s.totalCost);
   const line=document.getElementById('paymentsSummaryLine');
   if(line){
     const totalBudget=s.rows.length?s.rows[s.rows.length-1].cumBudget:0;
-    line.textContent=`При текущих настройках мера охватывает ${fmtNum(s.participants,0)} матерей, даёт ${fmtNum(s.totalAdditionalBirths,0)} потенциальных дополнительных рождений и требует ${fmtNum(totalBudget/1e9,2)} млрд ₽ до 2050 года. Цена одного потенциального рождения — ${fmtNum(s.marginalCost/1e6,2)} млн ₽.`;
+    line.textContent=`При текущих настройках мера охватывает ${fmtNum(s.participants,0)} матерей, даёт ${fmtNum(s.totalAdditionalBirths,0)} потенциальных дополнительных рождений и требует ${fmtNum(totalBudget/1e9,2)} млрд ₽ до 2050 года. Цена одного потенциального рождения — ${fmtNum(s.totalCost/1e6,2)} млн ₽.`;
   }
 }
 function updatePaymentsCharts(){
@@ -95,10 +95,20 @@ function updatePaymentsCharts(){
 function updateThresholdChart(baseParams){
   const thresholds=[2,3,4,5,6,7];
   const rows=thresholds.map(o=>simulatePayments(Object.assign({},baseParams,{startOrder:o})));
+  const labels=thresholds.map(o=>`с ${o}-го`);
+  const thresholdTraceNames=['Дополнительные рождения, тыс.','Цена программы на рождение, млн ₽'];
   Plotly.react('paymentsThresholdChart', [
-    {type:'bar',x:thresholds.map(o=>`с ${o}-го`),y:rows.map(r=>r.totalAdditionalBirths/1000),name:'Дополнительные рождения, тыс.',marker:{color:TG.colors.teal}},
-    {type:'scatter',x:thresholds.map(o=>`с ${o}-го`),y:rows.map(r=>r.marginalCost/1e6),name:'Маржинальная цена рождения, млн ₽',mode:'lines+markers',line:{color:TG.colors.gold,width:3},marker:{size:8},yaxis:'y2'}
+    {type:'bar',x:labels,y:rows.map(r=>r.totalAdditionalBirths/1000),name:thresholdTraceNames[0],marker:{color:TG.colors.teal},hovertemplate:'%{x}<br>дополнительные рождения: %{y:.1f} тыс.<extra></extra>'},
+    {type:'scatter',x:labels,y:rows.map(r=>r.totalCost/1e6),name:thresholdTraceNames[1],mode:'lines+markers',line:{color:TG.colors.gold,width:3},marker:{size:8},yaxis:'y2',hovertemplate:'%{x}<br>цена программы: %{y:.2f} млн ₽<extra></extra>'}
   ], TG.plotLayout({height:490,yaxis:{title:'тыс. рождений',gridcolor:'#efe5d4'},yaxis2:{title:'млн ₽',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)'},xaxis:{gridcolor:'#efe5d4'},margin:{l:70,r:82,t:40,b:70}}), TG.plotConfig);
+  paymentsState.thresholdTraceNames = thresholdTraceNames;
+  paymentsState.thresholdRows = rows.map((r,i)=>({
+    startOrder:thresholds[i],
+    label:labels[i],
+    totalAdditionalBirths:r.totalAdditionalBirths,
+    marginalCost:r.marginalCost,
+    totalCost:r.totalCost
+  }));
 }
 function updatePaymentsMothersChart(){
   const mothers=mothersByChildren();
@@ -155,10 +165,27 @@ function setupPaymentsControls(){
     downloadCsv('ежемесячные_выплаты_сценарий.csv', paymentsState.rows.map(r=>({год:r.year,дети_выбранной_очередности:Math.round(r.activeBaselineCohorts),дополнительные_рождения:Math.round(r.activeAddedCohorts),бюджет_основной_рублей:Math.round(r.budgetBaseline),бюджет_дополнительный_рублей:Math.round(r.budgetAdded),бюджет_всего_рублей:Math.round(r.budgetTotal)})));
   });
 }
+function getPaymentsState(){
+  const params = getPaymentsParams();
+  const summary = paymentsState.summary;
+  const thresholdRows = paymentsState.thresholdRows || [];
+  return {
+    loaded:Boolean(paymentsState.data),
+    params,
+    summaryLine:document.getElementById('paymentsSummaryLine')?.textContent || '',
+    kpiCostText:document.getElementById('paymentsKpiCost')?.textContent || '',
+    totalCost:summary?.totalCost ?? null,
+    marginalCost:summary?.marginalCost ?? null,
+    totalAdditionalBirths:summary?.totalAdditionalBirths ?? null,
+    thresholdRows,
+    thresholdTraceNames:paymentsState.thresholdTraceNames || []
+  };
+}
 async function initPayments(){
   try{
     paymentsState.data=await loadJSON('data/payments_inputs.json');
     setupPaymentsControls(); updatePaymentsCharts();
   }catch(err){ showDataUnavailable('paymentsTable'); }
 }
+window.PaymentsModule = { getState:getPaymentsState };
 if(document.body.dataset.page==='payments') initPayments();
