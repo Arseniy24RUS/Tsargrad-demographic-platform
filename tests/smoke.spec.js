@@ -273,8 +273,8 @@ test.describe('самодостаточный релиз', () => {
     await expect(page.locator('.range-ruler')).toContainText('0');
     const sliderRange = await page.locator('#delta2050').evaluate(el => ({ min: Number(el.min), max: Number(el.max), value: Number(el.value), disabled: el.disabled }));
     expect(sliderRange.disabled).toBe(false);
-    expect(sliderRange.min).toBeLessThan(-2);
-    expect(sliderRange.max).toBeGreaterThan(1.7);
+    expect(sliderRange.min).toBe(-10);
+    expect(sliderRange.max).toBe(10);
     expect(sliderRange.value).toBeGreaterThan(1.7);
     await page.waitForFunction(() => window.SettlementModule?.getState?.().tfrForecastLoaded);
     await page.waitForFunction(() => window.SettlementModule?.getState?.().rows?.some(row => row.articleScenarioKey === 'deurbanization'));

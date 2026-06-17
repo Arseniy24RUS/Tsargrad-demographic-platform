@@ -89,6 +89,9 @@ def main() -> None:
     for token in ["modelArticleRow", "setCalibratedPreset", "syncArticleStateRows"]:
         if token not in js:
             fail(f"interactive article model is missing {token}")
+    for token in ["USER_SLIDER_MIN = -10", "USER_SLIDER_MAX = 10", 'min="-10"', 'max="10"']:
+        if token not in js and token not in html:
+            fail(f"slider range token is missing: {token}")
     for token in ["disabled = true", "Ползунок отключён", "Жёсткие сценарии доли сельского населения"]:
         if token in js or token in html:
             fail(f"old fixed-scenario UI token remains: {token}")

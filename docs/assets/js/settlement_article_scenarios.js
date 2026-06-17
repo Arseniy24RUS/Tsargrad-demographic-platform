@@ -4,6 +4,8 @@
   const DATA_URL = 'data/settlement_article_scenarios_russia.json';
   const RUSSIA_ID = 'terr_rf_bez_novyh_subektov';
   const DASHBOARD_END = 2050;
+  const USER_SLIDER_MIN = -10;
+  const USER_SLIDER_MAX = 10;
   const SCENARIO_KEYS = ['urbanization', 'fixation', 'deurbanization'];
   const PRESET_TO_KEY = {
     urban: 'urbanization',
@@ -121,13 +123,11 @@
       const row = rowFor(key, DASHBOARD_END);
       presetDeltas[key] = row ? (Number(row.rural_share) - fixationShare) * 100 : 0;
     });
-    const lowPad = Math.max(1.5, Math.abs(presetDeltas.urbanization) * 0.65);
-    const highPad = Math.max(1.5, Math.abs(presetDeltas.deurbanization) * 0.85);
     return {
       fixationShare,
       presetDeltas,
-      sliderMin: Math.floor((presetDeltas.urbanization - lowPad) * 10) / 10,
-      sliderMax: Math.ceil((presetDeltas.deurbanization + highPad) * 10) / 10
+      sliderMin: USER_SLIDER_MIN,
+      sliderMax: USER_SLIDER_MAX
     };
   }
 
