@@ -10,7 +10,7 @@
     coveragePct: 60,
     conversionPct: 35,
     implementationYears: 6,
-    showThreeYearCheck: true
+    showThreeYearCheck: false
   };
 
   const fmt0 = new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0});
@@ -41,12 +41,12 @@
   function normalizeDefaults(defaults){
     return {
       housingBarrier: boolDefault(defaults.housing_barrier, state.housingBarrier),
-      housingNeed: boolDefault(defaults.housing_need, state.housingNeed),
-      highHousingMeasures: boolDefault(defaults.high_housing_measures, state.highHousingMeasures),
+      housingNeed: false,
+      highHousingMeasures: false,
       coveragePct: numberDefault(defaults.coverage_pct, state.coveragePct),
       conversionPct: numberDefault(defaults.conversion_pct, state.conversionPct),
       implementationYears: numberDefault(defaults.implementation_years, state.implementationYears),
-      showThreeYearCheck: boolDefault(defaults.show_three_year_check, state.showThreeYearCheck)
+      showThreeYearCheck: false
     };
   }
 
@@ -90,7 +90,21 @@
 
   function template(){
     const m = model.metadata || {};
-    const cards = (model.method_cards || []).map(card => `
+    const methodCards = [
+      {
+        title: 'Почему женщины 18–44?',
+        text: m.why_not_15_49 || 'Рамка расчёта следует РПН-2022: используются женщины 18–44 лет, по которым измерены желаемое и ожидаемое число детей.'
+      },
+      {
+        title: 'Как читается сценарий?',
+        text: 'Пользователь задаёт охват меры, конверсию резерва в рождения и срок реализации. Итог показывает потенциальные рождения за выбранный период и среднегодовую оценку.'
+      },
+      {
+        title: 'Что такое жилищный резерв?',
+        text: 'Это нереализованное желаемое число детей у женщин с положительным разрывом между желаемым и ожидаемым числом детей; жилищный барьер можно включить или отключить отдельно.'
+      }
+    ];
+    const cards = methodCards.map(card => `
       <div class="explain-card"><h4>${escapeHtml(card.title)}</h4><p>${escapeHtml(card.text)}</p></div>`).join('');
     return `
       <section class="rpn-effect-designer" id="rpnHousingEffectDesigner">
@@ -118,7 +132,6 @@
               <div class="metric"><span>Жилищный резерв</span><b id="rpnFxLatentBirths">—</b></div>
               <div class="metric gold"><span>Сценарный эффект</span><b id="rpnFxScenarioBirths">—</b></div>
               <div class="metric"><span>В среднем в год</span><b id="rpnFxAnnualBirths">—</b></div>
-              <div class="metric"><span>Контроль 3 года</span><b id="rpnFxThreeYearBirths">—</b></div>
             </div>
           </section>
           <div class="rpn-effect-main-grid">
@@ -133,14 +146,11 @@
                   <label>Жилищные условия целевой группы</label>
                   <div class="rpn-effect-checks">
                     <label class="rpn-effect-check"><input id="rpnFxHousingBarrier" type="checkbox" /><span>Жилищные трудности мешают иметь желаемое число детей<small>Ответы «мешает» или «очень мешает».</small></span></label>
-                    <label class="rpn-effect-check"><input id="rpnFxHousingNeed" type="checkbox" /><span>Семье нужно улучшить жилищные условия<small>Уточняет группу до тех, кому нужен жилищный переход.</small></span></label>
-                    <label class="rpn-effect-check"><input id="rpnFxHighMeasures" type="checkbox" /><span>Жилищные меры высоко значимы<small>Участок под ИЖС или погашение кредита оценены на 4–5 баллов.</small></span></label>
                   </div>
                 </div>
                 ${rangeControl('rpnFxCoverage','Охват меры внутри выбранной группы','coveragePct',0,100,5,'%')}
                 ${rangeControl('rpnFxConversion','Конверсия резерва в рождения','conversionPct',0,100,5,'%')}
                 ${rangeControl('rpnFxYears','Срок реализации эффекта','implementationYears',1,10,1,' лет')}
-                <label class="rpn-effect-check"><input id="rpnFxShowThreeYear" type="checkbox" /><span>Показывать контрольную 3-летнюю оценку РПН<small>Отдельная справочная линия: в анкете есть вопрос о вероятности рождения в ближайшие 3 года.</small></span></label>
               </div>
               <div class="rpn-effect-source"><strong>Почему так:</strong> ${escapeHtml(m.why_not_15_49 || '')}</div>
             </div>
@@ -196,9 +206,6 @@
       el.addEventListener('input', () => { state[key] = +el.value; renderAll(); });
     };
     bindCheck('rpnFxHousingBarrier','housingBarrier');
-    bindCheck('rpnFxHousingNeed','housingNeed');
-    bindCheck('rpnFxHighMeasures','highHousingMeasures');
-    bindCheck('rpnFxShowThreeYear','showThreeYearCheck');
     bindRange('rpnFxCoverage','coveragePct','%');
     bindRange('rpnFxConversion','conversionPct','%');
     bindRange('rpnFxYears','implementationYears',' лет');
@@ -206,16 +213,12 @@
   }
 
   function normalizeCheckState(){
-    const need = document.getElementById('rpnFxHousingNeed');
-    const high = document.getElementById('rpnFxHighMeasures');
-    if(!state.housingBarrier){ state.housingNeed = false; state.highHousingMeasures = false; }
-    if(need){ need.disabled = !state.housingBarrier; need.checked = !!state.housingNeed; }
-    if(high){ high.disabled = !state.housingBarrier; high.checked = !!state.highHousingMeasures; }
+    state.housingNeed = false;
+    state.highHousingMeasures = false;
+    state.showThreeYearCheck = false;
     const barrier = document.getElementById('rpnFxHousingBarrier');
-    const show = document.getElementById('rpnFxShowThreeYear');
     if(barrier) barrier.checked = !!state.housingBarrier;
-    if(show) show.checked = !!state.showThreeYearCheck;
-    [barrier, need, high, show].forEach(input => {
+    [barrier].forEach(input => {
       const label = input?.closest('.rpn-effect-check');
       if(!label) return;
       label.classList.toggle('is-active', !!input.checked);
@@ -225,9 +228,6 @@
 
   function selectedGroupId(){
     if(!state.housingBarrier) return 'gap_only';
-    if(state.housingNeed && state.highHousingMeasures) return 'gap_housing_need_high';
-    if(state.housingNeed) return 'gap_housing_need';
-    if(state.highHousingMeasures) return 'gap_housing_high';
     return 'gap_housing';
   }
 
@@ -252,8 +252,7 @@
     const latent = group.latent_gap_births;
     const scenario = latent * coverage * conversion;
     const annual = scenario / Math.max(1, state.implementationYears);
-    const threeYear = group.additional_3y_probability_delta * coverage;
-    return {coverage, conversion, latent, scenario, annual, threeYear};
+    return {coverage, conversion, latent, scenario, annual};
   }
 
   function renderText(group, rates){
@@ -263,11 +262,9 @@
     setLabel('rpnFxLatentBirths', compact(group.latent_gap_births));
     setLabel('rpnFxScenarioBirths', compact(rates.scenario));
     setLabel('rpnFxAnnualBirths', compact(rates.annual));
-    setLabel('rpnFxThreeYearBirths', state.showThreeYearCheck ? compact(rates.threeYear) : 'скрыта');
     setLabel('rpnFxSummaryText', `мера работает с группой ${compact(group.target_women_weighted)} женщин и даёт ${compact(rates.scenario)} потенциальных рождений за ${fmt0.format(state.implementationYears)} ${yearsWord(state.implementationYears)}; среднегодовая оценка — ${summaryAnnual}.`);
     setLabel('rpnFxFormula', `Сценарный эффект = ${compact(group.latent_gap_births)} × ${fmt0.format(state.coveragePct)}% охвата × ${fmt0.format(state.conversionPct)}% конверсии = ${compact(rates.scenario)} потенциальных рождений за ${fmt0.format(state.implementationYears)} ${yearsWord(state.implementationYears)}.`);
-    const note = state.showThreeYearCheck ? `Контрольная 3-летняя оценка по самооценке РПН при таком охвате: ${compact(rates.threeYear)} потенциальных рождений.` : 'Контрольная 3-летняя оценка скрыта; основной расчёт использует выбранный срок реализации.';
-    setLabel('rpnFxChartNote', note);
+    setLabel('rpnFxChartNote', 'Показано, какая часть полного жилищного резерва переходит в сценарный эффект при выбранных охвате и конверсии.');
   }
 
   function renderFunnel(group, rates){
@@ -286,7 +283,6 @@
       {label:'Жилищный резерв', value:group.latent_gap_births, color:'#d7b56d'},
       {label:'Сценарный эффект', value:rates.scenario, color:'#155a5f'}
     ];
-    if(state.showThreeYearCheck) rows.push({label:'Контроль РПН, 3 года', value:rates.threeYear, color:'#8da2a4'});
     document.getElementById('rpnFxPotentialChart').innerHTML = barSvg(rows, {valueLabel:v=>compact(v)});
   }
 
@@ -370,7 +366,7 @@
         latentGapBirths: group?.latent_gap_births ?? null,
         scenarioBirths: rates?.scenario ?? null,
         annualBirths: rates?.annual ?? null,
-        threeYearCheckBirths: rates?.threeYear ?? null
+        threeYearCheckBirths: null
       };
     }
   };

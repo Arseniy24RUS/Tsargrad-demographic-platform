@@ -375,14 +375,22 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
       designerState: window.RpnHousingEffectDesigner?.getState?.(),
       designerVisible: !!document.querySelector('#rpnHousingEffectDesigner')?.offsetParent,
       oldScenarioHidden: document.querySelector('#rpnScenarioSelect') ? !document.querySelector('#rpnScenarioSelect').offsetParent : false,
-      newControls: ['#rpnFxCoverage', '#rpnFxConversion', '#rpnFxYears', '#rpnFxHousingBarrier', '#rpnFxHousingNeed', '#rpnFxHighMeasures']
+      newControls: ['#rpnFxCoverage', '#rpnFxConversion', '#rpnFxYears', '#rpnFxHousingBarrier']
         .every(selector => !!document.querySelector(selector)),
+      removedControlsMissing: ['#rpnFxHousingNeed', '#rpnFxHighMeasures', '#rpnFxShowThreeYear', '#rpnFxThreeYearBirths']
+        .every(selector => !document.querySelector(selector)),
+      removedTextsMissing: [
+        'Семье нужно улучшить жилищные условия',
+        'Жилищные меры высоко значимы',
+        'Показывать контрольную 3-летнюю оценку РПН',
+        'Контроль 3 года'
+      ].every(text => !body.includes(text)),
       summaryVisible: !!document.querySelector('.rpn-effect-summary')?.offsetParent,
       rangeRulers: document.querySelectorAll('.rpn-effect-range-ruler').length,
       emptyTallPanels: [...document.querySelectorAll('#rpnHousingEffectDesigner .rpn-effect-panel')]
         .filter(panel => panel.getBoundingClientRect().height > 520 && panel.innerText.trim().length < 120).length,
       hasHousingExplanation: body.includes('самооценка жилищных условий по шкале 0–100'),
-      hasReserveExplanation: body.includes('нереализованный разрыв') && body.includes('вероятности рождения в ближайшие 3 года'),
+      hasReserveExplanation: body.includes('нереализованное желаемое число детей') && body.includes('жилищный барьер'),
       hasOldLatentReserveText: body.includes('латентный разрыв')
     };
   });
@@ -393,10 +401,16 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
   expect(skrRpnState.designerVisible, `${target.slug} ${viewport.name} housing effect designer`).toBe(true);
   expect(skrRpnState.oldScenarioHidden, `${target.slug} ${viewport.name} old scenario block hidden`).toBe(true);
   expect(skrRpnState.newControls, `${target.slug} ${viewport.name} housing effect controls`).toBe(true);
+  expect(skrRpnState.removedControlsMissing, `${target.slug} ${viewport.name} removed housing effect controls`).toBe(true);
+  expect(skrRpnState.removedTextsMissing, `${target.slug} ${viewport.name} removed housing effect texts`).toBe(true);
   expect(skrRpnState.summaryVisible, `${target.slug} ${viewport.name} housing effect summary`).toBe(true);
   expect(skrRpnState.rangeRulers, `${target.slug} ${viewport.name} range rulers`).toBeGreaterThanOrEqual(3);
   expect(skrRpnState.emptyTallPanels, `${target.slug} ${viewport.name} empty tall panels`).toBe(0);
   expect(skrRpnState.designerState.groupId, `${target.slug} ${viewport.name} default housing group`).toBe('gap_housing');
+  expect(skrRpnState.designerState.state.housingNeed, `${target.slug} ${viewport.name} simplified housing need state`).toBe(false);
+  expect(skrRpnState.designerState.state.highHousingMeasures, `${target.slug} ${viewport.name} simplified housing measures state`).toBe(false);
+  expect(skrRpnState.designerState.state.showThreeYearCheck, `${target.slug} ${viewport.name} simplified 3-year state`).toBe(false);
+  expect(skrRpnState.designerState.threeYearCheckBirths, `${target.slug} ${viewport.name} removed 3-year value`).toBeNull();
   expect(skrRpnState.designerState.state.coveragePct, `${target.slug} ${viewport.name} default coverage`).toBe(60);
   expect(skrRpnState.designerState.state.conversionPct, `${target.slug} ${viewport.name} default conversion`).toBe(35);
   expect(skrRpnState.designerState.state.implementationYears, `${target.slug} ${viewport.name} default years`).toBe(6);
