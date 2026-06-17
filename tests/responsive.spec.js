@@ -255,10 +255,19 @@ async function runGeometryGate(page, target, viewport) {
 async function expectHeaderContract(page, target, viewport) {
   await expect(page.locator('.brand-title').first(), `${target.slug} ${viewport.name} brand title`).toHaveText('Россия 2050');
   await expect(page.locator('.brand-subtitle, .brand-sub').first(), `${target.slug} ${viewport.name} brand subtitle`).toHaveText('демографическая платформа');
+  const favicon = await page.evaluate(() => ({
+    icon: document.querySelector('head link[rel="icon"]')?.getAttribute('href') || '',
+    shortcut: document.querySelector('head link[rel="shortcut icon"]')?.getAttribute('href') || ''
+  }));
+  expect(favicon.icon, `${target.slug} ${viewport.name} favicon png`).toMatch(/assets\/img\/favicon\.png$/);
+  expect(favicon.shortcut, `${target.slug} ${viewport.name} favicon ico`).toMatch(/favicon\.ico$/);
   if (viewport.width <= 700) {
     const toggle = page.locator('.menu-toggle');
     await expect(toggle, `${target.slug} ${viewport.name} mobile menu toggle`).toBeVisible();
     await expect(toggle, `${target.slug} ${viewport.name} no menu word`).not.toContainText('Меню');
+    const logoBox = await page.locator('.brand img').first().boundingBox();
+    expect(logoBox?.height || 0, `${target.slug} ${viewport.name} mobile logo height`).toBeGreaterThanOrEqual(43);
+    expect(logoBox?.width || 0, `${target.slug} ${viewport.name} mobile logo width`).toBeGreaterThan(34);
   }
 }
 
@@ -352,6 +361,31 @@ async function checkSkrDetailMode(page, target, viewport, captureScreenshots) {
   }, null, { timeout: 20_000 });
   await scrollTopNow(page);
   await page.waitForTimeout(350);
+  const skrRpnState = await page.evaluate(() => {
+    const scatter = document.getElementById('rpnRegionalScatter');
+    const trend = document.getElementById('rpnRegionalTrend');
+    const body = document.body.innerText;
+    const colorbar = scatter?._fullData?.[0]?.marker?.colorbar?.title?.text || scatter?.data?.[0]?.marker?.colorbar?.title?.text || '';
+    return {
+      scatterXTitle: scatter?._fullLayout?.xaxis?.title?.text || '',
+      scatterYTitle: scatter?._fullLayout?.yaxis?.title?.text || '',
+      colorbarTitle: colorbar,
+      trendYears: [...new Set((trend?.data || []).flatMap(trace => trace.x || []))].map(String).sort(),
+      percentRulers: [...document.querySelectorAll('.percent-ruler')].map(el => el.textContent.replace(/\s+/g, ' ').trim()),
+      hasHousingExplanation: body.includes('самооценка жилищных условий по шкале 0–100'),
+      hasReserveExplanation: body.includes('нереализованный разрыв') && body.includes('вероятности рождения в ближайшие 3 года'),
+      hasOldLatentReserveText: body.includes('латентный разрыв')
+    };
+  });
+  expect(skrRpnState.scatterXTitle, `${target.slug} ${viewport.name} RPN scatter x title`).toBe('Фактический СКР за год');
+  expect(skrRpnState.scatterYTitle, `${target.slug} ${viewport.name} RPN scatter y title`).toBe('Желаемое число детей, среднее');
+  expect(skrRpnState.colorbarTitle, `${target.slug} ${viewport.name} RPN colorbar title`).toContain('желаемое−ожидаемое');
+  expect(skrRpnState.trendYears, `${target.slug} ${viewport.name} RPN trend years`).toEqual(expect.arrayContaining(['2022', '2025']));
+  expect(skrRpnState.percentRulers.join(' '), `${target.slug} ${viewport.name} range rulers`).toContain('0% 50% 100%');
+  expect(skrRpnState.percentRulers.join(' '), `${target.slug} ${viewport.name} range rulers 200`).toContain('0% 100% 200%');
+  expect(skrRpnState.hasHousingExplanation, `${target.slug} ${viewport.name} housing explanation`).toBe(true);
+  expect(skrRpnState.hasReserveExplanation, `${target.slug} ${viewport.name} reserve explanation`).toBe(true);
+  expect(skrRpnState.hasOldLatentReserveText, `${target.slug} ${viewport.name} old latent wording`).toBe(false);
   await runGeometryGate(page, target, viewport);
   if (!captureScreenshots) return;
   const dir = path.join(screenshotRoot, target.slug);

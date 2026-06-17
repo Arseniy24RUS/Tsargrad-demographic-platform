@@ -1,7 +1,7 @@
 'use strict';
 
 const skrState = {
-  data:null, geo:null, rpn:null, rpnRegional:null, selected:'terr_rf_bez_novyh_subektov', map:null, layer:null,
+  data:null, geo:null, rpn:null, rpnRegional:null, settlement:null, vciom:null, selected:'terr_rf_bez_novyh_subektov', map:null, layer:null,
   policyMonths:[], policyStart:null, autoPolicyStartMonth:null, policyIndex:0, highlightedLayer:null, analysisMode:'country',
   policyPointerId:null, monthlyForecast:null
 };
@@ -617,7 +617,7 @@ function selectTerritory(tid, syncSelector){
 
 // --- РПН-2022: желаемое / ожидаемое число детей и жилищный резерв рождаемости ---
 const RPN_SCENARIO_LABELS = {
-  upper_bound_all_women_desired_expected_gap:'Все женщины 18–44: латентный максимум',
+  upper_bound_all_women_desired_expected_gap:'Все женщины 18–44: нереализованный максимум',
   upper_bound_women_with_positive_gap:'Женщины с разрывом желаемое > ожидаемого',
   upper_bound_housing_barrier:'Жильё мешает: верхняя граница',
   upper_bound_need_improvement_and_housing_barrier:'Нужно улучшить жильё + жильё мешает',
@@ -801,8 +801,8 @@ function drawRpnPotentialChart(){
   document.getElementById('rpnKpiMeanGap').textContent=fmtNum(s.mean_positive_gap,2);
   const compact=rpnCompactAxis();
   const labels=compact
-    ? ['База<br>3 года','Поддержка<br>3 года','Прирост<br>вероятности','Латентный<br>разрыв']
-    : ['Базовые рождения<br>за 3 года','При поддержке<br>за 3 года','Прирост по вероятности<br>за 3 года','Реализованный<br>латентный разрыв'];
+    ? ['База<br>3 года','Поддержка<br>3 года','Прирост<br>вероятности','Нереализованный<br>разрыв']
+    : ['Базовые рождения<br>за 3 года','При поддержке<br>за 3 года','Прирост по вероятности<br>за 3 года','Нереализованное<br>желаемое число детей'];
   const vals=[baselineBirths,support,probAdd,latent].map(v=>v/1e6);
   const traces=[{type:'bar', x:labels, y:vals, marker:{color:[TG.colors.teal,TG.colors.green,TG.colors.gold,TG.colors.red]}, text:vals.map(v=>fmtNum(v,2)+' млн'), textposition:'outside', cliponaxis:false}];
   Plotly.react('rpnPotentialChart', traces, rpnChartLayout({
@@ -816,7 +816,7 @@ function drawRpnOrderPotentialChart(){
   const narrow=TG.isNarrow();
   const x=rows.map(d=>narrow ? (d.born_children===4?'4+':String(d.born_children)) : (d.born_children===4?'4+ детей':`${d.born_children} ${d.born_children===1?'ребёнок':'детей'}`));
   const traces=[
-    {type:'bar', name:'латентный разрыв', x, y:rows.map(d=>d.latent_desired_expected_gap_births/1000), marker:{color:TG.colors.teal}},
+    {type:'bar', name:'нереализованное желаемое число детей', x, y:rows.map(d=>d.latent_desired_expected_gap_births/1000), marker:{color:TG.colors.teal}},
     {type:'bar', name:'вероятностный эффект за 3 года', x, y:rows.map(d=>d.additional_births_next_3y_probability_positive_delta/1000), marker:{color:TG.colors.gold}}
   ];
   Plotly.react('rpnOrderPotentialChart', traces, rpnChartLayout({
@@ -839,7 +839,7 @@ function drawRpnScenarioTable(){
   document.getElementById('rpnScenarioTable').innerHTML=tableHTML(rows,[
     {key:'scenario',label:'Сценарий'},
     {key:'target',label:'Целевая группа'},
-    {key:'latent',label:'Латентный максимум'},
+    {key:'latent',label:'Нереализованный максимум'},
     {key:'prob3y',label:'Вероятностный эффект'},
     {key:'meanGap',label:'Средний разрыв'}
   ]);
@@ -861,6 +861,51 @@ function rpnRegRows(year, sex){
 function rpnRegNational(year, sex){
   if(!skrState.rpnRegional) return null;
   return skrState.rpnRegional.records.find(d=>String(d.year)===String(year) && d.sex===sex && d.region_code==='RU') || null;
+}
+function rpnRussiaFactByYear(year){
+  const russiaId=skrState.data?.metadata?.russia_territory_id || 'terr_rf_bez_novyh_subektov';
+  const history=skrState.settlement?.history?.[russiaId] || [];
+  const historical=history.find(row=>String(row.year)===String(year));
+  if(historical && historical.total!==null && historical.total!==undefined) return +historical.total;
+  if(String(year)==='2025' && skrState.vciom?.actual?.tfr_total!==undefined) return +skrState.vciom.actual.tfr_total;
+  const author=skrState.authorTfr?.[russiaId]?.find?.(row=>String(row.year)===String(year));
+  return author?.median ?? null;
+}
+function rpnFederalReferenceRows(sex){
+  const rows=[];
+  const group=sex || 'Все';
+  const rpn2022=skrState.rpn?.overall_by_sex?.find(row=>row.group===group);
+  if(rpn2022){
+    rows.push({
+      year:2022,
+      region_code:'RU',
+      region_name:'Россия, РПН-2022',
+      territory_id:skrState.data?.metadata?.russia_territory_id,
+      sex:group,
+      desired_mean:rpn2022.desired_children_mean,
+      expected_mean:rpn2022.expected_children_mean,
+      gap_mean:rpn2022.gap_mean,
+      fact_tfr_total:rpnRussiaFactByYear(2022),
+      source_label:'РПН-2022'
+    });
+  }
+  const vciom=skrState.vciom?.vciom_2025;
+  const vciomRow=group==='Все' ? vciom?.all : vciom?.sex?.find(row=>row.group===group);
+  if(vciomRow){
+    rows.push({
+      year:2025,
+      region_code:'RU',
+      region_name:'Россия, ВЦИОМ-2025',
+      territory_id:skrState.data?.metadata?.russia_territory_id,
+      sex:group,
+      desired_mean:vciomRow.desired_children,
+      expected_mean:vciomRow.expected_children,
+      gap_mean:vciomRow.desired_expected_gap,
+      fact_tfr_total:rpnRussiaFactByYear(2025),
+      source_label:'ВЦИОМ-2025'
+    });
+  }
+  return rows.filter(row=>row.desired_mean!==null && row.desired_mean!==undefined && row.expected_mean!==null && row.expected_mean!==undefined);
 }
 function territoryRpnRegionalRows(tid, sex){
   if(!skrState.rpnRegional) return [];
@@ -887,7 +932,7 @@ function drawRpnRegionalScatter(){
   const traces=[
     {type:'scatter', mode:'markers', name:'субъекты РФ', x:otherRows.map(d=>d.fact_tfr_total), y:otherRows.map(d=>d.desired_mean),
       text:otherRows.map(d=>`<b>${d.region_name}</b><br>СКР факт: ${fmtTfr(d.fact_tfr_total,3)}<br>Желаемое: ${fmtNum(d.desired_mean,2)}<br>Ожидаемое: ${fmtNum(d.expected_mean,2)}<br>Разрыв: ${fmtNum(d.gap_mean,2)}<br>Число ответов: ${fmtNum(d.n,0)}`),
-      hovertemplate:'%{text}<extra></extra>', marker:{size:9, color:otherRows.map(d=>d.gap_mean), colorscale:[[0,'#d9d2c3'],[.5,TG.colors.gold],[1,TG.colors.red]], cmin:0, cmax:.75, colorbar:{title:'разрыв',thickness:12}, line:{color:'#fffdf8',width:1}}},
+      hovertemplate:'%{text}<extra></extra>', marker:{size:9, color:otherRows.map(d=>d.gap_mean), colorscale:[[0,'#d9d2c3'],[.5,TG.colors.gold],[1,TG.colors.red]], cmin:0, cmax:.75, colorbar:{title:{text:'Разрыв:<br>желаемое−ожидаемое,<br>детей',side:'right'},thickness:14,len:.78,outlinewidth:0}, line:{color:'#fffdf8',width:1}}},
     {type:'scatter', mode:'markers', name:'ожидаемое число детей', x:rows.map(d=>d.fact_tfr_total), y:rows.map(d=>d.expected_mean),
       text:rows.map(d=>`<b>${d.region_name}</b><br>СКР факт: ${fmtTfr(d.fact_tfr_total,3)}<br>Ожидаемое: ${fmtNum(d.expected_mean,2)}`), hovertemplate:'%{text}<extra></extra>', marker:{size:7,color:'rgba(20,91,97,.45)',symbol:'circle-open',line:{color:TG.colors.teal,width:1.5}}}
   ];
@@ -900,15 +945,18 @@ function drawRpnRegionalScatter(){
   }
   Plotly.react('rpnRegionalScatter', traces, rpnChartLayout({
     title:{text:`РПН-${year}: факт СКР и репродуктивные установки (${sex.toLowerCase()})`,x:0,xanchor:'left',font:{size:20}},
-    margin:TG.isNarrow()?{l:52,r:54,t:24,b:154}:{l:72,r:74,t:28,b:126},
-    xaxis:{title:'фактический СКР за год',gridcolor:'#efe5d4',zeroline:false,automargin:true},
-    yaxis:{title:'среднее число детей',gridcolor:'#efe5d4',zeroline:false,range:[0.8,3.4],automargin:true},
+    margin:TG.isNarrow()?{l:62,r:96,t:24,b:164}:{l:82,r:132,t:28,b:136},
+    xaxis:{title:{text:'Фактический СКР за год',standoff:12},gridcolor:'#efe5d4',zeroline:false,automargin:true},
+    yaxis:{title:{text:'Желаемое число детей, среднее',standoff:12},gridcolor:'#efe5d4',zeroline:false,range:[0.8,3.8],automargin:true},
     legend:rpnLegend()
   }), TG.plotConfig);
 }
 function drawRpnRegionalTrend(){
   const sex=document.getElementById('rpnRegionalSexSelect')?.value || 'Все';
-  const rows=territoryRpnRegionalRows(skrState.selected, sex);
+  const selectedIsRussia=skrState.selected===skrState.data?.metadata?.russia_territory_id;
+  const regionalRows=territoryRpnRegionalRows(skrState.selected, sex);
+  const federalRows=rpnFederalReferenceRows(sex);
+  const rows=(selectedIsRussia ? regionalRows.concat(federalRows) : regionalRows).sort((a,b)=>a.year-b.year);
   document.getElementById('rpnRegionalTerritoryPill').textContent=getTerritoryLabel(skrState.selected);
   if(!rows.length){
     document.getElementById('rpnRegionalTrend').innerHTML='<div class="text-note" style="padding:20px">Для выбранной территории нет региональных значений РПН-2012/2017.</div>';
@@ -916,13 +964,22 @@ function drawRpnRegionalTrend(){
   }
   const x=rows.map(d=>String(d.year));
   const traces=[
-    {type:'scatter',mode:'lines+markers',name:'желаемое',x,y:rows.map(d=>d.desired_mean),line:{color:TG.colors.gold,width:4},marker:{size:9}},
-    {type:'scatter',mode:'lines+markers',name:'ожидаемое',x,y:rows.map(d=>d.expected_mean),line:{color:TG.colors.teal,width:4},marker:{size:9}},
-    {type:'scatter',mode:'lines+markers',name:'фактический СКР',x,y:rows.map(d=>d.fact_tfr_total),line:{color:TG.colors.red,width:3,dash:'dot'},marker:{size:8}}
+    {type:'scatter',mode:'lines+markers',name:selectedIsRussia?'Россия: желаемое':'выбранная территория: желаемое',x,y:rows.map(d=>d.desired_mean),line:{color:TG.colors.gold,width:4},marker:{size:9}},
+    {type:'scatter',mode:'lines+markers',name:selectedIsRussia?'Россия: ожидаемое':'выбранная территория: ожидаемое',x,y:rows.map(d=>d.expected_mean),line:{color:TG.colors.teal,width:4},marker:{size:9}},
+    {type:'scatter',mode:'lines+markers',name:selectedIsRussia?'Россия: фактический СКР':'выбранная территория: фактический СКР',x,y:rows.map(d=>d.fact_tfr_total),line:{color:TG.colors.red,width:3,dash:'dot'},marker:{size:8}}
   ];
+  if(!selectedIsRussia && federalRows.length){
+    const fx=federalRows.map(d=>String(d.year));
+    const fHover=federalRows.map(d=>`<b>${d.region_name}</b><br>Желаемое: ${fmtNum(d.desired_mean,2)}<br>Ожидаемое: ${fmtNum(d.expected_mean,2)}<br>СКР факт: ${fmtTfr(d.fact_tfr_total,3)}<extra></extra>`);
+    traces.push(
+      {type:'scatter',mode:'lines+markers',name:'Россия: желаемое 2022/2025',x:fx,y:federalRows.map(d=>d.desired_mean),line:{color:TG.colors.gold,width:3,dash:'dash'},marker:{size:10,symbol:'diamond'},hovertemplate:fHover},
+      {type:'scatter',mode:'lines+markers',name:'Россия: ожидаемое 2022/2025',x:fx,y:federalRows.map(d=>d.expected_mean),line:{color:TG.colors.teal,width:3,dash:'dash'},marker:{size:10,symbol:'diamond'},hovertemplate:fHover},
+      {type:'scatter',mode:'lines+markers',name:'Россия: фактический СКР 2022/2025',x:fx,y:federalRows.map(d=>d.fact_tfr_total),line:{color:TG.colors.red,width:2,dash:'dashdot'},marker:{size:9,symbol:'diamond'},hovertemplate:fHover}
+    );
+  }
   Plotly.react('rpnRegionalTrend', traces, rpnChartLayout({
     title:{text:`${getTerritoryLabel(skrState.selected)}: установки и факт`,x:0,xanchor:'left',font:{size:20}},
-    yaxis:{title:'детей / СКР',gridcolor:'#efe5d4',range:[0.8,3.5]},
+    yaxis:{title:'детей / СКР',gridcolor:'#efe5d4',range:[0.8,3.8]},
     xaxis:{type:'category',gridcolor:'#efe5d4'},
     legend:rpnLegend()
   }), TG.plotConfig);
@@ -947,8 +1004,8 @@ function drawRpnRegionalTable(){
 
 async function initSkr(){
   try{
-    const [data, geo, rpn, rpnRegional] = await Promise.all([loadJSON('data/tfr_data.json'), loadJSON('data/subjects.geojson'), loadJSON('data/rpn2022_fertility_housing_dashboard.json'), loadJSON('data/rpn_regional_intentions_2012_2017.json')]);
-    skrState.data=data; skrState.geo=geo; skrState.rpn=rpn; skrState.rpnRegional=rpnRegional;
+    const [data, geo, rpn, rpnRegional, settlement, vciom] = await Promise.all([loadJSON('data/tfr_data.json'), loadJSON('data/subjects.geojson'), loadJSON('data/rpn2022_fertility_housing_dashboard.json'), loadJSON('data/rpn_regional_intentions_2012_2017.json'), loadJSON('data/settlement_data.json'), loadJSON('data/vciom_reproductive_intentions_2025.json')]);
+    skrState.data=data; skrState.geo=geo; skrState.rpn=rpn; skrState.rpnRegional=rpnRegional; skrState.settlement=settlement; skrState.vciom=vciom;
     try{ skrState.monthlyForecast = await loadSkrMonthlyForecast(); }catch(_){ skrState.monthlyForecast = {metadata:{}, series:{}}; }
     try{ skrState.authorTfr = await loadAuthorTfrForecast(); }catch(_){ skrState.authorTfr = null; }
     setupTerritorySelector(); setupTerritorySelectorEvents(); setupModeControls(); setupPolicyControl(); setupMap(); updateSkrChart(); setupRpnControls(); setupRpnRegionalControls(); updateRpnModule(); updateRpnRegionalModule();

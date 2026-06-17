@@ -54,7 +54,7 @@
       </div>
     </section>
 
-    <section class="grid two">
+    <section class="grid two skr-map-grid">
       <div class="card white">
         <div class="card-title-row">
           <div>
@@ -200,7 +200,7 @@
         <div class="card-title-row">
           <div>
             <h2>Жильё и разрыв репродуктивных планов</h2>
-            <div class="text-note">При выборе пола график показывает среднее желаемое, ожидаемое число детей и разрыв между ними по самооценке жилищных условий.</div>
+            <div class="text-note">Категории «очень хорошие», «хорошие» и далее — это самооценка жилищных условий по шкале 0–100. График показывает среднее желаемое и ожидаемое число детей, а также разрыв между ними.</div>
           </div>
           <div class="control mini-select"><label for="rpnSexSelect">Пол</label><select id="rpnSexSelect"><option>Все</option><option>Женщины</option><option>Мужчины</option></select></div>
         </div>
@@ -218,20 +218,30 @@
             <div class="text-note" id="rpnScenarioDescription">—</div>
           </div>
           <div class="control">
-            <label for="rpnLatentClosureRange">Закрытие латентного разрыва желаемое−ожидаемое</label>
+            <label for="rpnLatentClosureRange">Закрытие разрыва желаемое−ожидаемое</label>
             <input id="rpnLatentClosureRange" type="range" min="0" max="100" value="10" step="1" />
-            <div class="text-note">Реализовано: <b id="rpnLatentClosureLabel">10%</b> латентного максимума.</div>
+            <div class="range-ruler percent-ruler" aria-hidden="true">
+              <span class="range-tick min">0%</span>
+              <span class="range-tick mid">50%</span>
+              <span class="range-tick max">100%</span>
+            </div>
+            <div class="text-note">Реализовано: <b id="rpnLatentClosureLabel">10%</b> нереализованного максимума.</div>
           </div>
           <div class="control">
             <label for="rpnProbabilityScaleRange">Масштаб вероятностного эффекта за 3 года</label>
             <input id="rpnProbabilityScaleRange" type="range" min="0" max="200" value="100" step="5" />
+            <div class="range-ruler percent-ruler" aria-hidden="true">
+              <span class="range-tick min">0%</span>
+              <span class="range-tick mid">100%</span>
+              <span class="range-tick max">200%</span>
+            </div>
             <div class="text-note">Коэффициент: <b id="rpnProbabilityScaleLabel">100%</b> от самооценочной прибавки вероятности рождения.</div>
           </div>
         </div>
         <div class="metric-strip two-columns detail-metrics">
           <div class="metric"><span>Целевая группа</span><b id="rpnKpiTargetWomen">—</b></div>
           <div class="metric"><span>Вероятностный эффект</span><b id="rpnKpiProbBirths">—</b></div>
-          <div class="metric"><span>Латентный максимум</span><b id="rpnKpiLatentBirths">—</b></div>
+          <div class="metric"><span>Нереализованный максимум</span><b id="rpnKpiLatentBirths">—</b></div>
           <div class="metric"><span>Средний разрыв</span><b id="rpnKpiMeanGap">—</b></div>
         </div>
       </div>
@@ -258,7 +268,7 @@
     <section class="grid two">
       <div class="card white">
         <h2>Резерв по текущему числу детей</h2>
-        <div class="text-note">Женщины с положительным разрывом и жилищным барьером: латентный разрыв и вероятностная прибавка рождений за 3 года по числу уже рождённых детей.</div>
+        <div class="text-note">Оценка дополнительного потенциала среди женщин, которые хотят больше детей, чем ожидают, и одновременно сталкиваются с жилищным барьером. Сравниваются полный нереализованный разрыв и более осторожная прибавка по вероятности рождения в ближайшие 3 года.</div>
         <div id="rpnOrderPotentialChart" class="chart mid"></div>
       </div>
       <div class="card white">
